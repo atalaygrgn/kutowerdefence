@@ -11,7 +11,14 @@
          <font>
             <Font name="System Bold" size="22.0" />
          </font></Label>
-      <Pane prefHeight="120.0" prefWidth="1280.0" />
+      <Pane prefHeight="120.0" prefWidth="1280.0">
+         <children>
+            <Button layoutX="1199.0" mnemonicParsing="false" text="X">
+               <font>
+                  <Font name="System Bold" size="22.0" />
+               </font>
+            </Button>
+         </children></Pane>
       <HBox alignment="CENTER" prefHeight="480.0" prefWidth="1280.0">
          <children>
             <VBox prefHeight="480.0" prefWidth="580.0">
@@ -182,10 +189,11 @@
          </children>
       </HBox>
       <Pane prefHeight="50.0" prefWidth="200.0" />
-      <HBox alignment="TOP_RIGHT" prefHeight="120.0" prefWidth="1280.0">
+      <HBox alignment="TOP_CENTER" prefHeight="120.0" prefWidth="1280.0">
          <children>
+            <Button mnemonicParsing="false" text="Save Settings" />
+            <Pane prefHeight="93.0" prefWidth="800.0" />
             <Button mnemonicParsing="false" text="Revert to Default" />
-            <Pane prefHeight="93.0" prefWidth="100.0" />
          </children>
       </HBox>
    </children>

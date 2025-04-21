@@ -26,7 +26,7 @@
       </font>
    </Button>
    <Pane prefHeight="20.0" />
-   <Button layoutX="326.0" layoutY="359.0" mnemonicParsing="false" text="Options">
+   <Button fx:id="optionsButton" layoutX="326.0" layoutY="359.0" mnemonicParsing="false" text="Options">
       <font>
          <Font size="16.0" />
       </font>
