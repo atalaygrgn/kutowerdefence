@@ -18,6 +18,10 @@ public final class Routing {
         open(control, "mapeditor-view.fxml", "Edit Mode");
     }
 
+    public static void openOptionsMenu(Control control) throws IOException {
+        open(control, "optionsmenu-view.fxml", "Options");
+    }
+
     private static void open(Control control, String layoutPath, String title) throws IOException {
         Stage currentStage = (Stage) control.getScene().getWindow();
 

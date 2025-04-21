@@ -3,8 +3,8 @@ package com.canja.kutowerdefence;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -16,7 +16,10 @@ public class OptionsMenuView  implements Initializable{
 
     }
     public void exitButtonOnClick(ActionEvent actionEvent) {
-        Stage stage = (Stage) exitButton.getScene().getWindow();
-        stage.close();
+        try {
+            Routing.openMainMenu(exitButton);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

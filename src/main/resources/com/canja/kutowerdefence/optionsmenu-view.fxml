@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
+<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.canja.kutowerdefence.OptionsMenuView">
    <children>
       <Pane prefHeight="54.0" prefWidth="1280.0" />
       <Label text="OPTIONS MENU">
@@ -13,7 +13,7 @@
          </font></Label>
       <Pane prefHeight="120.0" prefWidth="1280.0">
          <children>
-            <Button layoutX="1199.0" mnemonicParsing="false" text="X">
+            <Button fx:id="exitButton" layoutX="1199.0" mnemonicParsing="false" onAction="#exitButtonOnClick" text="X">
                <font>
                   <Font name="System Bold" size="22.0" />
                </font>

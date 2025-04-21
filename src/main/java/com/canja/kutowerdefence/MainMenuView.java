@@ -59,14 +59,7 @@ public class MainMenuView implements Initializable {
         });
         optionsButton.setOnAction((event) -> {
             try {
-                FXMLLoader fxmlLoader = new FXMLLoader();
-                fxmlLoader.setLocation(getClass().getResource("optionsmenu-view.fxml"));
-
-                Scene scene = new Scene(fxmlLoader.load(), 1280, 720);
-                Stage stage = new Stage();
-                stage.setTitle("Options");
-                stage.setScene(scene);
-                stage.show();
+                Routing.openOptionsMenu(optionsButton);
             } catch (IOException e) {
                 e.printStackTrace();
             }
