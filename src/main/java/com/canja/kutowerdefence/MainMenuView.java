@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
@@ -46,20 +47,12 @@ public class MainMenuView implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
         showImages();
         editModeButton.setOnAction((event) -> {
             try {
-                FXMLLoader fxmlLoader = new FXMLLoader();
-                fxmlLoader.setLocation(getClass().getResource("mapeditor-view.fxml"));
-
-                Scene scene = new Scene(fxmlLoader.load(), 1280, 720);
-                Stage stage = new Stage();
-                stage.setTitle("Edit Mode");
-                stage.setScene(scene);
-                stage.show();
+                Routing.openEditMode(editModeButton);
             } catch (IOException e) {
-                e.printStackTrace();
+                throw new RuntimeException(e);
             }
         });
     }

@@ -14,6 +14,7 @@ public class Main extends Application {
         Scene scene = new Scene(fxmlLoader.load(), 1280, 720);
         stage.setTitle("KU Tower Defence");
         stage.setScene(scene);
+        stage.setResizable(false);
         stage.show();
     }
 
