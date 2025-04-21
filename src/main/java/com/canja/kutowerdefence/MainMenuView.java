@@ -23,10 +23,12 @@ public class MainMenuView implements Initializable {
     public ImageView logoimage;
     public VBox pane;
     public Button editModeButton;
+    public Button optionsButton;
 
     public void onQuitButtonClick(ActionEvent actionEvent) {
         Platform.exit();
     }
+
 
     public void showImages() {
         try {
@@ -53,6 +55,20 @@ public class MainMenuView implements Initializable {
                 Routing.openEditMode(editModeButton);
             } catch (IOException e) {
                 throw new RuntimeException(e);
+            }
+        });
+        optionsButton.setOnAction((event) -> {
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader();
+                fxmlLoader.setLocation(getClass().getResource("optionsmenu-view.fxml"));
+
+                Scene scene = new Scene(fxmlLoader.load(), 1280, 720);
+                Stage stage = new Stage();
+                stage.setTitle("Options");
+                stage.setScene(scene);
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         });
     }
