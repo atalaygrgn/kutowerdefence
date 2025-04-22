@@ -1,16 +1,14 @@
 package com.canja.kutowerdefence.ui;
 
-import com.canja.kutowerdefence.domain.Map;
 import com.canja.kutowerdefence.Routing;
+import com.canja.kutowerdefence.domain.MapEditor;
+import com.canja.kutowerdefence.domain.Tile;
 import com.canja.kutowerdefence.domain.TileType;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -18,32 +16,48 @@ import java.util.ResourceBundle;
 public class EditModeView implements Initializable {
 
     public Button exitButton;
-    public ImageView tilesetImageView;
     public GridPane mapGridPane;
-    public Map editModeMap;
+    public MapEditor mapEditor;
+    public GridPane tilePaletteGridPane;
+    private TileView previousTileView;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        File tilesetFile = new File("src/main/resources/assets/tileset64.png");
-        Image tilesetImage = new Image(tilesetFile.toURI().toString());
-        tilesetImageView.setImage(tilesetImage);
-        tilesetImageView.setCache(true);
-
-        editModeMap = new Map();
+        mapEditor = new MapEditor();
         initializeMapGridPane();
+        initializeTilePaletteGridPane();
     }
 
     private void initializeMapGridPane() {
-        for (int i = 0; i < editModeMap.getMap().length; i++) {
-            for (int j = 0; j < editModeMap.getMap()[i].length; j++) {
-                TileView tileView = new TileView(editModeMap.getTile(i, j));
+        for (int i = 0; i < mapEditor.getMap().getArray().length; i++) {
+            for (int j = 0; j < mapEditor.getMap().getArray()[i].length; j++) {
+                TileView tileView = new TileView(mapEditor.getMap().getTile(i, j));
                 int finalI = i;
                 int finalJ = j;
                 tileView.setOnMouseClicked(event -> {
-                    tileView.setTileType(TileType.HORIZONTAL);
-                    editModeMap.getTile(finalI, finalJ).setTileType(TileType.HORIZONTAL);
+                    mapEditor.penTool(finalI, finalJ, tileView);
                 });
                 mapGridPane.add(tileView, i, j);
+            }
+        }
+    }
+
+    private void initializeTilePaletteGridPane() {
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 4; j++) {
+                TileView tileView = new TileView(new Tile(i, j));
+                int finalI = i;
+                int finalJ = j;
+                tileView.setOnMouseClicked(event -> {
+                    TileType tileType = Tile.getTileType(finalI, finalJ);
+                    mapEditor.changeSelectedTile(tileType);
+                    tileView.highlight();
+                    if (previousTileView != null) if (!previousTileView.equals(tileView)) {
+                        previousTileView.unhighlight();
+                    }
+                    previousTileView = tileView;
+                });
+                tilePaletteGridPane.add(tileView, j, i);
             }
         }
     }

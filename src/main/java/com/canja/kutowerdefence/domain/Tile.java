@@ -3,6 +3,8 @@ package com.canja.kutowerdefence.domain;
 import javafx.scene.image.Image;
 
 import java.io.File;
+import java.text.DecimalFormat;
+import java.util.Arrays;
 
 public class Tile {
 
@@ -12,8 +14,16 @@ public class Tile {
         this.tileType = tileType;
     }
 
+    public Tile(int index) {
+        this.tileType = TileType.values()[index];
+    }
+
+    public Tile(int x, int y) {
+        this.tileType = TileType.values()[4*x + y];
+    }
+
     public Tile() {
-        this.tileType = TileType.CIRCULAR_CENTER;
+        this.tileType = TileType.EMPTY;
     }
 
     public TileType getTileType() {
@@ -24,22 +34,13 @@ public class Tile {
         this.tileType = tileType;
     }
 
-    public Image getTileImage() {
-        String tilePath = switch (tileType) {
-            case HORIZONTAL -> "assets/tile64/tile64_13.png";
-            case VERTICAL -> "assets/tile64/tile64_07.png";
-            case CIRCULAR_TOPLEFT -> "assets/tile64/tile64_00.png";
-            case CIRCULAR_TOPCENTER -> "assets/tile64/tile64_01.png";
-            case CIRCULAR_TOPRIGHT -> "assets/tile64/tile64_02.png";
-            case CIRCULAR_CENTERLEFT -> "assets/tile64/tile64_04.png";
-            case CIRCULAR_CENTER -> "assets/tile64/tile64_05.png";
-            case CIRCULAR_CENTERRIGHT -> "assets/tile64/tile64_06.png";
-            case CIRCULAR_BOTTOMLEFT -> "assets/tile64/tile64_08.png";
-            case CIRCULAR_BOTTOMCENTER ->"assets/tile64/tile64_09.png";
-            case CIRCULAR_BOTTOMRIGHT -> "assets/tile64/tile64_10.png";
-            default -> null;
-        };
-        return new Image(new File("src/main/resources/" + tilePath).toURI().toString());
+    public Image getTileImage64() {
+        String index_f = new DecimalFormat("00").format(Arrays.asList(TileType.values()).indexOf(tileType));
+        return new Image(new File("src/main/resources/assets/tile64/tile64_" + index_f + ".png").toURI().toString());
+    }
+
+    public static TileType getTileType(int x, int y) {
+        return TileType.values()[4*x + y];
     }
 
 }

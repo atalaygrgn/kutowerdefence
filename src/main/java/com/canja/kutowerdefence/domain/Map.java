@@ -13,20 +13,16 @@ public class Map {
         }
     }
 
-    public Tile[][] getMap() {
+    public Tile[][] getArray() {
         return map;
-    }
-
-    public void setMap(Tile[][] map) {
-        this.map = map;
     }
 
     public Tile getTile(int x, int y) {
         return map[x][y];
     }
 
-    public void setTile(int x, int y, Tile tile) {
-        map[x][y] = tile;
+    public void editTile(int x, int y, TileType tileType) {
+        map[x][y].setTileType(tileType);
     }
 
 }

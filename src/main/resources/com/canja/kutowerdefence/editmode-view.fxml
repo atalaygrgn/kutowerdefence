@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
@@ -32,7 +31,24 @@
                   <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" text="Sav" />
                </children>
             </HBox>
-            <ImageView fx:id="tilesetImageView" fitHeight="512.0" fitWidth="256.0" pickOnBounds="true" preserveRatio="true" />
+            <GridPane fx:id="tilePaletteGridPane" gridLinesVisible="true">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="64.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="64.0" />
+                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="64.0" />
+                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="64.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="64.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="64.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="64.0" vgrow="SOMETIMES" />
+                 <RowConstraints minHeight="10.0" prefHeight="64.0" vgrow="SOMETIMES" />
+                 <RowConstraints minHeight="10.0" prefHeight="64.0" vgrow="SOMETIMES" />
+                 <RowConstraints minHeight="10.0" prefHeight="64.0" vgrow="SOMETIMES" />
+                 <RowConstraints minHeight="10.0" prefHeight="64.0" vgrow="SOMETIMES" />
+                 <RowConstraints minHeight="10.0" prefHeight="64.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+            </GridPane>
          </children>
       </VBox>
    </right>
