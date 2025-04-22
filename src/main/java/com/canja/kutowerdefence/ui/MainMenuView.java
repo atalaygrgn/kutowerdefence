@@ -49,14 +49,14 @@ public class MainMenuView implements Initializable {
         showImages();
         editModeButton.setOnAction((event) -> {
             try {
-                Routing.openEditMode(editModeButton);
+                Routing.openEditMode();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         });
         optionsButton.setOnAction((event) -> {
             try {
-                Routing.openOptionsMenu(optionsButton);
+                Routing.openOptionsMenu();
             } catch (IOException e) {
                 e.printStackTrace();
             }
