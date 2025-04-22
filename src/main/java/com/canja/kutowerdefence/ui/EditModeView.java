@@ -50,7 +50,7 @@ public class EditModeView implements Initializable {
 
     public void exitButtonOnClick(ActionEvent actionEvent) {
         try {
-            Routing.openMainMenu(exitButton);
+            Routing.returnToPreviousScene();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
