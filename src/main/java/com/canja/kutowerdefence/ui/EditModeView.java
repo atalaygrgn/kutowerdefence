@@ -57,6 +57,10 @@ public class EditModeView implements Initializable {
                     }
                     previousTileView = tileView;
                 });
+                if (mapEditor.getSelectedTileType().equals(tileView.getTileType())) {
+                    previousTileView = tileView;
+                    tileView.highlight();
+                }
                 tilePaletteGridPane.add(tileView, j, i);
             }
         }

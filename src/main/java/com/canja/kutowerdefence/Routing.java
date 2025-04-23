@@ -1,10 +1,13 @@
 package com.canja.kutowerdefence;
 
 import javafx.fxml.FXMLLoader;
+import javafx.scene.ImageCursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Stack;
 
@@ -36,10 +39,16 @@ public final class Routing {
         Scene scene = new Scene(fxmlLoader.load(), 1280, 768);
         String title = "KU Tower Defence";
         mainStage.setTitle(title);
+
         route.push(scene);
         titles.push(title);
+
+        Image cursorImage = new Image(new File("src/main/resources/assets/ui/cursor.png").toURI().toString());
+        scene.setCursor(new ImageCursor(cursorImage, cursorImage.getWidth() / 2, cursorImage.getHeight() /2));
+
         mainStage.setScene(scene);
         mainStage.setResizable(false);
+
         mainStage.show();
     }
 
