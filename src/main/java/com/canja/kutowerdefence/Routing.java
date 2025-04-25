@@ -44,7 +44,7 @@ public final class Routing {
         titles.push(title);
 
         Image cursorImage = new Image(new File("src/main/resources/assets/ui/cursor.png").toURI().toString());
-        scene.setCursor(new ImageCursor(cursorImage, cursorImage.getWidth() / 2, cursorImage.getHeight() /2));
+        scene.setCursor(new ImageCursor(cursorImage));
 
         mainStage.setScene(scene);
         mainStage.setResizable(false);

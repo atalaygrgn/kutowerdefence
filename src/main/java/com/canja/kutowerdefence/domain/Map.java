@@ -25,4 +25,13 @@ public class Map {
         map[x][y].setTileType(tileType);
     }
 
+    public Tile[][] reset() {
+        map = new Tile[16][12];
+        for (int x = 0; x < 16; x++) {
+            for (int y = 0; y < 12; y++) {
+                map[x][y] = new Tile();
+            }
+        }
+        return map;
+    }
 }

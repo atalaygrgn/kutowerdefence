@@ -3,7 +3,12 @@ package com.canja.kutowerdefence.ui;
 import com.canja.kutowerdefence.domain.Tile;
 import com.canja.kutowerdefence.domain.TileType;
 import javafx.scene.effect.Glow;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+
+import java.io.File;
+import java.text.DecimalFormat;
+import java.util.Arrays;
 
 public class TileView extends ImageView {
 
@@ -14,22 +19,18 @@ public class TileView extends ImageView {
         setTile(tile);
     }
 
-    public Tile getTile() {
-        return tile;
-    }
-
     public TileType getTileType() {
         return tile.getTileType();
     }
 
     public void setTile(Tile tile) {
         this.tile = tile;
-        setImage(tile.getTileImage64());
+        setImage(getTileImage64());
     }
 
     public void setTileType(TileType tileType) {
         this.tile = new Tile(tileType);
-        setImage(this.tile.getTileImage64());
+        setImage(getTileImage64());
     }
 
     public void highlight() {
@@ -38,5 +39,10 @@ public class TileView extends ImageView {
 
     public void unhighlight() {
         setEffect(null);
+    }
+
+    public Image getTileImage64() {
+        String index_f = new DecimalFormat("00").format(Arrays.asList(TileType.values()).indexOf(tile.getTileType()));
+        return new Image(new File("src/main/resources/assets/tile64/tile64_" + index_f + ".png").toURI().toString());
     }
 }

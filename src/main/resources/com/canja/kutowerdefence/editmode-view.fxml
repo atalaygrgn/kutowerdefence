@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
@@ -15,20 +16,25 @@
                         <Font size="24.0" />
                      </font></Label>
                   <Pane prefHeight="5.0" prefWidth="24.0" />
-                  <Button fx:id="exitButton" mnemonicParsing="false" onAction="#exitButtonOnClick" text="X">
-                     <font>
-                        <Font size="16.0" />
-                     </font></Button>
+                  <Button fx:id="exitButton" mnemonicParsing="false" onAction="#exitButtonOnClick" prefHeight="40.0" prefWidth="40.0" />
                   <Pane prefHeight="5.0" prefWidth="20.0" />
                </children>
             </HBox>
-            <HBox alignment="CENTER" prefHeight="60.0" prefWidth="256.0">
+            <HBox alignment="CENTER" prefHeight="64.0" prefWidth="256.0">
                <children>
-                  <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" text="Pen" />
-                  <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" text="Ers" />
-                  <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" text="Fill" />
-                  <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" text="Clr" />
-                  <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" text="Sav" />
+                  <Button fx:id="penButton" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" />
+                  <Pane prefWidth="10.0" />
+                  <Button fx:id="clearButton" mnemonicParsing="false" onAction="#clearButtonOnClick" prefHeight="40.0" prefWidth="40.0" />
+                  <Pane prefWidth="20.0" />
+                  <ImageView fx:id="fileIcon" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" />
+                  <Pane prefWidth="10.0" />
+                  <VBox alignment="CENTER" prefHeight="40.0" prefWidth="64.0">
+                     <children>
+                        <Button fx:id="loadButton" mnemonicParsing="false" prefHeight="20.0" prefWidth="64.0" text="Load" onAction="#loadButtonOnClick" />
+                        <Pane prefHeight="5.0" />
+                        <Button fx:id="saveButton" mnemonicParsing="false" prefHeight="20.0" prefWidth="64.0" text="Save" onAction="#saveButtonOnClick" />
+                     </children></VBox>
+
                </children>
             </HBox>
             <GridPane fx:id="tilePaletteGridPane" gridLinesVisible="true">
