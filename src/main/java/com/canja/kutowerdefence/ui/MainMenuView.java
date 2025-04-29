@@ -4,6 +4,7 @@ import com.canja.kutowerdefence.Routing;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -13,6 +14,9 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.List;
+
+import com.canja.kutowerdefence.domain.MapService;
 
 public class MainMenuView implements Initializable {
 
@@ -21,6 +25,7 @@ public class MainMenuView implements Initializable {
     public VBox pane;
     public Button editModeButton;
     public Button optionsButton;
+    public Button newGameButton;
 
     public void onQuitButtonClick(ActionEvent actionEvent) {
         Platform.exit();
@@ -35,7 +40,7 @@ public class MainMenuView implements Initializable {
             logoimage.setCache(true);
 
             File bgFile = new File("src/main/resources/assets/titlebg.png");
-            BackgroundImage bgImage= new BackgroundImage(new Image(bgFile.toURI().toString()),
+            BackgroundImage bgImage = new BackgroundImage(new Image(bgFile.toURI().toString()),
                     BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
                     new BackgroundSize(720, 1280, false, false, true, true));
             pane.setBackground(new Background(bgImage));
@@ -61,7 +66,20 @@ public class MainMenuView implements Initializable {
                 e.printStackTrace();
             }
         });
+
+        newGameButton.setOnAction((event) -> handleNewGame());
+
+
     }
 
 
+    private void handleNewGame() {
+        List<File> maps = MapService.getInstance().getSavedMaps();
+        if (maps.isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "ERROR: No maps found. Create a new one by going to Edit Mode.");
+            alert.showAndWait();
+        } else {
+            MapSelectionOverlay.show(maps);
+        }
+    }
 }
