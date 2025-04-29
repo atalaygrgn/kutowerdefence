@@ -1,7 +1,7 @@
 package com.canja.kutowerdefence.ui;
 
 import com.canja.kutowerdefence.Routing;
-import com.canja.kutowerdefence.domain.GameSession;
+import com.canja.kutowerdefence.controller.GamePlayController;
 import com.canja.kutowerdefence.domain.Map;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -36,20 +36,21 @@ public class GamePlayView implements Initializable {
     @FXML
     private Button exitButton;
 
-    private GameSession gameSession;
+    private GamePlayController controller;
+
+    public void setController(GamePlayController controller) {
+        this.controller = controller;
+        initializeMapGridPane();
+        updateUI();
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         initializeButtons();
     }
 
-    public void setGameSession(GameSession gameSession) {
-        this.gameSession = gameSession;
-        initializeMapGridPane(); // Initialize map after setting GameSession
-    }
-
     private void initializeMapGridPane() {
-        Map gameMap = gameSession.getMap(); // Assuming GameSession has a getMap() method
+        Map gameMap = controller.getMap();
         for (int i = 0; i < gameMap.getArray().length; i++) {
             for (int j = 0; j < gameMap.getArray()[i].length; j++) {
                 TileView tileView = new TileView(gameMap.getTile(i, j));
@@ -59,19 +60,15 @@ public class GamePlayView implements Initializable {
     }
 
     private void initializeButtons() {
-        pauseButton.setOnAction(event -> handlePause());
-        restartButton.setOnAction(event -> handleRestart());
+        pauseButton.setOnAction(event -> controller.pauseGame());
+        restartButton.setOnAction(event -> controller.restartGame());
         exitButton.setOnAction(event -> handleExit());
     }
 
-    private void handlePause() {
-        System.out.println("Game Paused");
-        // TODO: Implement pause functionality
-    }
-
-    private void handleRestart() {
-        System.out.println("Game Restarted");
-        // TODO: Implement restart functionality
+    private void updateUI() {
+        healthLabel.setText(String.valueOf(controller.getHealth()));
+        goldLabel.setText(String.valueOf(controller.getGold()));
+        waveLabel.setText(controller.getWaveInfo());
     }
 
     private void handleExit() {

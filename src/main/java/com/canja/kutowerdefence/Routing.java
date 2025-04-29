@@ -1,13 +1,14 @@
 package com.canja.kutowerdefence;
 
+import com.canja.kutowerdefence.controller.GamePlayController;
+import com.canja.kutowerdefence.domain.GameSession;
+import com.canja.kutowerdefence.ui.GamePlayView;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.ImageCursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import com.canja.kutowerdefence.domain.GameSession;
-import com.canja.kutowerdefence.ui.GamePlayView;
 
 import java.io.File;
 import java.io.IOException;
@@ -87,8 +88,9 @@ public final class Routing {
         FXMLLoader fxmlLoader = new FXMLLoader(Routing.class.getResource("gameplay-view.fxml"));
         Parent root = fxmlLoader.load();
 
-        GamePlayView controller = fxmlLoader.getController();
-        controller.setGameSession(gameSession); // Inject GameSession
+        GamePlayView view = fxmlLoader.getController();
+        GamePlayController controller = new GamePlayController(gameSession);
+        view.setController(controller);
 
         Scene scene = new Scene(root, 1280, 768);
         route.push(scene);

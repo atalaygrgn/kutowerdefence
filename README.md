@@ -6,3 +6,5 @@ Please list the changes you made here during development
 ### Atalay:
 - Created a basic gameplay view with map loading, very WIP
 - Some modifications to GameSession, MapSelectionOverlay, Map, and Routing for creating a gameplay screen with the selected map
+- Introducing controller package for the controller pattern, and GamePlayController for handling game logic
+- This file renamed to README to show the changes directly on the repo page
