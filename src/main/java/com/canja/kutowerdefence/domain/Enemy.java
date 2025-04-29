@@ -30,7 +30,7 @@ public class Enemy {
 
         float dx = targetX - x;
         float dy = targetY - y;
-        float distance = (float)Math.sqrt(dx**2+dy**2);
+        float distance = (float)Math.sqrt(dx*dx+dy*dy);
 
         if(distance< speed * deltaTime){
             x= targetX;

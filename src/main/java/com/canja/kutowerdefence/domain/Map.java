@@ -1,5 +1,11 @@
 package com.canja.kutowerdefence.domain;
 
+import com.google.gson.Gson;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+
 public class Map {
 
     private Tile[][] map;
@@ -33,5 +39,18 @@ public class Map {
             }
         }
         return map;
+    }
+
+    public void loadFromFile(File mapFile) throws IOException {
+        String content = new String(Files.readAllBytes(mapFile.toPath()));
+        Gson gson = new Gson();
+        int[][] serializedMap = gson.fromJson(content, int[][].class);
+
+        for (int x = 0; x < 16; x++) {
+            for (int y = 0; y < 12; y++) {
+                TileType type = TileType.values()[serializedMap[x][y]];
+                editTile(x, y, type);
+            }
+        }
     }
 }

@@ -6,6 +6,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import com.canja.kutowerdefence.domain.GameSession;
+import com.canja.kutowerdefence.ui.GamePlayView;
 
 import java.io.File;
 import java.io.IOException;
@@ -74,6 +76,26 @@ public final class Routing {
      */
     public static void openMainMenu() throws IOException {
         open("mainmenu-view.fxml", "KU Tower Defence");
+    }
+
+    /**
+     * Opens the game screen with the selected map.
+     * @param gameSession The game session to inject into the GamePlayView controller.
+     * @throws IOException
+     */
+    public static void openGamePlay(GameSession gameSession) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(Routing.class.getResource("gameplay-view.fxml"));
+        Parent root = fxmlLoader.load();
+
+        GamePlayView controller = fxmlLoader.getController();
+        controller.setGameSession(gameSession); // Inject GameSession
+
+        Scene scene = new Scene(root, 1280, 768);
+        route.push(scene);
+        titles.push("KU Tower Defence");
+        mainStage.setScene(scene);
+        mainStage.setTitle("KU Tower Defence");
+        mainStage.setResizable(false);
     }
 
     /**

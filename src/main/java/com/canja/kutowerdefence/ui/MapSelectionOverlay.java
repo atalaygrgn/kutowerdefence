@@ -1,5 +1,6 @@
 package com.canja.kutowerdefence.ui;
 
+import com.canja.kutowerdefence.Routing;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
@@ -8,6 +9,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import com.canja.kutowerdefence.domain.GameSession;
@@ -30,15 +32,23 @@ public class MapSelectionOverlay {
             }
         });
 
+        Scene scene = getScene(listView, popupStage);
+        popupStage.setScene(scene);
+        popupStage.showAndWait();
+    }
 
-
+    private static Scene getScene(ListView<File> listView, Stage popupStage) {
         Button selectButton = new Button("Start Game");
         selectButton.setOnAction(event -> {
             File selectedMap = listView.getSelectionModel().getSelectedItem();
             if (selectedMap != null) {
                 GameSession session = new GameSession(selectedMap);
-                session.start();
                 popupStage.close();
+                try {
+                    Routing.openGamePlay(session);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
 
@@ -46,9 +56,7 @@ public class MapSelectionOverlay {
         vbox.setSpacing(10);
 
         Scene scene = new Scene(vbox, 400, 300);
-        popupStage.setScene(scene);
-        popupStage.showAndWait();
+        return scene;
     }
-
 
 }
