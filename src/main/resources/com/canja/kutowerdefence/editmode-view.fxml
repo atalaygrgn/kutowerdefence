@@ -30,9 +30,9 @@
                   <Pane prefWidth="10.0" />
                   <VBox alignment="CENTER" prefHeight="40.0" prefWidth="64.0">
                      <children>
-                        <Button fx:id="loadButton" mnemonicParsing="false" prefHeight="20.0" prefWidth="64.0" text="Load" onAction="#loadButtonOnClick" />
+                        <Button fx:id="loadButton" mnemonicParsing="false" onAction="#loadButtonOnClick" prefHeight="20.0" prefWidth="64.0" text="Load" />
                         <Pane prefHeight="5.0" />
-                        <Button fx:id="saveButton" mnemonicParsing="false" prefHeight="20.0" prefWidth="64.0" text="Save" onAction="#saveButtonOnClick" />
+                        <Button fx:id="saveButton" mnemonicParsing="false" onAction="#saveButtonOnClick" prefHeight="20.0" prefWidth="64.0" text="Save" />
                      </children></VBox>
 
                </children>
@@ -55,6 +55,19 @@
                  <RowConstraints minHeight="10.0" prefHeight="64.0" vgrow="SOMETIMES" />
               </rowConstraints>
             </GridPane>
+            <HBox alignment="CENTER" prefHeight="64.0" prefWidth="200.0">
+               <children>
+                  <Label text="Set Path">
+                     <font>
+                        <Font size="16.0" />
+                     </font></Label>
+                  <Pane prefWidth="16.0" />
+                  <Button fx:id="setPathStartButton" mnemonicParsing="false" prefWidth="64.0" text="Start" />
+                  <Pane prefWidth="8.0" />
+                  <Button fx:id="setPathEndButton" mnemonicParsing="false" prefWidth="64.0" text="End" />
+
+               </children>
+            </HBox>
          </children>
       </VBox>
    </right>

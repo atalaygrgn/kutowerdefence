@@ -4,9 +4,12 @@ import com.canja.kutowerdefence.Routing;
 import com.canja.kutowerdefence.domain.MapEditor;
 import com.canja.kutowerdefence.domain.Tile;
 import com.canja.kutowerdefence.domain.TileType;
+import com.canja.kutowerdefence.domain.Map;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -31,7 +34,13 @@ public class EditModeView implements Initializable {
     public Button loadButton;
     public ImageView fileIcon;
 
+    public Button setPathStartButton;
+    public Button setPathEndButton;
+
     private TileView previousTileView;
+
+    private boolean isSettingPathStart = false;
+    private boolean isSettingPathEnd = false;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -50,7 +59,33 @@ public class EditModeView implements Initializable {
                 TileView tileView = new TileView(mapEditor.getMap().getTile(i, j));
                 int finalI = i;
                 int finalJ = j;
-                tileView.setOnMouseClicked(event -> mapEditor.penTool(finalI, finalJ, tileView));
+                tileView.setOnMouseClicked(event -> {
+                    if (isSettingPathStart || isSettingPathEnd) {
+                        if (Map.isEdgeTile(finalI, finalJ)) {
+                            if (isSettingPathStart) {
+                                mapEditor.getMap().setPathStartEnd(finalI, finalJ, 
+                                    mapEditor.getMap().getPathStartEnd()[1] != null ? 
+                                    mapEditor.getMap().getPathStartEnd()[1].getX() : -1, 
+                                    mapEditor.getMap().getPathStartEnd()[1] != null ? 
+                                    mapEditor.getMap().getPathStartEnd()[1].getY() : -1);
+                            } else if (isSettingPathEnd) {
+                                mapEditor.getMap().setPathStartEnd(
+                                    mapEditor.getMap().getPathStartEnd()[0] != null ? 
+                                    mapEditor.getMap().getPathStartEnd()[0].getX() : -1, 
+                                    mapEditor.getMap().getPathStartEnd()[0] != null ? 
+                                    mapEditor.getMap().getPathStartEnd()[0].getY() : -1, 
+                                    finalI, finalJ);
+                            }
+                            isSettingPathStart = false;
+                            isSettingPathEnd = false;
+                            showAlert("Success", "Path point set successfully.");
+                        } else {
+                            showAlert("Error", "Path points must be set on edge tiles.");
+                        }
+                    } else {
+                        mapEditor.penTool(finalI, finalJ, tileView);
+                    }
+                });
                 mapGridPane.add(tileView, i, j);
             }
         }
@@ -84,6 +119,9 @@ public class EditModeView implements Initializable {
         initializeToolButton(penButton, 0);
         initializeToolButton(clearButton, 1);
         initializeToolButton(exitButton, 3);
+
+        setPathStartButton.setOnAction(event -> handleSetPathStart());
+        setPathEndButton.setOnAction(event -> handleSetPathEnd());
     }
 
     private void initializeToolButton(Button button, int index) {
@@ -104,6 +142,11 @@ public class EditModeView implements Initializable {
 
     @FXML
     private void saveButtonOnClick() {
+        if(!mapEditor.getMap().validatePath()){
+            showError("Error Saving Map", "Make sure a valid path exists.");
+            return;
+        }
+
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Save Map");
         fileChooser.setInitialFileName("map");
@@ -143,6 +186,34 @@ public class EditModeView implements Initializable {
                 throw new RuntimeException(e);
             }
         }
+    }
+
+    private void handleSetPathStart() {
+        isSettingPathStart = true;
+        isSettingPathEnd = false;
+        showAlert("Set Path Start", "Click on an edge tile to set the path start point.");
+    }
+
+    private void handleSetPathEnd() {
+        isSettingPathStart = false;
+        isSettingPathEnd = true;
+        showAlert("Set Path End", "Click on an edge tile to set the path end point.");
+    }
+
+    private void showAlert(String title, String content) {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
+
+    private void showError(String title, String content) {
+        Alert alert = new Alert(AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
     }
 
     private static Node getNodeFromGridPane(GridPane gridPane, int col, int row) {
