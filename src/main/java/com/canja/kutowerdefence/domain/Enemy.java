@@ -20,6 +20,25 @@ public class Enemy {
         this.x= start.getX();
         this.y= start.getY();
     }
+    public float getX() {
+        return x;
+    }
+
+    public float getY() {
+        return y;
+    }
+
+    public EnemyDescription getDescription() {
+        return description;
+    }
+
+    public float getSpeed() {
+        return speed;
+    }
+
+    public int getHitpoint() {
+        return hitpoint;
+    }
     public void update(float deltaTime){
         if(currentPathIndex >= path.size()){
             return;
@@ -42,19 +61,24 @@ public class Enemy {
         }
     }
 
-    public void takeDamage(int damage, String attackType){
+    public void takeDamage(int damage, String attackType) {
         float multiplier = 1.0f;
-        if (attackType.equals("arrow")){
-            multiplier = 0.5f;
-        } else if (attackType.equals("spell")) {
-            multiplier = 0.5f;
+
+        if (attackType.equals("Arrow")) {
+            int resistance = description.getArrowResistance();
+            multiplier = 1.0f - resistance / 100f;
+        } else if (attackType.equals("Spell")) {
+            int resistance = description.getSpellResistance();
+            multiplier = 1.0f - resistance / 100f;
         }
-        hitpoint -= (int)(damage * multiplier);
-        //damage in arrow: knight<goblin
-        //damage in spell: knight>goblin
+
+        int actualDamage = Math.round(damage * multiplier);
+        hitpoint -= actualDamage;
     }
+    //damage in arrow: knight<goblin
+    //damage in spell: knight>goblin
 
-//    Enemy goblin= new Enemy(EnemyFactory.GOBLIN, path);
-//    Enemy knight= new Enemy(EnemyFactory.KNIGHT, path);
-
+    public boolean reachedEnd() {
+        return currentPathIndex >= path.size();
+    }
 }

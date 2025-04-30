@@ -90,6 +90,7 @@ public final class Routing {
 
         GamePlayView view = fxmlLoader.getController();
         GamePlayController controller = new GamePlayController(gameSession);
+        controller.setView(view);
         view.setController(controller);
 
         Scene scene = new Scene(root, 1280, 768);

@@ -3,17 +3,17 @@ package com.canja.kutowerdefence.domain;
 public class EnemyDescription {
     private String name;
     private int hitpoints;
-    private int weakness;
     private int spellResistance;
     private int arrowResistance;
     private float speed;
     private int gold;
 
 
-    public EnemyDescription(String name, int hitpoints, int weakness, float speed, int gold) {
+    public EnemyDescription(String name, int hitpoints, int spellResistance,int arrowResistance, float speed, int gold) {
         this.name = name;
         this.hitpoints = hitpoints;
-        this.weakness = weakness;
+        this.spellResistance = spellResistance;
+        this.arrowResistance = arrowResistance;
         this.speed = speed;
         this.gold = gold;
     }
@@ -26,10 +26,6 @@ public class EnemyDescription {
         return hitpoints;
     }
 
-    public int getWeakness() {
-        return weakness;
-    }
-
     public float getSpeed() {
         return speed;
     }
@@ -37,4 +33,12 @@ public class EnemyDescription {
     public int getGold() {
         return gold;
     }
+    public int getArrowResistance() {
+        return arrowResistance;
+    }
+
+    public int getSpellResistance() {
+        return spellResistance;
+    }
+
 }

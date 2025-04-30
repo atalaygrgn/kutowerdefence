@@ -2,21 +2,30 @@ package com.canja.kutowerdefence.ui;
 
 import com.canja.kutowerdefence.Routing;
 import com.canja.kutowerdefence.controller.GamePlayController;
+import com.canja.kutowerdefence.domain.Enemy;
 import com.canja.kutowerdefence.domain.Map;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.GridPane;
+import javafx.animation.AnimationTimer;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.List;
+import java.util.ArrayList;
 
 public class GamePlayView implements Initializable {
 
     @FXML
+    private Pane enemyLayer;
+
+    @FXML
     private GridPane mapGridPane;
+
 
     @FXML
     private Label healthLabel;
@@ -38,11 +47,18 @@ public class GamePlayView implements Initializable {
 
     private GamePlayController controller;
 
+    private final List<EnemyView> enemyViews = new ArrayList<>();
+
     public void setController(GamePlayController controller) {
         this.controller = controller;
         initializeMapGridPane();
         updateUI();
+//        enemyLayer.prefWidthProperty().bind(mapGridPane.widthProperty());
+//        enemyLayer.prefHeightProperty().bind(mapGridPane.heightProperty());
+//        controller.spawnTestEnemy();
+//        startEnemyUpdateLoop();
     }
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -77,5 +93,47 @@ public class GamePlayView implements Initializable {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void spawnEnemy(Enemy enemy) {
+        EnemyView view = new EnemyView(enemy);
+        enemyLayer.getChildren().add(view);
+        enemyViews.add(view);
+    }
+
+    public void updateEnemies(float deltaTime) {
+        List<EnemyView> toRemove = new ArrayList<>();
+        for (EnemyView view : enemyViews) {
+            Enemy enemy = view.getEnemy();
+            enemy.update(deltaTime);
+            view.update();
+
+            if (view.isDead() || enemy.reachedEnd()) {
+                toRemove.add(view);
+            }
+        }
+        for (EnemyView view : toRemove) {
+            enemyLayer.getChildren().remove(view);
+            enemyViews.remove(view);
+        }
+    }
+
+
+    private void startEnemyUpdateLoop() {
+        AnimationTimer timer = new AnimationTimer() {
+            private long lastTime = -1;
+
+            @Override
+            public void handle(long now) {
+                if (lastTime < 0) {
+                    lastTime = now;
+                    return;
+                }
+                float deltaTime = (now - lastTime) / 1_000_000_000f;
+                updateEnemies(deltaTime);
+                lastTime = now;
+            }
+        };
+        timer.start();
     }
 }

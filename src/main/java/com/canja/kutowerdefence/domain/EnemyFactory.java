@@ -4,8 +4,9 @@ public class EnemyFactory {
     public static final EnemyDescription GOBLIN = new EnemyDescription(
             "Goblin",
             100,
+            40,
             10,
-            100f,
+            10f,
             1
     );
 
@@ -13,7 +14,8 @@ public class EnemyFactory {
             "Knight",
             100,
             10,
-            100f,
+            40,
+            8f,
             1
     );
 }
