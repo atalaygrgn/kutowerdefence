@@ -16,6 +16,7 @@ Please list the changes you made here during development
 - Right-click on a tile to clear it quickly in edit mode
 - Right-click on a map object to remove it in edit mode
 - A change of formatting in .kutdmap format: storage of the path and map objects
+- All map files are now saved into resources/maps, user just inputs the map name
 - Two new example maps, compatible with the format change
 - The Tower abstract Tower class WIP
 ### Jahan:

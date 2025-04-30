@@ -8,6 +8,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
@@ -186,12 +187,26 @@ public class EditModeView implements Initializable {
             return;
         }
 
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Save Map");
-        fileChooser.setInitialFileName("map");
-        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("All files","*.kutdmap"));
-        File selectedFile = fileChooser.showSaveDialog(saveButton.getScene().getWindow());
-        mapEditor.saveMap(selectedFile.getPath());
+        TextInputDialog textInputDialog = new TextInputDialog();
+        textInputDialog.setTitle("Save Map");
+        textInputDialog.setHeaderText("Enter the name of the map:");
+        textInputDialog.setContentText("Map Name:");
+
+        textInputDialog.showAndWait().ifPresent(mapName -> {
+            if (mapName.trim().isEmpty()) {
+            showError("Error Saving Map", "Map name cannot be empty.");
+            return;
+            }
+
+            File saveDirectory = new File("src/main/resources/maps");
+            if (!saveDirectory.exists()) {
+            saveDirectory.mkdirs();
+            }
+
+            File saveFile = new File(saveDirectory, mapName + ".kutdmap");
+            mapEditor.saveMap(saveFile.getPath());
+            showAlert("Success", "Map saved successfully as " + mapName + ".kutdmap");
+        });
     }
 
     @FXML
