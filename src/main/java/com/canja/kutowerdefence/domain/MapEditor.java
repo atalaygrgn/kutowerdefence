@@ -1,23 +1,29 @@
 package com.canja.kutowerdefence.domain;
 
+import com.canja.kutowerdefence.ui.MapObjectView;
 import com.canja.kutowerdefence.ui.TileView;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import javafx.fxml.Initializable;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class MapEditor {
 
     private final Map map;
     private TileType selectedTileType;
+    private MapObjectType selectedObjectType;
 
     public MapEditor() {
         this.map = new Map();
         this.selectedTileType = TileType.EMPTY;
+        this.selectedObjectType = MapObjectType.TREE1;
     }
 
     public Map getMap() {
@@ -28,13 +34,25 @@ public class MapEditor {
         return selectedTileType;
     }
 
+    public MapObjectType getSelectedObjectType() {
+        return selectedObjectType;
+    }
+
     public void changeSelectedTile(TileType tileType) {
         this.selectedTileType = tileType;
+    }
+
+    public void changeSelectedObject(MapObjectType objectType) {
+        this.selectedObjectType = objectType;
     }
 
     public void penTool(int x, int y, TileView tileView) {
         editTile(x, y, selectedTileType);
         tileView.setTileType(selectedTileType);
+    }
+
+    public void placeObject(MapObject mapObject) {
+        map.addObject(mapObject);
     }
 
     private void editTile(int x, int y, TileType tileType) {
@@ -48,6 +66,10 @@ public class MapEditor {
 
     public void resetMap() {
         map.reset();
+    }
+
+    public void removeObject(MapObject mapObject) {
+        map.getObjects().remove(mapObject);
     }
 
     public void saveMap(String filename) {
@@ -78,12 +100,19 @@ public class MapEditor {
                 pathData[i][1] = path.get(i).getY();
             }
 
+            // Serialize map objects
+            ArrayList<MapObject> objects = map.getObjects();
+            ArrayList<Object[]> objectData = new ArrayList<>();
+            for (MapObject object : objects) {
+                objectData.add(new Object[]{object.getType().ordinal(), object.getPosition().getX(), object.getPosition().getY()});
+            }
+
             // Create Gson instance
             Gson gson = new GsonBuilder().create();
 
             // Write to file
             try (FileWriter writer = new FileWriter(filename)) {
-                gson.toJson(new Object[]{serializedMap, pathStartEndData, pathData}, writer);
+                gson.toJson(new Object[]{serializedMap, pathStartEndData, pathData, objectData}, writer);
             }
 
             System.out.println("Map saved successfully to " + filename);
@@ -119,5 +148,17 @@ public class MapEditor {
             path.add(new Point(point[0], point[1]));
         }
         map.setPath(path);
+
+        // Deserialize map objects
+        ArrayList<ArrayList<Double>> objectData = gson.fromJson(gson.toJson(data[3]), ArrayList.class);
+        ArrayList<MapObject> objects = new ArrayList<>();
+        for (ArrayList<Double> obj : objectData) {
+            int typeOrdinal = obj.get(0).intValue();
+            int x = obj.get(1).intValue();
+            int y = obj.get(2).intValue();
+            MapObjectType type = MapObjectType.values()[typeOrdinal];
+            objects.add(new MapObject(type, new Point(x, y)));
+        }
+        map.setObjects(objects);
     }
 }

@@ -12,8 +12,12 @@ Please list the changes you made here during development
 ## 30.04
 ### Atalay:
 - Pathfinding, path setting in edit mode, path saving/loading to/from file
-- A change of formatting in .kutdmap format
-- Two new example maps
+- Map objects (decoration, castles, houses over tiles), map object saving/loading to/from file
+- Right-click on a tile to clear it quickly in edit mode
+- Right-click on a map object to remove it in edit mode
+- A change of formatting in .kutdmap format: storage of the path and map objects
+- Two new example maps, compatible with the format change
+- The Tower abstract Tower class WIP
 ### Jahan:
 - Changed No Maps Found Error to include two buttons, OK to continue, or Go to Map Editor to direct the user to the map editor. (two new imports in MainMenuView)
 - 

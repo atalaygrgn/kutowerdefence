@@ -4,6 +4,7 @@ import com.canja.kutowerdefence.Routing;
 import com.canja.kutowerdefence.controller.GamePlayController;
 import com.canja.kutowerdefence.domain.Enemy;
 import com.canja.kutowerdefence.domain.Map;
+import com.canja.kutowerdefence.domain.MapObject;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -53,10 +54,10 @@ public class GamePlayView implements Initializable {
         this.controller = controller;
         initializeMapGridPane();
         updateUI();
-//        enemyLayer.prefWidthProperty().bind(mapGridPane.widthProperty());
-//        enemyLayer.prefHeightProperty().bind(mapGridPane.heightProperty());
-//        controller.spawnTestEnemy();
-//        startEnemyUpdateLoop();
+        enemyLayer.prefWidthProperty().bind(mapGridPane.widthProperty());
+        enemyLayer.prefHeightProperty().bind(mapGridPane.heightProperty());
+        controller.spawnTestEnemy();
+        startEnemyUpdateLoop();
     }
 
 
@@ -72,6 +73,10 @@ public class GamePlayView implements Initializable {
                 TileView tileView = new TileView(gameMap.getTile(i, j));
                 mapGridPane.add(tileView, i, j);
             }
+        }
+        for (MapObject mapObject : gameMap.getObjects()) {
+            MapObjectView objectView = new MapObjectView(mapObject);
+            mapGridPane.add(objectView, mapObject.getPosition().getX(), mapObject.getPosition().getY());
         }
     }
 

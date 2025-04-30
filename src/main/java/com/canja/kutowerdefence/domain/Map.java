@@ -5,7 +5,7 @@ import com.google.gson.Gson;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class Map {
@@ -13,6 +13,7 @@ public class Map {
     private Tile[][] map;
     private Point[] pathStartEnd;
     private LinkedList<Point> path = new LinkedList<>();
+    private ArrayList<MapObject> objects = new ArrayList<>();
 
     public Map() {
         map =  new Tile[16][12];
@@ -36,7 +37,22 @@ public class Map {
         map[x][y].setTileType(tileType);
     }
 
+    public void addObject(MapObject object) {
+        objects.add(object);
+    }
+
+    public ArrayList<MapObject> getObjects() {
+        return objects;
+    }
+
+    public void setObjects(ArrayList<MapObject> objects) {
+        this.objects = objects;
+    }
+
     public Tile[][] reset() {
+        pathStartEnd = new Point[2];
+        path.clear();
+        objects.clear();
         map = new Tile[16][12];
         for (int x = 0; x < 16; x++) {
             for (int y = 0; y < 12; y++) {
@@ -90,6 +106,18 @@ public class Map {
             path.add(new Point(point[0], point[1]));
         }
         setPath(path);
+
+        // Deserialize map objects
+        ArrayList<ArrayList<Double>> objectData = gson.fromJson(gson.toJson(data[3]), ArrayList.class);
+        ArrayList<MapObject> objects = new ArrayList<>();
+        for (ArrayList<Double> obj : objectData) {
+            int typeOrdinal = obj.get(0).intValue();
+            int x = obj.get(1).intValue();
+            int y = obj.get(2).intValue();
+            MapObjectType type = MapObjectType.values()[typeOrdinal];
+            objects.add(new MapObject(type, new Point(x, y)));
+        }
+        setObjects(objects);
     }
 
     public boolean validatePath() {
@@ -121,10 +149,6 @@ public class Map {
                 }
 
                 Tile currentTile = getTile(current.getX(), current.getY());
-                System.out.println("Current Point: " + current.getX() + ", " + current.getY());
-                System.out.println("Current Tile Accessibility: " + getPathAccessibilityOfTileType(currentTile.getTileType()));
-                System.out.println("Current Tile Type: " + currentTile.getTileType());
-                System.out.println("Visited: " + visited[current.getX()][current.getY()]);
                 boolean[] accessibility = getPathAccessibilityOfTileType(currentTile.getTileType());
 
                 // Check neighbors based on accessibility
@@ -174,32 +198,20 @@ public class Map {
             case CIRCULAR_TOPLEFT -> {
                 return new boolean[]{false, true, true, false};
             }
-            case CIRCULAR_TOPCENTER -> {
+            case CIRCULAR_TOPCENTER, CIRCULAR_BOTTOMCENTER, HORIZONTAL -> {
                 return new boolean[]{false, true, false, true};
             }
             case CIRCULAR_TOPRIGHT -> {
                 return new boolean[]{false, false, true, true};
             }
-            case CIRCULAR_CENTERLEFT -> {
-                return new boolean[]{true, false, true, false};
-            }
-            case CIRCULAR_CENTERRIGHT -> {
+            case CIRCULAR_CENTERLEFT, CIRCULAR_CENTERRIGHT, VERTICAL -> {
                 return new boolean[]{true, false, true, false};
             }
             case CIRCULAR_BOTTOMLEFT -> {
                 return new boolean[]{true, true, false, false};
             }
-            case CIRCULAR_BOTTOMCENTER -> {
-                return new boolean[]{false, true, false, true};
-            }
             case CIRCULAR_BOTTOMRIGHT -> {
                 return new boolean[]{true, false, false, true};
-            }
-            case HORIZONTAL -> {
-                return new boolean[]{false, true, false, true};
-            }
-            case VERTICAL -> {
-                return new boolean[]{true, false, true, false};
             }
             case TOP -> {
                 return new boolean[]{false, false, true, false};
@@ -219,4 +231,6 @@ public class Map {
 
         }
     }
+
+
 }

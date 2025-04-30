@@ -1,10 +1,7 @@
 package com.canja.kutowerdefence.ui;
 
 import com.canja.kutowerdefence.Routing;
-import com.canja.kutowerdefence.domain.MapEditor;
-import com.canja.kutowerdefence.domain.Tile;
-import com.canja.kutowerdefence.domain.TileType;
-import com.canja.kutowerdefence.domain.Map;
+import com.canja.kutowerdefence.domain.*;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -13,6 +10,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 
@@ -41,6 +39,7 @@ public class EditModeView implements Initializable {
 
     private boolean isSettingPathStart = false;
     private boolean isSettingPathEnd = false;
+    private boolean tileEdit = true;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -60,35 +59,62 @@ public class EditModeView implements Initializable {
                 int finalI = i;
                 int finalJ = j;
                 tileView.setOnMouseClicked(event -> {
-                    if (isSettingPathStart || isSettingPathEnd) {
-                        if (Map.isEdgeTile(finalI, finalJ)) {
-                            if (isSettingPathStart) {
-                                mapEditor.getMap().setPathStartEnd(finalI, finalJ, 
-                                    mapEditor.getMap().getPathStartEnd()[1] != null ? 
-                                    mapEditor.getMap().getPathStartEnd()[1].getX() : -1, 
-                                    mapEditor.getMap().getPathStartEnd()[1] != null ? 
-                                    mapEditor.getMap().getPathStartEnd()[1].getY() : -1);
-                            } else if (isSettingPathEnd) {
-                                mapEditor.getMap().setPathStartEnd(
-                                    mapEditor.getMap().getPathStartEnd()[0] != null ? 
-                                    mapEditor.getMap().getPathStartEnd()[0].getX() : -1, 
-                                    mapEditor.getMap().getPathStartEnd()[0] != null ? 
-                                    mapEditor.getMap().getPathStartEnd()[0].getY() : -1, 
-                                    finalI, finalJ);
+                    if (event.getButton() == MouseButton.PRIMARY) { // Left click
+                        if (isSettingPathStart || isSettingPathEnd) {
+                            if (Map.isEdgeTile(finalI, finalJ)) {
+                                if (isSettingPathStart) {
+                                    mapEditor.getMap().setPathStartEnd(finalI, finalJ,
+                                        mapEditor.getMap().getPathStartEnd()[1] != null ?
+                                        mapEditor.getMap().getPathStartEnd()[1].getX() : -1,
+                                        mapEditor.getMap().getPathStartEnd()[1] != null ?
+                                        mapEditor.getMap().getPathStartEnd()[1].getY() : -1);
+                                } else if (isSettingPathEnd) {
+                                    mapEditor.getMap().setPathStartEnd(
+                                        mapEditor.getMap().getPathStartEnd()[0] != null ?
+                                        mapEditor.getMap().getPathStartEnd()[0].getX() : -1,
+                                        mapEditor.getMap().getPathStartEnd()[0] != null ?
+                                        mapEditor.getMap().getPathStartEnd()[0].getY() : -1,
+                                        finalI, finalJ);
+                                }
+                                isSettingPathStart = false;
+                                isSettingPathEnd = false;
+                                showAlert("Success", "Path point set successfully.");
+                            } else {
+                                showAlert("Error", "Path points must be set on edge tiles.");
                             }
-                            isSettingPathStart = false;
-                            isSettingPathEnd = false;
-                            showAlert("Success", "Path point set successfully.");
                         } else {
-                            showAlert("Error", "Path points must be set on edge tiles.");
+                            if (tileEdit && getObjectFromGridPane(mapGridPane, finalI, finalJ) == null) {
+                                mapEditor.penTool(finalI, finalJ, tileView);
+                            } else {
+                                if (getObjectFromGridPane(mapGridPane, finalI, finalJ) == null &&
+                                        getTileFromGridPane(mapGridPane, finalI, finalJ).getTileType().equals(TileType.EMPTY)) {
+                                    MapObject newObject = MapObjectFactory.createMapObject(mapEditor.getSelectedObjectType(), finalI, finalJ);
+                                    mapEditor.placeObject(newObject);
+                                    putObjectOnMapView(newObject);
+                                    System.out.println("New object placed on map");
+                                }
+                            }
                         }
-                    } else {
-                        mapEditor.penTool(finalI, finalJ, tileView);
+                    } else if (event.getButton() == MouseButton.SECONDARY) { // Right click
+                        mapEditor.getMap().editTile(finalI, finalJ, TileType.EMPTY);
+                        tileView.setTile(new Tile());
                     }
                 });
                 mapGridPane.add(tileView, i, j);
             }
         }
+    }
+
+    private void putObjectOnMapView(MapObject mapObject) {
+        MapObjectView newObjectView = new MapObjectView(mapObject);
+        newObjectView.setOnMouseClicked(event -> {
+            if (event.getButton() == MouseButton.SECONDARY) { // Left click
+                mapEditor.removeObject(mapObject);
+                mapGridPane.getChildren().remove(newObjectView);
+                System.out.println("Object removed from map");
+            }});
+        mapGridPane.add(newObjectView, mapObject.getPosition().getX(), mapObject.getPosition().getY());
+
     }
 
     private void initializeTilePaletteGridPane() {
@@ -99,9 +125,22 @@ public class EditModeView implements Initializable {
                 int finalJ = j;
                 tileView.setOnMouseClicked(event -> {
                     TileType tileType = Tile.getTileType(finalI, finalJ);
-                    mapEditor.changeSelectedTile(tileType);
+                    if (tileType.ordinal() >= 16) {
+                        tileEdit = false;
+                        if (finalI >= 6 && finalI <= 7 && finalJ >= 0 && finalJ <= 1) {
+                            // Handle 2x2 big castle object
+                            mapEditor.changeSelectedObject(MapObjectType.CASTLE);
+                            System.out.println("Object selection: CASTLE");
+                        } else {
+                            mapEditor.changeSelectedObject(MapObject.getObjectType(finalI, finalJ));
+                            System.out.println("Object selection: " + MapObject.getObjectType(finalI, finalJ));
+                        }
+                    } else {
+                        tileEdit = true;
+                        mapEditor.changeSelectedTile(tileType);
+                    }
                     tileView.highlight();
-                    if (previousTileView != null) if (!previousTileView.equals(tileView)) {
+                    if (previousTileView != null && !previousTileView.equals(tileView)) {
                         previousTileView.unhighlight();
                     }
                     previousTileView = tileView;
@@ -160,9 +199,14 @@ public class EditModeView implements Initializable {
         // domain update
         mapEditor.resetMap();
 
-        //UI update
-        for (Node tileView : mapGridPane.getChildren()) {
-            if(tileView instanceof TileView) ((TileView) tileView).setTile(new Tile());
+        // UI update
+        for (int i = mapGridPane.getChildren().size() - 1; i >= 0; i--) {
+            Node view = mapGridPane.getChildren().get(i);
+            if (view instanceof TileView) {
+            ((TileView) view).setTile(new Tile());
+            } else if (view instanceof MapObjectView) {
+            mapGridPane.getChildren().remove(i);
+            }
         }
     }
 
@@ -173,13 +217,26 @@ public class EditModeView implements Initializable {
         fileChooser.setInitialFileName("map");
         File selectedFile = fileChooser.showOpenDialog(loadButton.getScene().getWindow());
         if (selectedFile != null) {
+
+            for (int i = mapGridPane.getChildren().size() - 1; i >= 0; i--) {
+                Node view = mapGridPane.getChildren().get(i);
+                if (view instanceof MapObjectView) {
+                    mapGridPane.getChildren().remove(i);
+                }
+            }
+
             try {
                 mapEditor.loadMap(selectedFile.getPath());
 
+
                 for (int i = 0; i < mapEditor.getMap().getArray().length; i++) {
                     for (int j = 0; j < mapEditor.getMap().getArray()[i].length; j++) {
-                        ((TileView) getNodeFromGridPane(mapGridPane, i, j)).setTile(mapEditor.getMap().getTile(i, j));
+                        getTileFromGridPane(mapGridPane, i, j).setTile(mapEditor.getMap().getTile(i, j));
                     }
+                }
+
+                for (MapObject mapObject : mapEditor.getMap().getObjects()) {
+                    putObjectOnMapView(mapObject);
                 }
 
             } catch (Exception e) {
@@ -216,11 +273,22 @@ public class EditModeView implements Initializable {
         alert.showAndWait();
     }
 
-    private static Node getNodeFromGridPane(GridPane gridPane, int col, int row) {
+    private static TileView getTileFromGridPane(GridPane gridPane, int col, int row) {
         for (Node node : gridPane.getChildren()) {
             if (node instanceof TileView) {
                 if (GridPane.getColumnIndex(node) == col && GridPane.getRowIndex(node) == row) {
-                    return node;
+                    return (TileView) node;
+                }
+            }
+        }
+        return null;
+    }
+
+    private static MapObjectView getObjectFromGridPane(GridPane gridPane, int col, int row) {
+        for (Node node : gridPane.getChildren()) {
+            if (node instanceof MapObjectView) {
+                if (GridPane.getColumnIndex(node) == col && GridPane.getRowIndex(node) == row) {
+                    return (MapObjectView) node;
                 }
             }
         }

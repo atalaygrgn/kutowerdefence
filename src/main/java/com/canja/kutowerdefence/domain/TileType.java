@@ -17,6 +17,7 @@ public enum TileType {
     HORIZONTAL,
     RIGHT,
     EMPTY_LOT,
+    // object tiles below
     TREE1,
     TREE2,
     TREE3,
