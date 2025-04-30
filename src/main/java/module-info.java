@@ -3,6 +3,7 @@ module com.canja.kutowerdefence {
     requires javafx.fxml;
     requires java.desktop;
     requires com.google.gson;
+    requires javafx.graphics;
 
 
     opens com.canja.kutowerdefence to javafx.fxml;

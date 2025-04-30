@@ -6,6 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -17,6 +18,7 @@ import java.util.ResourceBundle;
 import java.util.List;
 
 import com.canja.kutowerdefence.domain.MapService;
+import javafx.stage.Stage;
 
 public class MainMenuView implements Initializable {
 
@@ -76,8 +78,26 @@ public class MainMenuView implements Initializable {
     private void handleNewGame() {
         List<File> maps = MapService.getInstance().getSavedMaps();
         if (maps.isEmpty()) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "ERROR: No maps found. Create a new one by going to Edit Mode.");
-            alert.showAndWait();
+          Alert alert = new Alert(Alert.AlertType.ERROR);
+          alert.setTitle("No Maps Found");
+          alert.setHeaderText("No Maps Found.");
+          alert.setContentText("Create a new one by going to edit mode!");
+
+          ButtonType editorButton= new ButtonType("Go to Map Editor");
+          ButtonType okButton = new ButtonType("OK");
+          alert.getButtonTypes().setAll(editorButton, okButton);
+
+          alert.showAndWait().ifPresent(response -> {
+              if(response == editorButton){
+                  try{
+                      Routing.openEditMode();
+                      Stage stage = (Stage) pane.getScene().getWindow();
+                      stage.close();
+                  } catch(IOException e){
+                      throw new RuntimeException(e);
+                  }
+              }
+          });
         } else {
             MapSelectionOverlay.show(maps);
         }

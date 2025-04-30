@@ -14,3 +14,8 @@ Please list the changes you made here during development
 - Pathfinding, path setting in edit mode, path saving/loading to/from file
 - A change of formatting in .kutdmap format
 - Two new example maps
+### Jahan:
+- Changed No Maps Found Error to include two buttons, OK to continue, or Go to Map Editor to direct the user to the map editor. (two new imports in MainMenuView)
+- 
+- Slightly changed wording of the error
+- 
