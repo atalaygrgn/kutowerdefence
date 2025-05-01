@@ -8,18 +8,37 @@ import java.util.LinkedList;
 
 public class GamePlayController {
     private final GameSession gameSession;
+    private final EnemyDescription goblin = EnemyFactory.GOBLIN;
+    private final EnemyDescription knight = EnemyFactory.KNIGHT;
     private int waveNumber = 0;
-    private int goldAmount = 0;
-    private int currentHealth = -1;
     private int currentWave = 1;
     private GamePlayView view;
+    private final Player player;
 
     public GamePlayController(GameSession gameSession) {
         this.gameSession = gameSession;
         int[] options = gameSession.getOptionValues();
-        this.waveNumber = options[0];
-        this.goldAmount = options[4];
-        this.currentHealth = options[10];
+
+        this.waveNumber = options[Option.WAVE_NUMBER.ordinal()];
+        player = new Player(options[Option.GOLD.ordinal()], options[Option.PLAYER_HITPOINT.ordinal()]);
+        configureGoblin(options);
+        configureKnight(options);
+    }
+    
+    public void configureGoblin(int[] options) {
+        goblin.setGold(options[Option.GOBLIN_REWARD.ordinal()]);
+        goblin.setHitpoints(options[Option.GOBLIN_HITPOINT.ordinal()]);
+        goblin.setSpeed(options[Option.GOBLIN_SPEED.ordinal()]);
+    }
+
+    public void configureKnight(int[] options) {
+        knight.setGold(options[Option.KNIGHT_REWARD.ordinal()]);
+        knight.setHitpoints(options[Option.KNIGHT_HITPOINT.ordinal()]);
+        knight.setSpeed(options[Option.KNIGHT_SPEED.ordinal()]);
+    }
+
+    public Player getPlayer() {
+        return player;
     }
 
     public Map getMap() {
@@ -27,19 +46,11 @@ public class GamePlayController {
     }
 
     public int getHealth() {
-        return currentHealth;
-    }
-
-    public void setHealth(int value) {
-        this.currentHealth = value;
+        return player.getHealth();
     }
 
     public int getGold() {
-        return goldAmount;
-    }
-
-    public void setGold(int value) {
-        this.goldAmount = value;
+        return player.getGoldAmount();
     }
 
     public void setWaveNumber(int value) {
@@ -75,5 +86,4 @@ public class GamePlayController {
         Enemy knight = new Enemy(EnemyFactory.KNIGHT, path);
         view.spawnEnemy(knight);
     }
-
 }

@@ -26,13 +26,26 @@ public class EnemyDescription {
         return hitpoints;
     }
 
+    public void setHitpoints(int val) {
+        hitpoints = val;
+    }
+
     public float getSpeed() {
         return speed;
+    }
+
+    public void setSpeed(float val) {
+        speed = val;
     }
 
     public int getGold() {
         return gold;
     }
+
+    public void setGold(int val) {
+        gold = val;
+    }
+
     public int getArrowResistance() {
         return arrowResistance;
     }

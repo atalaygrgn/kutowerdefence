@@ -113,13 +113,19 @@ public class GamePlayView implements Initializable {
             enemy.update(deltaTime);
             view.update();
 
-            if (view.isDead() || enemy.reachedEnd()) {
+            if (view.isDead()) {
+                toRemove.add(view);
+            }
+
+            if (enemy.reachedEnd()) {
+                controller.getPlayer().loseHealth();
                 toRemove.add(view);
             }
         }
         for (EnemyView view : toRemove) {
             enemyLayer.getChildren().remove(view);
             enemyViews.remove(view);
+            updateUI();
         }
     }
 
