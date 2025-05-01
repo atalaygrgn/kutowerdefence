@@ -13,45 +13,45 @@
          </font></Label>
       <Pane prefHeight="120.0" prefWidth="1280.0">
          <children>
-            <Button fx:id="exitButton" layoutX="1199.0" mnemonicParsing="false" onAction="#exitButtonOnClick" text="X">
+            <Button fx:id="exitButton" layoutX="1199.0" mnemonicParsing="false" text="X">
                <font>
                   <Font name="System Bold" size="22.0" />
                </font>
             </Button>
          </children></Pane>
-      <HBox alignment="CENTER" prefHeight="480.0" prefWidth="1280.0">
+      <HBox fx:id="HBoxContainer" alignment="CENTER" prefHeight="480.0" prefWidth="1280.0">
          <children>
-            <VBox prefHeight="480.0" prefWidth="580.0">
+            <VBox fx:id="leftOptionBox" prefHeight="480.0" prefWidth="580.0">
                <children>
                   <HBox alignment="TOP_CENTER" prefHeight="40.0" prefWidth="580.0">
                      <children>
                         <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="300.0" text="Number Of Waves :" />
                         <Pane prefHeight="40.0" prefWidth="30.0" />
-                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="__" />
+                        <Button id="waveNumberButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="1" />
                      </children>
                   </HBox>
                   <Pane prefHeight="5.0" prefWidth="200.0" />
                   <HBox alignment="TOP_CENTER" layoutX="10.0" layoutY="10.0" prefHeight="40.0" prefWidth="580.0">
                      <children>
-                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="300.0" text="Delay | Waves :" />
+                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="300.0" text="Delay | Waves (sec):" />
                         <Pane prefHeight="40.0" prefWidth="30.0" />
-                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="__" />
+                        <Button id="waveDelayButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="30 " />
                      </children>
                   </HBox>
                   <Pane prefHeight="5.0" prefWidth="200.0" />
                   <HBox alignment="TOP_CENTER" layoutX="10.0" layoutY="10.0" prefHeight="40.0" prefWidth="580.0">
                      <children>
-                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="300.0" text="Delay | Groups of Waves :" />
+                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="300.0" text="Delay | Groups of Waves (sec):" />
                         <Pane prefHeight="40.0" prefWidth="30.0" />
-                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="__" />
+                        <Button id="waveGroupDelayButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="5" />
                      </children>
                   </HBox>
                   <Pane prefHeight="5.0" prefWidth="200.0" />
                   <HBox alignment="TOP_CENTER" layoutX="10.0" layoutY="40.0" prefHeight="40.0" prefWidth="580.0">
                      <children>
-                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="300.0" text="Delay | Enemies of a Group :" />
+                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="300.0" text="Delay | Enemies of a Group (sec):" />
                         <Pane prefHeight="40.0" prefWidth="30.0" />
-                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="__" />
+                        <Button id="enemySpawnDelayButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="1" />
                      </children>
                   </HBox>
                   <Pane prefHeight="5.0" prefWidth="200.0" />
@@ -59,7 +59,7 @@
                      <children>
                         <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="300.0" text="Gold | Starting Amount :" />
                         <Pane prefHeight="40.0" prefWidth="30.0" />
-                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="__" />
+                        <Button id="goldAmountButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="250" />
                      </children>
                   </HBox>
                   <Pane prefHeight="5.0" prefWidth="200.0" />
@@ -67,7 +67,7 @@
                      <children>
                         <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="300.0" text="Gold | Goblin :" />
                         <Pane prefHeight="40.0" prefWidth="30.0" />
-                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="__" />
+                        <Button id="goblinRewardButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="10" />
                      </children>
                   </HBox>
                   <Pane prefHeight="5.0" prefWidth="200.0" />
@@ -75,7 +75,7 @@
                      <children>
                         <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="300.0" text="Gold | Knight :" />
                         <Pane prefHeight="40.0" prefWidth="30.0" />
-                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="__" />
+                        <Button id="knightRewardButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="25" />
                      </children>
                   </HBox>
                   <Pane prefHeight="5.0" prefWidth="200.0" />
@@ -83,7 +83,7 @@
                      <children>
                         <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="300.0" text="Cost | Archer Tower:" />
                         <Pane prefHeight="40.0" prefWidth="30.0" />
-                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="__" />
+                        <Button id="archerTowerCostButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="125" />
                      </children>
                   </HBox>
                   <Pane prefHeight="5.0" prefWidth="200.0" />
@@ -91,7 +91,7 @@
                      <children>
                         <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="300.0" text="Cost | Artillery Tower:" />
                         <Pane prefHeight="40.0" prefWidth="30.0" />
-                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="__" />
+                        <Button id="artilleryTowerCostButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="500" />
                      </children>
                   </HBox>
                   <Pane prefHeight="5.0" prefWidth="200.0" />
@@ -99,25 +99,25 @@
                      <children>
                         <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="300.0" text="Cost | Mage Tower:" />
                         <Pane prefHeight="40.0" prefWidth="30.0" />
-                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="__" />
+                        <Button id="mageTowerCostButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="250" />
                      </children>
                   </HBox>
                </children></VBox>
             <Pane prefHeight="463.0" prefWidth="72.0" />
-            <VBox prefHeight="480.0" prefWidth="580.0">
+            <VBox fx:id="rightOptionBox" prefHeight="480.0" prefWidth="580.0">
                <children>
                   <HBox alignment="TOP_CENTER" prefHeight="40.0" prefWidth="580.0">
                      <children>
                         <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="300.0" text="Hitpoint | Starting Amount :" />
                         <Pane prefHeight="40.0" prefWidth="30.0" />
-                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="__" />
+                        <Button id="playerHitpointButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="3" />
                      </children></HBox>
                   <Pane prefHeight="5.0" prefWidth="200.0" />
                   <HBox alignment="TOP_CENTER" layoutX="10.0" layoutY="10.0" prefHeight="40.0" prefWidth="580.0">
                      <children>
                         <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="300.0" text="Hitpoint | Goblin :" />
                         <Pane prefHeight="40.0" prefWidth="30.0" />
-                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="__" />
+                        <Button id="goblinHitpointButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="100" />
                      </children>
                   </HBox>
                   <Pane prefHeight="5.0" prefWidth="200.0" />
@@ -125,7 +125,7 @@
                      <children>
                         <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="300.0" text="Hitpoint | Knight :" />
                         <Pane prefHeight="40.0" prefWidth="30.0" />
-                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="__" />
+                        <Button id="knightHitpointButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="100" />
                      </children>
                   </HBox>
                   <Pane prefHeight="5.0" prefWidth="200.0" />
@@ -133,7 +133,7 @@
                      <children>
                         <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="300.0" text="Damage | Arrow :" />
                         <Pane prefHeight="40.0" prefWidth="30.0" />
-                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="__" />
+                        <Button id="arrowDamageButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="10" />
                      </children>
                   </HBox>
                   <Pane prefHeight="5.0" prefWidth="200.0" />
@@ -141,7 +141,7 @@
                      <children>
                         <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="300.0" text="Damage | Artillery Shell :" />
                         <Pane prefHeight="40.0" prefWidth="30.0" />
-                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="__" />
+                        <Button id="artilleryDamageButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="25" />
                      </children>
                   </HBox>
                   <Pane prefHeight="5.0" prefWidth="200.0" />
@@ -149,7 +149,7 @@
                      <children>
                         <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="300.0" text="Damage | Spell :" />
                         <Pane prefHeight="40.0" prefWidth="30.0" />
-                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="__" />
+                        <Button id="spellDamageButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="5" />
                      </children>
                   </HBox>
                   <Pane prefHeight="5.0" prefWidth="200.0" />
@@ -157,7 +157,7 @@
                      <children>
                         <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="300.0" text="Range | Tower :" />
                         <Pane prefHeight="40.0" prefWidth="30.0" />
-                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="__" />
+                        <Button id="towerRangeButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="2" />
                      </children>
                   </HBox>
                   <Pane prefHeight="5.0" prefWidth="200.0" />
@@ -165,7 +165,7 @@
                      <children>
                         <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="300.0" text="Range | AOE Effect :" />
                         <Pane prefHeight="40.0" prefWidth="30.0" />
-                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="__" />
+                        <Button id="AOERangeButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="2" />
                      </children>
                   </HBox>
                   <Pane prefHeight="5.0" prefWidth="200.0" />
@@ -173,7 +173,7 @@
                      <children>
                         <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="300.0" text="Speed | Goblin :" />
                         <Pane prefHeight="40.0" prefWidth="30.0" />
-                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="__" />
+                        <Button id="goblinSpeedButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="1" />
                      </children>
                   </HBox>
                   <Pane prefHeight="5.0" prefWidth="200.0" />
@@ -181,7 +181,7 @@
                      <children>
                         <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="300.0" text="Speed | Knight :" />
                         <Pane prefHeight="40.0" prefWidth="30.0" />
-                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="__" />
+                        <Button id="knightSpeedButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="1" />
                      </children>
                   </HBox>
                </children>
@@ -193,7 +193,7 @@
          <children>
             <Button mnemonicParsing="false" text="Save Settings" />
             <Pane prefHeight="93.0" prefWidth="800.0" />
-            <Button mnemonicParsing="false" text="Revert to Default" />
+            <Button fx:id="restoreButton" mnemonicParsing="false" text="Revert to Default" />
          </children>
       </HBox>
    </children>

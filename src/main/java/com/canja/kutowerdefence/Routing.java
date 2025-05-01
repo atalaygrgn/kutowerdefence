@@ -1,8 +1,12 @@
 package com.canja.kutowerdefence;
 
 import com.canja.kutowerdefence.controller.GamePlayController;
+import com.canja.kutowerdefence.controller.OptionController;
 import com.canja.kutowerdefence.domain.GameSession;
 import com.canja.kutowerdefence.ui.GamePlayView;
+import com.canja.kutowerdefence.ui.OptionsMenuView;
+
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.ImageCursor;
 import javafx.scene.Parent;
@@ -84,7 +88,14 @@ public final class Routing {
      * @param gameSession The game session to inject into the GamePlayView controller.
      * @throws IOException
      */
-    public static void openGamePlay(GameSession gameSession) throws IOException {
+    public static void openGamePlay(GameSession gameSession) throws IOException {   
+        FXMLLoader fxmlLoader = open("gameplay-view.fxml", "KU Tower Defence");
+        GamePlayView view = fxmlLoader.getController();
+        GamePlayController controller = new GamePlayController(gameSession);
+        controller.setView(view);
+        view.setController(controller);
+
+        /* 
         FXMLLoader fxmlLoader = new FXMLLoader(Routing.class.getResource("gameplay-view.fxml"));
         Parent root = fxmlLoader.load();
 
@@ -99,6 +110,7 @@ public final class Routing {
         mainStage.setScene(scene);
         mainStage.setTitle("KU Tower Defence");
         mainStage.setResizable(false);
+        */
     }
 
     /**
@@ -114,7 +126,11 @@ public final class Routing {
      * @throws IOException
      */
     public static void openOptionsMenu() throws IOException {
-        open("optionsmenu-view.fxml", "Options");
+        FXMLLoader fxmlLoader = open("optionsmenu-view.fxml", "Options");
+        OptionsMenuView view = fxmlLoader.getController();
+        OptionController controller = new OptionController();
+        controller.setView(view);
+        view.setController(controller);
     }
 
     /**
@@ -123,7 +139,7 @@ public final class Routing {
      * @param title Title of the new view.
      * @throws IOException
      */
-    private static void open(String layoutPath, String title) throws IOException {
+    private static FXMLLoader open(String layoutPath, String title) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Routing.class.getResource(layoutPath));
         Parent editorRoot = fxmlLoader.load();
 
@@ -133,5 +149,7 @@ public final class Routing {
         mainStage.setScene(scene);
         mainStage.setTitle(title);
         mainStage.setResizable(false);
+
+        return fxmlLoader;
     }
 }
