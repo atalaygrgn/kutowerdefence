@@ -129,7 +129,6 @@ public final class Routing {
         FXMLLoader fxmlLoader = open("optionsmenu-view.fxml", "Options");
         OptionsMenuView view = fxmlLoader.getController();
         OptionController controller = new OptionController();
-        controller.setView(view);
         view.setController(controller);
     }
 

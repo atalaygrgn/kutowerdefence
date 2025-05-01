@@ -35,3 +35,9 @@ Please list the changes you made here during development
 
 - Added OptionController for handling option adjustment (Further developement of SaveOptions and Save/Load game requires WaveController to be developed). Restore option is done.
 - Code refactoring and slight modifications in OptionController in Routing & OptionsMenuViewmake to make them compatible with OptionController (please review)
+
+## 01.05
+
+### Anıl:
+
+- Added saveOptions function, it saves the congigured options under resources/options folder. Now when a new game starts, it reads the options from the saved file.

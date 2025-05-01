@@ -2,19 +2,17 @@ package com.canja.kutowerdefence.controller;
 
 import com.canja.kutowerdefence.Routing;
 import com.canja.kutowerdefence.ui.OptionsMenuView;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import javafx.scene.control.*;
 
 import java.io.IOException;
+import java.io.File;
+import java.io.FileWriter;
 import java.util.List;
 
 public class OptionController {
-    private OptionsMenuView view;
-    
-    public void setView(OptionsMenuView view) {
-        this.view = view;
-    }
-
     public void toggleButton(Button clickedButton) {
         String buttonId = clickedButton.getId();
         int value;
@@ -29,7 +27,7 @@ public class OptionController {
                 clickedButton.setText("" + value);
                 break;
             case "waveDelayButton":
-                value = Integer.parseInt(clickedButton.getText().replaceAll("\\D+", ""));
+                value = Integer.parseInt(clickedButton.getText());
                 value = (value + 30) % 120;
 
                 if (value == 0) value += 30;
@@ -37,7 +35,7 @@ public class OptionController {
                 clickedButton.setText("" + value);
                 break;
             case "waveGroupDelayButton":
-                value = Integer.parseInt(clickedButton.getText().replaceAll("\\D+", ""));
+                value = Integer.parseInt(clickedButton.getText());
                 value = (value + 5) % 20;
 
                 if (value == 0) value += 5;
@@ -45,7 +43,7 @@ public class OptionController {
                 clickedButton.setText("" + value);
                 break;
             case "enemySpawnDelayButton":
-                value = Integer.parseInt(clickedButton.getText().replaceAll("\\D+", ""));
+                value = Integer.parseInt(clickedButton.getText());
                 
                 if (value == 1) value++;
                 else if (value == 2) value = 5;
@@ -177,6 +175,33 @@ public class OptionController {
             Routing.returnToPreviousScene();
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public void saveButtonOnClick(List<Button> buttons) throws IOException{
+        File saveDirectory = new File("src/main/resources/options");
+        String saveName = "options.kutdopt";
+        int[] optionValues = new int[buttons.size()];
+        int index = 0;
+
+        for (Button button : buttons) {
+            int value = Integer.parseInt(button.getText());
+            optionValues[index++] = value;
+        }
+
+        if (!saveDirectory.exists()) saveDirectory.mkdirs();
+
+        File saveFile = new File(saveDirectory, saveName);
+        Gson gson = new GsonBuilder().create();
+
+        try (FileWriter writer = new FileWriter(saveFile)) {
+            gson.toJson(optionValues, writer);
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Success");
+            alert.setHeaderText(null);
+            alert.setContentText("Options are saved successfully");
+            alert.showAndWait();
         }
     }
 }
