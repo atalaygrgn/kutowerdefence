@@ -8,11 +8,18 @@ import java.util.LinkedList;
 
 public class GamePlayController {
     private final GameSession gameSession;
-
+    private int waveNumber = 0;
+    private int goldAmount = 0;
+    private int currentHealth = -1;
+    private int currentWave = 1;
     private GamePlayView view;
 
     public GamePlayController(GameSession gameSession) {
         this.gameSession = gameSession;
+        int[] options = gameSession.getOptionValues();
+        this.waveNumber = options[0];
+        this.goldAmount = options[4];
+        this.currentHealth = options[10];
     }
 
     public Map getMap() {
@@ -20,18 +27,29 @@ public class GamePlayController {
     }
 
     public int getHealth() {
-        // Placeholder for health logic
-        return 100;
+        return currentHealth;
+    }
+
+    public void setHealth(int value) {
+        this.currentHealth = value;
     }
 
     public int getGold() {
-        // Placeholder for gold logic
-        return 500;
+        return goldAmount;
+    }
+
+    public void setGold(int value) {
+        this.goldAmount = value;
+    }
+
+    public void setWaveNumber(int value) {
+        this.waveNumber = value;
     }
 
     public String getWaveInfo() {
-        // Placeholder for wave info logic
-        return "1/10";
+        String waveInfo = currentWave + "/" + waveNumber;
+
+        return waveInfo;
     }
 
     public void setView(GamePlayView view) {
