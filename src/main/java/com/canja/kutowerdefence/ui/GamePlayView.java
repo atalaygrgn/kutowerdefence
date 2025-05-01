@@ -5,6 +5,8 @@ import com.canja.kutowerdefence.controller.GamePlayController;
 import com.canja.kutowerdefence.domain.Enemy;
 import com.canja.kutowerdefence.domain.Map;
 import com.canja.kutowerdefence.domain.MapObject;
+import com.canja.kutowerdefence.domain.TileType;
+
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -27,6 +29,9 @@ public class GamePlayView implements Initializable {
     @FXML
     private GridPane mapGridPane;
 
+    public GridPane getMapGridPane() {
+        return mapGridPane;
+    }
 
     @FXML
     private Label healthLabel;
@@ -71,6 +76,13 @@ public class GamePlayView implements Initializable {
         for (int i = 0; i < gameMap.getArray().length; i++) {
             for (int j = 0; j < gameMap.getArray()[i].length; j++) {
                 TileView tileView = new TileView(gameMap.getTile(i, j));
+                if (tileView.getTileType().equals(TileType.EMPTY_LOT)) {
+                    int finalI = i;
+                    int finalJ = j;
+                    tileView.setOnMouseClicked(event -> {
+                        controller.onEmptyLotClicked(tileView, finalI, finalJ);
+                    });
+                }
                 mapGridPane.add(tileView, i, j);
             }
         }

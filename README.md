@@ -41,3 +41,7 @@ Please list the changes you made here during development
 ### Anıl:
 
 - Added saveOptions function, it saves the congigured options under resources/options folder. Now when a new game starts, it reads the options from the saved file.
+
+### Atalay:
+- Tower classes implemented
+- Build tower by clicking an empty lot and choosing a tower type with the popup panel
