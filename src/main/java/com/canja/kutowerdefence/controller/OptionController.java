@@ -125,7 +125,7 @@ public class OptionController {
                 break;
             case "artilleryDamageButton":
                 value = Integer.parseInt(clickedButton.getText());
-                value = (value + 25) % 55;
+                value = (value + 25) % 100;
 
                 if (value == 0) value = 25;
 

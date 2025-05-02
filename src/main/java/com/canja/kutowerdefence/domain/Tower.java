@@ -8,19 +8,16 @@ public abstract class Tower extends MapObject {
     public abstract Enemy[] targetEnemies(List<Enemy> allEnemies);
     public abstract void attackEnemy(Enemy target);
     protected int range;
+    protected int damage;
     protected GameSession session;
     protected long lastAttackTime = 0;
     protected long attackCooldownMillis = 800;
 
-    public Tower(MapObjectType type, Point position) {
+    public Tower(MapObjectType type, Point position, GameSession gameSession, int range, int damage) {
         super(type, position);
-    }
-
-    public Tower(MapObjectType type, Point position, GameSession session) {
-        super(type, position);
-        this.session = session;
-        this.range = session.getOptionValues()[16];
-
+        this.session = gameSession;
+        this.range = range;
+        this.damage = damage;
     }
 
     public boolean isInRange(Enemy enemy) {
@@ -51,6 +48,4 @@ public abstract class Tower extends MapObject {
         }
         return best;
     }
-
-
 }

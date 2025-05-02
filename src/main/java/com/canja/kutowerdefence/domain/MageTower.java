@@ -4,8 +4,8 @@ import java.util.List;
 
 public class MageTower extends Tower {
 
-    public MageTower(Point position, GameSession session) {
-        super(MapObjectType.TOWER_MAGE, position, session);
+    public MageTower(Point position, GameSession gameSession, int range, int damage) {
+        super(MapObjectType.TOWER_MAGE, position, gameSession, range, damage);
     }
 
     @Override
@@ -16,10 +16,7 @@ public class MageTower extends Tower {
 
 
     @Override
-
     public void attackEnemy(Enemy target) {
-        int damage = session.getOptionValues()[15];
-
         session.getView().launchProjectile(
                 position.getX(), position.getY(),
                 target.getX(), target.getY(),
@@ -32,6 +29,4 @@ public class MageTower extends Tower {
                 }
         );
     }
-
-
 }

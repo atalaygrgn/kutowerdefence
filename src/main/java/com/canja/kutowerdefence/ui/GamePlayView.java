@@ -81,6 +81,7 @@ public class GamePlayView implements Initializable {
                     int finalJ = j;
                     tileView.setOnMouseClicked(event -> {
                         controller.onEmptyLotClicked(tileView, finalI, finalJ);
+                        updateUI();
                     });
                 }
                 mapGridPane.add(tileView, i, j);
@@ -126,11 +127,12 @@ public class GamePlayView implements Initializable {
             view.update();
 
             if (view.isDead()) {
+                controller.rewardPlayer(enemy.getGoldReward());
                 toRemove.add(view);
             }
 
             if (enemy.reachedEnd()) {
-                controller.getPlayer().loseHealth();
+                controller.loseHealth();
                 toRemove.add(view);
             }
         }

@@ -4,8 +4,8 @@ import java.util.List;
 
 public class ArcherTower extends Tower {
 
-    public ArcherTower(Point position, GameSession session) {
-        super(MapObjectType.TOWER_ARCHER, position, session);
+    public ArcherTower(Point position, GameSession gameSession, int range, int damage) {
+        super(MapObjectType.TOWER_ARCHER, position, gameSession, range, damage);
     }
 
     @Override
@@ -16,8 +16,6 @@ public class ArcherTower extends Tower {
 
     @Override
     public void attackEnemy(Enemy target) {
-        int damage = session.getOptionValues()[13];
-
         session.getView().launchProjectile(
                 position.getX(), position.getY(),
                 target.getX(), target.getY(),
@@ -30,8 +28,4 @@ public class ArcherTower extends Tower {
                 }
         );
     }
-
-
-
-
 }
