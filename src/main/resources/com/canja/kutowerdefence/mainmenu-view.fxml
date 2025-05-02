@@ -14,7 +14,7 @@
       </font>
    </Button>
    <Pane prefHeight="20.0" />
-   <Button layoutX="315.0" layoutY="259.0" mnemonicParsing="false" text="Load Game">
+   <Button fx:id="loadGameButton" layoutX="315.0" layoutY="259.0" mnemonicParsing="false" text="Load Game">
       <font>
          <Font size="16.0" />
       </font>

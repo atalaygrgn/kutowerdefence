@@ -18,6 +18,8 @@ import java.util.ResourceBundle;
 import java.util.List;
 
 import com.canja.kutowerdefence.domain.MapService;
+import com.canja.kutowerdefence.domain.SaveSelectionOverlay;
+import com.canja.kutowerdefence.domain.SaveService;
 import javafx.stage.Stage;
 
 public class MainMenuView implements Initializable {
@@ -28,6 +30,7 @@ public class MainMenuView implements Initializable {
     public Button editModeButton;
     public Button optionsButton;
     public Button newGameButton;
+    public Button loadGameButton;
 
     public void onQuitButtonClick(ActionEvent actionEvent) {
         Platform.exit();
@@ -70,8 +73,7 @@ public class MainMenuView implements Initializable {
         });
 
         newGameButton.setOnAction((event) -> handleNewGame());
-
-
+        loadGameButton.setOnAction((event) -> handleLoadGame());
     }
 
 
@@ -101,5 +103,10 @@ public class MainMenuView implements Initializable {
         } else {
             MapSelectionOverlay.show(maps);
         }
+    }
+
+    private void handleLoadGame() {
+        List<File> saves = SaveService.getInstance().getSaveFiles();
+        SaveSelectionOverlay.show(saves);
     }
 }
