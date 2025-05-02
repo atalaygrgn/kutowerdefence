@@ -25,12 +25,14 @@
                 prefHeight="768.0"
                 prefWidth="1024.0">
         <columnConstraints>
+          <!-- your ColumnConstraints repeated as before -->
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="64.0"/>
-          <!-- repeat ColumnConstraints as needed... -->
+          <!-- … -->
         </columnConstraints>
         <rowConstraints>
+          <!-- your RowConstraints repeated as before -->
           <RowConstraints minHeight="10.0" prefHeight="64.0" vgrow="SOMETIMES"/>
-          <!-- repeat RowConstraints as needed... -->
+          <!-- … -->
         </rowConstraints>
       </GridPane>
       <Pane fx:id="enemyLayer" pickOnBounds="false"/>
@@ -53,13 +55,13 @@
         <StackPane>
           <ImageView fx:id="goldFrame" fitWidth="200" preserveRatio="true">
             <image>
-              <Image url="@../ui/images/gold_frame.png"/>
+              <Image url="@/assets/ui/gold_frame.png"/>
             </image>
           </ImageView>
           <HBox alignment="CENTER" spacing="8">
             <ImageView fx:id="goldIcon" fitHeight="24" preserveRatio="true">
               <image>
-                <Image url="@../ui/images/coin_icon.png"/>
+                <Image url="@/assets/ui/coin_icon.png"/>
               </image>
             </ImageView>
             <Label fx:id="goldLabel"
@@ -72,13 +74,13 @@
         <StackPane>
           <ImageView fx:id="healthFrame" fitWidth="200" preserveRatio="true">
             <image>
-              <Image url="@../ui/images/health_frame.png"/>
+              <Image url="@/assets/ui/health_frame.png"/>
             </image>
           </ImageView>
           <HBox alignment="CENTER" spacing="8">
             <ImageView fx:id="heartIcon" fitHeight="24" preserveRatio="true">
               <image>
-                <Image url="@../ui/images/heart_icon.png"/>
+                <Image url="@/assets/ui/heart_icon.png"/>
               </image>
             </ImageView>
             <Label fx:id="healthLabel"
@@ -91,13 +93,13 @@
         <StackPane>
           <ImageView fx:id="waveFrame" fitWidth="200" preserveRatio="true">
             <image>
-              <Image url="@../ui/images/wave_frame.png"/>
+              <Image url="@/assets/ui/wave_frame.png"/>
             </image>
           </ImageView>
           <HBox alignment="CENTER" spacing="8">
             <ImageView fx:id="shieldIcon" fitHeight="24" preserveRatio="true">
               <image>
-                <Image url="@../ui/images/shield_icon.png"/>
+                <Image url="@/assets/ui/shield_icon.png"/>
               </image>
             </ImageView>
             <Label fx:id="waveLabel"
