@@ -113,6 +113,15 @@ public final class Routing {
         */
     }
 
+    public static void openGamePlay(GameSession gameSession, int currentWave) throws IOException {   
+        FXMLLoader fxmlLoader = open("gameplay-view.fxml", "KU Tower Defence");
+        GamePlayView view = fxmlLoader.getController();
+        GamePlayController controller = new GamePlayController(gameSession);
+        controller.setCurrentWave(currentWave);
+        controller.setView(view);
+        view.setController(controller);
+    }
+
     /**
      * Opens the Edit Mode (Map Editor) view in the same window.
      * @throws IOException

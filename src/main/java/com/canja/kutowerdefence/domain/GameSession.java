@@ -89,10 +89,12 @@ public class GameSession {
         activeEnemies.removeIf(e -> e.getHitpoint() <= 0);
     }
 
+    public String getMapPath() {
+        return mapFile.getPath();
+    }
 
-
-
-
-
+    public String getOptionPath() {
+        return optionFile.getPath();
+    }
 }
 

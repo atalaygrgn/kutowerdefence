@@ -5,8 +5,13 @@ import com.canja.kutowerdefence.ui.GamePlayView;
 import com.canja.kutowerdefence.ui.MapObjectView;
 import com.canja.kutowerdefence.ui.TileView;
 import com.canja.kutowerdefence.ui.TowerPopupPanel;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import javafx.scene.input.MouseButton;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.LinkedList;
 
 
@@ -21,6 +26,7 @@ public class GamePlayController {
     private int mageCost;
     private GamePlayView view;
     private final Player player;
+    private boolean isGamePaused;
 
     public GamePlayController(GameSession gameSession) {
         this.gameSession = gameSession;
@@ -75,10 +81,18 @@ public class GamePlayController {
         this.waveNumber = value;
     }
 
+    public void setCurrentWave(int val) {
+        this.currentWave = val;
+    }
+
     public String getWaveInfo() {
         String waveInfo = currentWave + "/" + waveNumber;
 
         return waveInfo;
+    }
+    
+    public boolean getPauseState() {
+        return isGamePaused;
     }
 
     public void setView(GamePlayView view) {
@@ -101,12 +115,28 @@ public class GamePlayController {
 
     public void pauseGame() {
         // Implement pause logic
+        isGamePaused = !isGamePaused;
         System.out.println("Game Paused");
     }
 
     public void restartGame() {
         // Implement restart logic
         System.out.println("Game Restarted");
+    }
+
+    public void saveGame() {
+        String filename = "src/main/resources/saves/save.kutdsave";
+        String mapPath = gameSession.getMapPath();
+        String optionPath = gameSession.getOptionPath();
+
+        Gson gson = new GsonBuilder().create();
+
+        try (FileWriter writer = new FileWriter(filename)) {
+            gson.toJson(new Object[]{mapPath, optionPath, currentWave}, writer);
+            System.out.println("Game saved successfully to " + filename);
+        } catch (IOException e) {
+            System.err.println("Failed to save map: " + e.getMessage());
+        }
     }
 
     public void spawnTestEnemy() {
@@ -146,6 +176,7 @@ public class GamePlayController {
                 gameSession.addTower(newTower);
                 putObjectOnMapView(newTower);
                 player.deductGold(requiredGold);
+                view.updateUI();
             }
         });
     }

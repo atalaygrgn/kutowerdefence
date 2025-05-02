@@ -99,7 +99,7 @@ public class GamePlayView implements Initializable {
         exitButton.setOnAction(event -> handleExit());
     }
 
-    private void updateUI() {
+    public void updateUI() {
         healthLabel.setText(String.valueOf(controller.getHealth()));
         goldLabel.setText(String.valueOf(controller.getGold()));
         waveLabel.setText(controller.getWaveInfo());
@@ -119,7 +119,9 @@ public class GamePlayView implements Initializable {
         enemyViews.add(view);
     }
 
-    public void updateEnemies(float deltaTime) {
+    public void updateEnemies(float deltaTime, boolean isGamePaused) {
+        if (isGamePaused) return;
+
         List<EnemyView> toRemove = new ArrayList<>();
         for (EnemyView view : enemyViews) {
             Enemy enemy = view.getEnemy();
@@ -127,6 +129,7 @@ public class GamePlayView implements Initializable {
             view.update();
 
             if (view.isDead()) {
+                controller.getPlayer().gainGold(enemy.getGoldReward());
                 controller.rewardPlayer(enemy.getGoldReward());
                 toRemove.add(view);
             }
@@ -154,10 +157,13 @@ public class GamePlayView implements Initializable {
                     lastTime = now;
                     return;
                 }
-                float deltaTime = (now - lastTime) / 1_000_000_000f;
-                controller.getGameSession().tick(deltaTime);
 
-                updateEnemies(deltaTime);
+                if (!controller.getPauseState()) {
+                    float deltaTime = (now - lastTime) / 1_000_000_000f;
+                    controller.getGameSession().tick(deltaTime);
+
+                    updateEnemies(deltaTime, controller.getPauseState());
+                }
                 lastTime = now;
             }
         };
