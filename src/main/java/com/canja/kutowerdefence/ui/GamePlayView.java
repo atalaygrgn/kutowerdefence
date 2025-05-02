@@ -11,6 +11,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.GridPane;
 import javafx.animation.AnimationTimer;
@@ -51,6 +53,15 @@ public class GamePlayView implements Initializable {
     @FXML
     private Button exitButton;
 
+    @FXML
+    private ImageView goldIcon;
+
+    @FXML
+    private ImageView healthIcon;
+
+    @FXML
+    private ImageView waveIcon;
+
     private GamePlayController controller;
 
     private final List<EnemyView> enemyViews = new ArrayList<>();
@@ -68,7 +79,12 @@ public class GamePlayView implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
         initializeButtons();
+        goldIcon.setImage(new Image("file:src/main/resources/assets/ui/button/0.png"));
+        healthIcon.setImage(new Image("file:src/main/resources/assets/ui/button/1.png"));
+        waveIcon.setImage(new Image("file:src/main/resources/assets/ui/button/2.png"));
+
     }
 
     private void initializeMapGridPane() {
@@ -81,7 +97,6 @@ public class GamePlayView implements Initializable {
                     int finalJ = j;
                     tileView.setOnMouseClicked(event -> {
                         controller.onEmptyLotClicked(tileView, finalI, finalJ);
-                        updateUI();
                     });
                 }
                 mapGridPane.add(tileView, i, j);
@@ -127,12 +142,11 @@ public class GamePlayView implements Initializable {
             view.update();
 
             if (view.isDead()) {
-                controller.rewardPlayer(enemy.getGoldReward());
                 toRemove.add(view);
             }
 
             if (enemy.reachedEnd()) {
-                controller.loseHealth();
+                controller.getPlayer().loseHealth();
                 toRemove.add(view);
             }
         }

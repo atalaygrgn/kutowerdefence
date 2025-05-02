@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 
 <BorderPane xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.canja.kutowerdefence.ui.GamePlayView">
     <center>
@@ -45,29 +45,29 @@
         </StackPane>
     </center>
     <right>
-        <VBox alignment="TOP_CENTER" spacing="10" prefWidth="256.0" BorderPane.alignment="CENTER">
+        <VBox alignment="TOP_CENTER" prefWidth="256.0" spacing="10" BorderPane.alignment="CENTER">
             <children>
                 <Button fx:id="pauseButton" text="Pause" />
                 <Button fx:id="restartButton" text="Restart" />
                 <Button fx:id="exitButton" text="Exit" />
-                <Label text="Health:">
-                    <font>
-                        <Font size="16.0" />
-                    </font>
-                </Label>
-                <Label fx:id="healthLabel" text="100" />
-                <Label text="Gold:">
-                    <font>
-                        <Font size="16.0" />
-                    </font>
-                </Label>
-                <Label fx:id="goldLabel" text="500" />
-                <Label text="Wave:">
-                    <font>
-                        <Font size="16.0" />
-                    </font>
-                </Label>
-                <Label fx:id="waveLabel" text="1/10" />
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <Pane prefHeight="24.0" prefWidth="24.0" />
+                    <ImageView fx:id="healthIcon" fitHeight="24" fitWidth="24" />
+                    <Label fx:id="healthLabel" text="100" />
+                </HBox>
+
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <Pane prefHeight="24.0" prefWidth="24.0" />
+                    <ImageView fx:id="goldIcon" fitHeight="24" fitWidth="24" />
+                    <Label fx:id="goldLabel" text="500" />
+                </HBox>
+
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <Pane prefHeight="24.0" prefWidth="24.0" />
+                    <ImageView fx:id="waveIcon" fitHeight="24" fitWidth="24" />
+                    <Label fx:id="waveLabel" text="1/10" />
+                </HBox>
+
             </children>
         </VBox>
     </right>
