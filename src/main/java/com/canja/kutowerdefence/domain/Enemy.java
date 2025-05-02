@@ -8,6 +8,7 @@ public class Enemy {
     private EnemyDescription description;
     private LinkedList<Point> path;
     private int currentPathIndex;
+    private int goldReward;
 
 
     public Enemy(EnemyDescription description, LinkedList<Point> path) {
@@ -15,6 +16,7 @@ public class Enemy {
         this.path = path;
         this.speed= description.getSpeed();
         this.hitpoint = description.getHitpoints();
+        this.goldReward = description.getGold();
 
         Point start = path.get(0);
         this.x= start.getX();
@@ -32,6 +34,10 @@ public class Enemy {
         return description;
     }
 
+    public int getGoldReward() {
+        return goldReward;
+    }
+    
     public float getSpeed() {
         return speed;
     }

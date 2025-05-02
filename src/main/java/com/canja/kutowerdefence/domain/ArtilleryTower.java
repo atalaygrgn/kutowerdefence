@@ -3,8 +3,11 @@ package com.canja.kutowerdefence.domain;
 import java.util.List;
 
 public class ArtilleryTower extends Tower {
-    public ArtilleryTower(Point position, GameSession session) {
-        super(MapObjectType.TOWER_ARTILLERY, position, session);
+    private int aoeRadius;
+
+    public ArtilleryTower(Point position, GameSession gameSession, int range, int damage, int aoeRadius) {
+        super(MapObjectType.TOWER_ARTILLERY, position, gameSession, range, damage);
+        this.aoeRadius = aoeRadius;
     }
 
     @Override
@@ -15,9 +18,6 @@ public class ArtilleryTower extends Tower {
 
     @Override
     public void attackEnemy(Enemy target) {
-        int damage = session.getOptionValues()[14];
-        int aoeRadius = session.getOptionValues()[17];
-
         float impactX = target.getX();
         float impactY = target.getY();
 
@@ -42,6 +42,4 @@ public class ArtilleryTower extends Tower {
                 }
         );
     }
-
-
 }

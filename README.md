@@ -43,6 +43,7 @@ Please list the changes you made here during development
 - Added saveOptions function, it saves the congigured options under resources/options folder. Now when a new game starts, it reads the options from the saved file.
 
 ### Atalay:
+
 - Tower classes implemented
 - Build tower by clicking an empty lot and choosing a tower type with the popup panel
 
@@ -55,3 +56,8 @@ Please list the changes you made here during development
 - Health-bar decrease added on losing HP
 - New View: ProjectileView
 - Towers attack enemies, in line with what is selected in options.
+
+### Anıl:
+
+- Added functions related to gold (gaining when an enemy is dead, losing when buying towers)
+- Options now modify tower properties
