@@ -6,7 +6,7 @@ public class EnemyFactory {
             100,
             40,
             10,
-            10f,
+            8f,
             1
     );
 

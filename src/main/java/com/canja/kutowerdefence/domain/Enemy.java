@@ -78,6 +78,10 @@ public class Enemy {
     //damage in arrow: knight<goblin
     //damage in spell: knight>goblin
 
+    public int getCurrentPathIndex() {
+        return currentPathIndex;
+    }
+
     public boolean reachedEnd() {
         return currentPathIndex >= path.size();
     }

@@ -69,6 +69,12 @@ public class GamePlayController {
 
     public void setView(GamePlayView view) {
         this.view = view;
+        gameSession.setGamePlayView(view);
+    }
+
+
+    public GameSession getGameSession() {
+        return gameSession;
     }
 
     public void pauseGame() {
@@ -85,10 +91,17 @@ public class GamePlayController {
         //for testing enemy movement
         LinkedList<Point> path = gameSession.getMap().getPath();
 
-        Enemy goblin = new Enemy(EnemyFactory.GOBLIN, path);
-        view.spawnEnemy(goblin);
-        Enemy knight = new Enemy(EnemyFactory.KNIGHT, path);
-        view.spawnEnemy(knight);
+      Enemy goblin = new Enemy(EnemyFactory.GOBLIN, path);
+      gameSession.addEnemy(goblin);
+      view.spawnEnemy(goblin);
+      Enemy knight = new Enemy(EnemyFactory.KNIGHT, path);
+      gameSession.addEnemy(knight);
+      view.spawnEnemy(knight);
+
+
+
+
+
     }
 
     public void onEmptyLotClicked(TileView tileView, int x, int y) {
@@ -96,7 +109,8 @@ public class GamePlayController {
             if (selectedType != null) {
                 // deduct gold from player
                 tileView.setTileType(TileType.EMPTY);
-                Tower newTower = TowerFactory.createTower(selectedType, new Point(x, y));
+                Tower newTower = TowerFactory.createTower(selectedType, new Point(x, y), gameSession);
+                gameSession.addTower(newTower);
                 putObjectOnMapView(newTower);
             }
         });

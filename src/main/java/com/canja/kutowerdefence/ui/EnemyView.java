@@ -83,10 +83,12 @@ public class EnemyView extends Group {
 
         this.setTranslateX(pixelX + TILE_SIZE / 2f - imageView.getFitWidth() / 2f);
         this.setTranslateY(pixelY + TILE_SIZE / 2f - imageView.getFitHeight() / 2f);
+
+        int currentHP = enemy.getHitpoint();
+        int maxHP = enemy.getDescription().getHitpoints();
+        float ratio = Math.max(0, (float) currentHP / maxHP);
+        healthBarFront.setWidth(TILE_SIZE * ratio);
     }
-
-
-
 
     public boolean isDead() {
         return enemy.getHitpoint() <= 0;

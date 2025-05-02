@@ -2,7 +2,7 @@ package com.canja.kutowerdefence.domain;
 
 public class MapObject {
 
-    private Point position;
+    protected Point position;
     private MapObjectType type;
 
     public MapObject(MapObjectType type, Point position) {
@@ -34,4 +34,5 @@ public class MapObject {
     public void setType(MapObjectType type) {
         this.type = type;
     }
+
 }

@@ -45,3 +45,13 @@ Please list the changes you made here during development
 ### Atalay:
 - Tower classes implemented
 - Build tower by clicking an empty lot and choosing a tower type with the popup panel
+
+## 02.05
+
+### Jahan:
+
+- Added Two new asset files: Fire and Explosion under effects.
+- Animations added for projectile attacks
+- Health-bar decrease added on losing HP
+- New View: ProjectileView
+- Towers attack enemies, in line with what is selected in options.
