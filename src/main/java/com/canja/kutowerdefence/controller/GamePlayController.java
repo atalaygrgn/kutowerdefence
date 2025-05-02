@@ -27,13 +27,8 @@ public class GamePlayController {
         int[] options = gameSession.getOptionValues();
 
         this.waveNumber = options[Option.WAVE_NUMBER.ordinal()];
-        this.archerCost = options[Option.ARCHER_TOWER_COST.ordinal()];
-        this.artilleryCost = options[Option.ARTILLERY_TOWER_COST.ordinal()];
-        this.mageCost = options[Option.MAGE_TOWER_COST.ordinal()];
         player = new Player(options[Option.GOLD.ordinal()], options[Option.PLAYER_HITPOINT.ordinal()]);
-        TowerFactory.setRange(options[Option.TOWER_RANGE.ordinal()], options[Option.TOWER_RANGE.ordinal()], options[Option.TOWER_RANGE.ordinal()]);
-        TowerFactory.setDamage(options[Option.ARROW_DAMAGE.ordinal()], options[Option.ARTILLERY_DAMAGE.ordinal()], options[Option.SPELL_DAMAGE.ordinal()]);
-        TowerFactory.setAoeRadius(options[Option.AOE_RANGE.ordinal()]);
+        configureTowers(options);
         configureGoblin(options);
         configureKnight(options);
     }
@@ -48,6 +43,16 @@ public class GamePlayController {
         knight.setGold(options[Option.KNIGHT_REWARD.ordinal()]);
         knight.setHitpoints(options[Option.KNIGHT_HITPOINT.ordinal()]);
         knight.setSpeed(options[Option.KNIGHT_SPEED.ordinal()]);
+    }
+
+    public void configureTowers(int[] options) {
+        TowerFactory.setRange(options[Option.TOWER_RANGE.ordinal()], options[Option.TOWER_RANGE.ordinal()], options[Option.TOWER_RANGE.ordinal()]);
+        TowerFactory.setDamage(options[Option.ARROW_DAMAGE.ordinal()], options[Option.ARTILLERY_DAMAGE.ordinal()], options[Option.SPELL_DAMAGE.ordinal()]);
+        TowerFactory.setAoeRadius(options[Option.AOE_RANGE.ordinal()]);
+
+        this.archerCost = options[Option.ARCHER_TOWER_COST.ordinal()];
+        this.artilleryCost = options[Option.ARTILLERY_TOWER_COST.ordinal()];
+        this.mageCost = options[Option.MAGE_TOWER_COST.ordinal()];
     }
 
     public Player getPlayer() {
@@ -93,7 +98,7 @@ public class GamePlayController {
     public void rewardPlayer(int val) {
         player.gainGold(val);
     }
-    
+
     public void pauseGame() {
         // Implement pause logic
         System.out.println("Game Paused");

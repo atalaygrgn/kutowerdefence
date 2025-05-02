@@ -40,7 +40,7 @@ Please list the changes you made here during development
 
 ### Anıl:
 
-- Added saveOptions function, it saves the congigured options under resources/options folder. Now when a new game starts, it reads the options from the saved file.
+- Added saveOptions function, it saves the configured options under resources/options folder. Now when a new game starts, it reads the options from the saved file.
 
 ### Atalay:
 
