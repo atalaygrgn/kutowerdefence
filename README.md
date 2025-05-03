@@ -10,7 +10,12 @@ Please list the changes you made here during development
 - Some modifications to GameSession, MapSelectionOverlay, Map, and Routing for creating a gameplay screen with the selected map
 - Introducing controller package for the controller pattern, and GamePlayController for handling game logic
 - This file renamed to README to show the changes directly on the repo page
+### Çınar:
+- Created options menu view and layout
+- Handled the exit button case
 
+
+optionsmenuview enemy domain classes enemy spawning path movement animation
 ## 30.04
 
 ### Atalay:
@@ -36,6 +41,13 @@ Please list the changes you made here during development
 - Added OptionController for handling option adjustment (Further developement of SaveOptions and Save/Load game requires WaveController to be developed). Restore option is done.
 - Code refactoring and slight modifications in OptionController in Routing & OptionsMenuViewmake to make them compatible with OptionController (please review)
 
+### Çınar:
+- Implemented Enemy domain classes: Enemy, EnemyDescription, and EnemyFactory.
+- EnemyDescription holds the necessary informations for enemy creation, used in Enemy.
+- Enemy class includes an update() function for handling enemy movement and a takeDamage() that sets damage multiplier for different enemy and projectile combinations.
+- EnemyFactory is used for different types of enemy creation using factory pattern
+- Implemented Point class for the path, we hold the path as a linkedlist type point as enemies move on it.
+
 ## 01.05
 
 ### Anıl:
@@ -46,6 +58,15 @@ Please list the changes you made here during development
 
 - Tower classes implemented
 - Build tower by clicking an empty lot and choosing a tower type with the popup panel
+
+### Çınar: 
+- Implemented basic enemy spawning and path movement animation, many changes here and there.
+- Modified GamePlayController and Routing to test enemy movement, includes spawnTestEnemy() which creates 1 goblin and 1 knight.
+- Enemy and EnemyDescription classes are modified for takeDamage() logic with new resistance fields.
+- Implemented EnemyView class with ImageView, update() function modified for pixel movement and animationFrames list with Timeline for animation.
+- Assets for goblin and knight animations added.
+- GamePlayView updated with enemyLayer, enemyViews list, updateEnemies() for movement and startUpdateEnemyLoop() for enemy movement animation with AnimationTimer.
+- GamePlayView layout updated for including enemyLayer.
 
 ## 02.05
 
@@ -61,3 +82,6 @@ Please list the changes you made here during development
 
 - Added functions related to gold (gaining when an enemy is dead, losing when buying towers)
 - Options now modify tower properties
+
+### Çınar:
+- Added health, gold, and wave icons on gameplay screen, slight modification on GamePlayView layout.
