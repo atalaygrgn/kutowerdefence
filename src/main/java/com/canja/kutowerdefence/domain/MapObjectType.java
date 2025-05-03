@@ -17,5 +17,9 @@ public enum MapObjectType {
     CASTLE4,
     FORTRESS,
     LOGS,
-    CASTLE
+    CASTLE,
+    WAY1,
+    WAY2,
+    WAY3,
+    WAY4
 }

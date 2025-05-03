@@ -155,7 +155,7 @@ public class Map {
                 if (accessibility[0] && current.getY() > 0) { // Top
                     Point neighbor = new Point(current.getX(), current.getY() - 1);
                     if (!visited[neighbor.getX()][neighbor.getY()] &&
-                        getPathAccessibilityOfTileType(getTile(neighbor.getX(), neighbor.getY()).getTileType())[2]) {
+                            getPathAccessibilityOfTileType(getTile(neighbor.getX(), neighbor.getY()).getTileType())[2]) {
                         queue.add(neighbor);
                         visited[neighbor.getX()][neighbor.getY()] = true;
                     }
@@ -163,7 +163,7 @@ public class Map {
                 if (accessibility[1] && current.getX() < 15) { // Right
                     Point neighbor = new Point(current.getX() + 1, current.getY());
                     if (!visited[neighbor.getX()][neighbor.getY()] &&
-                        getPathAccessibilityOfTileType(getTile(neighbor.getX(), neighbor.getY()).getTileType())[3]) {
+                            getPathAccessibilityOfTileType(getTile(neighbor.getX(), neighbor.getY()).getTileType())[3]) {
                         queue.add(neighbor);
                         visited[neighbor.getX()][neighbor.getY()] = true;
                     }
@@ -171,7 +171,7 @@ public class Map {
                 if (accessibility[2] && current.getY() < 11) { // Bottom
                     Point neighbor = new Point(current.getX(), current.getY() + 1);
                     if (!visited[neighbor.getX()][neighbor.getY()] &&
-                        getPathAccessibilityOfTileType(getTile(neighbor.getX(), neighbor.getY()).getTileType())[0]) {
+                            getPathAccessibilityOfTileType(getTile(neighbor.getX(), neighbor.getY()).getTileType())[0]) {
                         queue.add(neighbor);
                         visited[neighbor.getX()][neighbor.getY()] = true;
                     }
@@ -179,7 +179,7 @@ public class Map {
                 if (accessibility[3] && current.getX() > 0) { // Left
                     Point neighbor = new Point(current.getX() - 1, current.getY());
                     if (!visited[neighbor.getX()][neighbor.getY()] &&
-                        getPathAccessibilityOfTileType(getTile(neighbor.getX(), neighbor.getY()).getTileType())[1]) {
+                            getPathAccessibilityOfTileType(getTile(neighbor.getX(), neighbor.getY()).getTileType())[1]) {
                         queue.add(neighbor);
                         visited[neighbor.getX()][neighbor.getY()] = true;
                     }
@@ -231,6 +231,24 @@ public class Map {
 
         }
     }
+    // Returns direction of the path: 1 for right, 2 for down, 3 for up, 4 for right
+    public int getDirection() {
+        Point point1 = path.get(0);
+        Point point2 = path.get(1);
+        int x1=point1.getX();
+        int y1=point1.getY();
+        int x2=point2.getX();
+        int y2=point2.getY();
+        System.out.println(""+point1+""+point2+""+x1+""+y1+""+x2+""+y2);
 
-
+        int direction = 0;
+        if(x1!=x2){
+            if(x1+1==x2){ direction=1;}
+            else if(x1-1==x2){ direction=4;}
+        } else {
+            if(y1+1==y2){ direction=2;}
+            else if (y1-1==y2){ direction=3;}
+        }
+        return direction;
+    }
 }

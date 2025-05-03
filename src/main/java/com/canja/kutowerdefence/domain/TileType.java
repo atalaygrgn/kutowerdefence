@@ -33,5 +33,9 @@ public enum TileType {
     CASTLE3,
     CASTLE4,
     FORTRESS,
-    LOGS
+    LOGS,
+    WAY1,
+    WAY2,
+    WAY3,
+    WAY4
 }

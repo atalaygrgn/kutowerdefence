@@ -65,21 +65,24 @@ public class EditModeView implements Initializable {
                             if (Map.isEdgeTile(finalI, finalJ)) {
                                 if (isSettingPathStart) {
                                     mapEditor.getMap().setPathStartEnd(finalI, finalJ,
-                                        mapEditor.getMap().getPathStartEnd()[1] != null ?
-                                        mapEditor.getMap().getPathStartEnd()[1].getX() : -1,
-                                        mapEditor.getMap().getPathStartEnd()[1] != null ?
-                                        mapEditor.getMap().getPathStartEnd()[1].getY() : -1);
+                                            mapEditor.getMap().getPathStartEnd()[1] != null ?
+                                                    mapEditor.getMap().getPathStartEnd()[1].getX() : -1,
+                                            mapEditor.getMap().getPathStartEnd()[1] != null ?
+                                                    mapEditor.getMap().getPathStartEnd()[1].getY() : -1);
                                 } else if (isSettingPathEnd) {
                                     mapEditor.getMap().setPathStartEnd(
-                                        mapEditor.getMap().getPathStartEnd()[0] != null ?
-                                        mapEditor.getMap().getPathStartEnd()[0].getX() : -1,
-                                        mapEditor.getMap().getPathStartEnd()[0] != null ?
-                                        mapEditor.getMap().getPathStartEnd()[0].getY() : -1,
-                                        finalI, finalJ);
+                                            mapEditor.getMap().getPathStartEnd()[0] != null ?
+                                                    mapEditor.getMap().getPathStartEnd()[0].getX() : -1,
+                                            mapEditor.getMap().getPathStartEnd()[0] != null ?
+                                                    mapEditor.getMap().getPathStartEnd()[0].getY() : -1,
+                                            finalI, finalJ);
                                 }
                                 isSettingPathStart = false;
                                 isSettingPathEnd = false;
                                 showAlert("Success", "Path point set successfully.");
+                                // should be on the starting tile pathStartEnd
+
+
                             } else {
                                 showAlert("Error", "Path points must be set on edge tiles.");
                             }
@@ -186,6 +189,27 @@ public class EditModeView implements Initializable {
             showError("Error Saving Map", "Make sure a valid path exists.");
             return;
         }
+        int direction = mapEditor.getMap().getDirection();
+        System.out.println(direction);
+
+        if(direction==1){
+            MapObject wayObject = MapObjectFactory.createMapObject(MapObjectType.WAY1, mapEditor.getMap().getPathStartEnd()[0].getX(), mapEditor.getMap().getPathStartEnd()[0].getY());
+            mapEditor.placeObject(wayObject);
+            putObjectOnMapView(wayObject);
+        } else if (direction==2){
+            MapObject wayObject = MapObjectFactory.createMapObject(MapObjectType.WAY2, mapEditor.getMap().getPathStartEnd()[0].getX(), mapEditor.getMap().getPathStartEnd()[0].getY());
+            mapEditor.placeObject(wayObject);
+            putObjectOnMapView(wayObject);
+        } else if (direction==3){
+            MapObject wayObject = MapObjectFactory.createMapObject(MapObjectType.WAY3, mapEditor.getMap().getPathStartEnd()[0].getX(), mapEditor.getMap().getPathStartEnd()[0].getY());
+            mapEditor.placeObject(wayObject);
+            putObjectOnMapView(wayObject);
+        } else if (direction==4){
+            MapObject wayObject = MapObjectFactory.createMapObject(MapObjectType.WAY4, mapEditor.getMap().getPathStartEnd()[0].getX(), mapEditor.getMap().getPathStartEnd()[0].getY());
+            mapEditor.placeObject(wayObject);
+            putObjectOnMapView(wayObject);
+        }
+        // Tile way is shown after path validation
 
         TextInputDialog textInputDialog = new TextInputDialog();
         textInputDialog.setTitle("Save Map");
@@ -194,13 +218,13 @@ public class EditModeView implements Initializable {
 
         textInputDialog.showAndWait().ifPresent(mapName -> {
             if (mapName.trim().isEmpty()) {
-            showError("Error Saving Map", "Map name cannot be empty.");
-            return;
+                showError("Error Saving Map", "Map name cannot be empty.");
+                return;
             }
 
             File saveDirectory = new File("src/main/resources/maps");
             if (!saveDirectory.exists()) {
-            saveDirectory.mkdirs();
+                saveDirectory.mkdirs();
             }
 
             File saveFile = new File(saveDirectory, mapName + ".kutdmap");
@@ -218,9 +242,9 @@ public class EditModeView implements Initializable {
         for (int i = mapGridPane.getChildren().size() - 1; i >= 0; i--) {
             Node view = mapGridPane.getChildren().get(i);
             if (view instanceof TileView) {
-            ((TileView) view).setTile(new Tile());
+                ((TileView) view).setTile(new Tile());
             } else if (view instanceof MapObjectView) {
-            mapGridPane.getChildren().remove(i);
+                mapGridPane.getChildren().remove(i);
             }
         }
     }
