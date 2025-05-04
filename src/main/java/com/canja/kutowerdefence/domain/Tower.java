@@ -11,7 +11,7 @@ public abstract class Tower extends MapObject {
     protected int damage;
     protected GameSession session;
     protected long lastAttackTime = 0;
-    protected long attackCooldownMillis = 800;
+    protected static long attackCooldownMillis = 800;
 
     public Tower(MapObjectType type, Point position, GameSession gameSession, int range, int damage) {
         super(type, position);
@@ -47,5 +47,10 @@ public abstract class Tower extends MapObject {
             }
         }
         return best;
+    }
+
+    public static void toggleCooldown(boolean willBeFaster) {
+        if (willBeFaster) attackCooldownMillis /= 2;
+        else attackCooldownMillis *= 2;
     }
 }

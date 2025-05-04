@@ -18,6 +18,7 @@ public class ProjectileView extends Group {
     private final ImageView imageView = new ImageView();
     private final List<Image> frames = new ArrayList<>();
     private final Timeline animationTimeline;
+    private static int animationDuration = 50;
 
     public ProjectileView(double startX, double startY, double endX, double endY,
         String spritePath, int frameW, int frameH, int frameCount, Runnable onHit){
@@ -41,7 +42,7 @@ public class ProjectileView extends Group {
         getChildren().add(imageView);
 
         animationTimeline = new Timeline(
-                new KeyFrame(Duration.millis(50), e -> {
+                new KeyFrame(Duration.millis(animationDuration), e -> {
                     int next = (frames.indexOf(imageView.getImage()) + 1) % frames.size();
                     imageView.setImage(frames.get(next));
                 })
@@ -63,5 +64,10 @@ public class ProjectileView extends Group {
             ((Pane)getParent()).getChildren().remove(this);
         });
         flight.play();
+    }
+
+    public static void toggleAnimationDuration(boolean willBeFaster) {
+        if (willBeFaster) animationDuration /= 2;
+        else animationDuration *= 2;
     }
 }
