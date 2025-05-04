@@ -5,6 +5,7 @@ import com.canja.kutowerdefence.controller.GamePlayController;
 import com.canja.kutowerdefence.domain.Enemy;
 import com.canja.kutowerdefence.domain.Map;
 import com.canja.kutowerdefence.domain.MapObject;
+import com.canja.kutowerdefence.domain.MapObjectType;
 import com.canja.kutowerdefence.domain.TileType;
 
 import javafx.fxml.FXML;
@@ -67,6 +68,8 @@ public class GamePlayView implements Initializable {
 
     private final List<EnemyView> enemyViews = new ArrayList<>();
 
+    private KuTowerView kuTowerView;
+
     public void setController(GamePlayController controller) {
         this.controller = controller;
         initializeMapGridPane();
@@ -103,9 +106,16 @@ public class GamePlayView implements Initializable {
             }
         }
         for (MapObject mapObject : gameMap.getObjects()) {
-            MapObjectView objectView = new MapObjectView(mapObject);
-            mapGridPane.add(objectView, mapObject.getPosition().getX(), mapObject.getPosition().getY());
+            if (mapObject.getType() == MapObjectType.KU_TOWER) {
+                kuTowerView = new KuTowerView(mapObject); // your custom view
+                kuTowerView.setHealth(controller.getPlayer().getHealth());
+                mapGridPane.add(kuTowerView, mapObject.getPosition().getX(), mapObject.getPosition().getY());
+            } else {
+                MapObjectView objectView = new MapObjectView(mapObject);
+                mapGridPane.add(objectView, mapObject.getPosition().getX(), mapObject.getPosition().getY());
+            }
         }
+
     }
 
     private void initializeButtons() {
@@ -153,10 +163,15 @@ public class GamePlayView implements Initializable {
                 controller.loseHealth();
                 toRemove.add(view);
             }
+            if (kuTowerView != null) {
+                kuTowerView.setHealth(controller.getHealth());
+            }
+
         }
         for (EnemyView view : toRemove) {
             enemyLayer.getChildren().remove(view);
             enemyViews.remove(view);
+            System.out.println("This removed: "+view.getEnemy().getDescription().getName());
             updateUI();
         }
     }

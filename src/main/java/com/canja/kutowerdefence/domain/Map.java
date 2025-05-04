@@ -190,7 +190,7 @@ public class Map {
     }
 
     public static boolean isEdgeTile(int x, int y) {
-        return x == 0 || y == 0 || x == 15 || y == 11;
+        return x == 0 || y == 0|| x == 15 || y == 11;
     }
 
     private boolean[] getPathAccessibilityOfTileType(TileType tileType) {
@@ -251,4 +251,27 @@ public class Map {
         }
         return direction;
     }
+    public int getEndDirection() {
+        int size = path.size();
+
+        Point point2 = path.get(size-2);
+        Point point1 = path.get(size-1);
+
+
+        int x1 = point2.getX();
+        int y1 = point2.getY();
+        int x2 = point1.getX();
+        int y2 = point1.getY();
+
+        int direction = 0;
+        if (x1 != x2) {
+            if (x1 + 1 == x2) direction = 1; // → Right
+            else if (x1 - 1 == x2) direction = 4; // ← Left
+        } else {
+            if (y1 + 1 == y2) direction = 3; // ↓ Down
+            else if (y1 - 1 == y2) direction = 2; // ↑ Up
+        }
+        return direction;
+    }
+
 }

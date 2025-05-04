@@ -110,15 +110,20 @@ public class EditModeView implements Initializable {
     }
 
     private void putObjectOnMapView(MapObject mapObject) {
-        MapObjectView newObjectView = new MapObjectView(mapObject);
-        newObjectView.setOnMouseClicked(event -> {
-            if (event.getButton() == MouseButton.SECONDARY) { // Left click
-                mapEditor.removeObject(mapObject);
-                mapGridPane.getChildren().remove(newObjectView);
-                System.out.println("Object removed from map");
-            }});
-        mapGridPane.add(newObjectView, mapObject.getPosition().getX(), mapObject.getPosition().getY());
-
+        if (mapObject.getType() == MapObjectType.KU_TOWER) {
+            KuTowerView kutowerView = new KuTowerView(mapObject);
+            mapGridPane.add(kutowerView, mapObject.getPosition().getX(), mapObject.getPosition().getY());
+        } else {
+            MapObjectView newObjectView = new MapObjectView(mapObject);
+            newObjectView.setOnMouseClicked(event -> {
+                if (event.getButton() == MouseButton.SECONDARY) { // Left click
+                    mapEditor.removeObject(mapObject);
+                    mapGridPane.getChildren().remove(newObjectView);
+                    System.out.println("Object removed from map");
+                }
+            });
+            mapGridPane.add(newObjectView, mapObject.getPosition().getX(), mapObject.getPosition().getY());
+        }
     }
 
     private void initializeTilePaletteGridPane() {
@@ -209,6 +214,20 @@ public class EditModeView implements Initializable {
             mapEditor.placeObject(wayObject);
             putObjectOnMapView(wayObject);
         }
+        mapEditor.getMap().getPath().removeLast();
+        Point end = mapEditor.getMap().getPathStartEnd()[1];
+        int towerX = end.getX();
+        int towerY = end.getY();
+
+        int endDirection = mapEditor.getMap().getEndDirection();
+        switch (endDirection) {
+            case 1 -> towerY--; // Enemy came from left, tower behind
+            case 4 -> towerY--; // Enemy came from right
+        }
+
+        MapObject kuTower = MapObjectFactory.createMapObject(MapObjectType.KU_TOWER, towerX, towerY);
+        mapEditor.placeObject(kuTower);
+        putObjectOnMapView(kuTower);
         // Tile way is shown after path validation
 
         TextInputDialog textInputDialog = new TextInputDialog();
@@ -247,6 +266,7 @@ public class EditModeView implements Initializable {
                 mapGridPane.getChildren().remove(i);
             }
         }
+        mapGridPane.getChildren().removeIf(node -> node instanceof KuTowerView);
     }
 
     @FXML
