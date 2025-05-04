@@ -3,6 +3,7 @@ package com.canja.kutowerdefence.controller;
 import com.canja.kutowerdefence.domain.*;
 import com.canja.kutowerdefence.ui.GamePlayView;
 import com.canja.kutowerdefence.ui.MapObjectView;
+import com.canja.kutowerdefence.ui.ProjectileView;
 import com.canja.kutowerdefence.ui.TileView;
 import com.canja.kutowerdefence.ui.TowerPopupPanel;
 import com.google.gson.Gson;
@@ -13,6 +14,7 @@ import javafx.scene.input.MouseButton;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.LinkedList;
+import java.util.List;
 
 
 public class GamePlayController {
@@ -27,6 +29,7 @@ public class GamePlayController {
     private GamePlayView view;
     private final Player player;
     private boolean isGamePaused;
+    private boolean isSpeedToggled = false;
 
     public GamePlayController(GameSession gameSession) {
         this.gameSession = gameSession;
@@ -119,9 +122,25 @@ public class GamePlayController {
         System.out.println("Game Paused");
     }
 
-    public void restartGame() {
+    public void toggleSpeed() {
         // Implement restart logic
-        System.out.println("Game Restarted");
+        List<Enemy> enemies = gameSession.getEnemies();
+        if (isSpeedToggled) {
+            ProjectileView.toggleAnimationDuration(false);
+            Tower.toggleCooldown(false);
+
+            for (Enemy enemy : enemies) enemy.toggleSpeed(false);
+
+            isSpeedToggled = false;
+        }
+        else {
+            ProjectileView.toggleAnimationDuration(true);
+            Tower.toggleCooldown(true);
+
+            for (Enemy enemy : enemies) enemy.toggleSpeed(true);
+
+            isSpeedToggled = true;
+        }
     }
 
     public void saveGame() {

@@ -8,15 +8,15 @@ public class Enemy {
     private EnemyDescription description;
     private LinkedList<Point> path;
     private int currentPathIndex;
-    private int goldReward;
+    private static int goldReward;
 
 
     public Enemy(EnemyDescription description, LinkedList<Point> path) {
         this.description = description;
         this.path = path;
-        this.speed= description.getSpeed();
+        speed= description.getSpeed();
         this.hitpoint = description.getHitpoints();
-        this.goldReward = description.getGold();
+        goldReward = description.getGold();
 
         Point start = path.get(0);
         this.x= start.getX();
@@ -90,5 +90,10 @@ public class Enemy {
 
     public boolean reachedEnd() {
         return currentPathIndex >= path.size();
+    }
+
+    public void toggleSpeed(boolean willBeFaster) {
+        if (willBeFaster) speed *= 2;
+        else speed /= 2;
     }
 }
