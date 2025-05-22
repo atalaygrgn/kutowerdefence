@@ -48,7 +48,7 @@
         <VBox alignment="TOP_CENTER" prefWidth="256.0" spacing="10" BorderPane.alignment="CENTER">
             <children>
                 <Button fx:id="pauseButton" text="Pause" />
-                <Button fx:id="speedButton" text="x2" />
+                <Button fx:id="speedButton" text="x1" />
                 <Button fx:id="exitButton" text="Exit" />
                 <HBox alignment="CENTER_LEFT" spacing="10">
                     <Pane prefHeight="24.0" prefWidth="24.0" />

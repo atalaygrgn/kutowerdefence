@@ -42,6 +42,10 @@ public class Enemy {
         return speed;
     }
 
+    public void setSpeed(float speed) {
+        this.speed = speed;
+    }
+
     public int getHitpoint() {
         return hitpoint;
     }
@@ -90,10 +94,5 @@ public class Enemy {
 
     public boolean reachedEnd() {
         return currentPathIndex >= path.size();
-    }
-
-    public void toggleSpeed(boolean willBeFaster) {
-        if (willBeFaster) speed *= 2;
-        else speed /= 2;
     }
 }

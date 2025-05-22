@@ -49,8 +49,11 @@ public abstract class Tower extends MapObject {
         return best;
     }
 
-    public static void toggleCooldown(boolean willBeFaster) {
-        if (willBeFaster) attackCooldownMillis /= 2;
-        else attackCooldownMillis *= 2;
+    public static long getCooldown() {
+        return attackCooldownMillis;
+    }
+
+    public static void setCooldown(long cooldown) {
+        attackCooldownMillis = cooldown;
     }
 }

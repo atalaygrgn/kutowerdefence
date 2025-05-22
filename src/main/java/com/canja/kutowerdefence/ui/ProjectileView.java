@@ -66,8 +66,11 @@ public class ProjectileView extends Group {
         flight.play();
     }
 
-    public static void toggleAnimationDuration(boolean willBeFaster) {
-        if (willBeFaster) animationDuration /= 2;
-        else animationDuration *= 2;
+    public static int getAnimationDuration() {
+        return animationDuration;
+    }
+
+    public static void setAnimationDuration(int duration) {
+        animationDuration = duration;
     }
 }

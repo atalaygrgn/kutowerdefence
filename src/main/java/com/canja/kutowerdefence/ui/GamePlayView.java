@@ -109,7 +109,7 @@ public class GamePlayView implements Initializable {
 
     private void initializeButtons() {
         pauseButton.setOnAction(event -> controller.pauseGame());
-        speedButton.setOnAction(event -> controller.toggleSpeed());
+        speedButton.setOnAction(event -> controller.toggleSpeed(speedButton));
         exitButton.setOnAction(event -> handleExit());
     }
 
