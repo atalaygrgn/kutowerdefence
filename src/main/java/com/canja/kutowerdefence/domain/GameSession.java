@@ -1,6 +1,7 @@
 package com.canja.kutowerdefence.domain;
 
 import com.canja.kutowerdefence.Routing;
+import com.canja.kutowerdefence.state.*;
 import com.canja.kutowerdefence.ui.GamePlayView;
 import com.google.gson.Gson;
 
@@ -16,6 +17,12 @@ public class GameSession {
     private final File mapFile;
     private final Map map; // Assuming a Map object is part of GameSession
     private int[] optionValues;
+
+    private SpeedState normalState;
+    private SpeedState fastState;
+    private SpeedState ultraFastState;
+    private SpeedState slowState;
+    private SpeedState speedState;
 
     private final List<Tower> activeTowers = new ArrayList<>();
     private final List<Enemy> activeEnemies = new ArrayList<>();
@@ -34,7 +41,7 @@ public class GameSession {
         this.optionFile = new File("src/main/resources/options/options.kutdopt");
         this.mapFile = mapFile;
         this.map = new Map();
-
+        
         InitializeSession();
     }
 
@@ -42,11 +49,17 @@ public class GameSession {
         this.optionFile = optionFile;
         this.mapFile = mapFile;
         this.map = new Map();
-
+        
         InitializeSession();
     }
 
     public void InitializeSession() {
+        normalState = new NormalState(this);
+        fastState = new FastState(this);
+        ultraFastState = new UltraFastState(this);
+        slowState = new SlowState(this);
+        speedState = normalState;
+
         try {
             map.loadFromFile(mapFile);
         } catch (Exception e) {
@@ -76,6 +89,30 @@ public class GameSession {
 
     public int[] getOptionValues() {
         return optionValues;
+    }
+
+    public SpeedState getNormalState() {
+        return normalState;
+    }
+
+    public SpeedState getFastState() {
+        return fastState;
+    }
+
+    public SpeedState getUltraFastState() {
+        return ultraFastState;
+    }
+
+    public SpeedState getSlowState() {
+        return slowState;
+    }
+
+    public SpeedState getSpeedState() {
+        return speedState;
+    }
+
+    public void setSpeedState(SpeedState state) {
+        speedState = state;
     }
 
     public void tick(float deltaTime) {
