@@ -3,6 +3,7 @@ package com.canja.kutowerdefence.domain;
 import com.canja.kutowerdefence.Routing;
 import com.canja.kutowerdefence.state.*;
 import com.canja.kutowerdefence.ui.GamePlayView;
+import com.canja.kutowerdefence.ui.ProjectileView;
 import com.google.gson.Gson;
 
 import java.io.File;
@@ -54,6 +55,8 @@ public class GameSession {
     }
 
     public void InitializeSession() {
+        Tower.setCooldownToDefault();
+        ProjectileView.setAnimationDurationToDefault();
         normalState = new NormalState(this);
         fastState = new FastState(this);
         ultraFastState = new UltraFastState(this);
