@@ -73,4 +73,8 @@ public class ProjectileView extends Group {
     public static void setAnimationDuration(int duration) {
         animationDuration = duration;
     }
+
+    public static void setAnimationDurationToDefault() {
+        animationDuration = 50;
+    }
 }
