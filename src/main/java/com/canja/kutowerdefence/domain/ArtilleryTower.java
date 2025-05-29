@@ -5,8 +5,8 @@ import java.util.List;
 public class ArtilleryTower extends Tower {
     private int aoeRadius;
 
-    public ArtilleryTower(Point position, GameSession gameSession, int range, int damage, int aoeRadius) {
-        super(MapObjectType.TOWER_ARTILLERY, position, gameSession, range, damage);
+    public ArtilleryTower(Point position, GameSession gameSession, int range, int damage, int cost, int aoeRadius) {
+        super(MapObjectType.TOWER_ARTILLERY, position, gameSession, range, damage, cost);
         this.aoeRadius = aoeRadius;
     }
 
