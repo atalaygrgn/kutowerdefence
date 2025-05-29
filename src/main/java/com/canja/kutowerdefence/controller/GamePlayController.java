@@ -25,20 +25,15 @@ public class GamePlayController {
     private final EnemyDescription knight = EnemyFactory.KNIGHT;
     private int waveNumber = 0;
     private int currentWave = 1;
-    private int archerCost;
-    private int artilleryCost;
-    private int mageCost;
     private GamePlayView view;
-    private final Player player;
     private boolean isGamePaused;
-    private boolean isSpeedToggled = false;
 
     public GamePlayController(GameSession gameSession) {
         this.gameSession = gameSession;
         int[] options = gameSession.getOptionValues();
 
         this.waveNumber = options[Option.WAVE_NUMBER.ordinal()];
-        player = new Player(options[Option.GOLD.ordinal()], options[Option.PLAYER_HITPOINT.ordinal()]);
+        
         configureTowers(options);
         configureGoblin(options);
         configureKnight(options);
@@ -60,14 +55,10 @@ public class GamePlayController {
         TowerFactory.setRange(options[Option.TOWER_RANGE.ordinal()], options[Option.TOWER_RANGE.ordinal()], options[Option.TOWER_RANGE.ordinal()]);
         TowerFactory.setDamage(options[Option.ARROW_DAMAGE.ordinal()], options[Option.ARTILLERY_DAMAGE.ordinal()], options[Option.SPELL_DAMAGE.ordinal()]);
         TowerFactory.setAoeRadius(options[Option.AOE_RANGE.ordinal()]);
-
-        this.archerCost = options[Option.ARCHER_TOWER_COST.ordinal()];
-        this.artilleryCost = options[Option.ARTILLERY_TOWER_COST.ordinal()];
-        this.mageCost = options[Option.MAGE_TOWER_COST.ordinal()];
     }
 
     public Player getPlayer() {
-        return player;
+        return gameSession.getPlayer();
     }
 
     public Map getMap() {
@@ -75,11 +66,11 @@ public class GamePlayController {
     }
 
     public int getHealth() {
-        return player.getHealth();
+        return gameSession.getPlayer().getHealth();
     }
 
     public int getGold() {
-        return player.getGoldAmount();
+        return gameSession.getPlayer().getGoldAmount();
     }
 
     public void setWaveNumber(int value) {
@@ -111,11 +102,11 @@ public class GamePlayController {
     }
 
     public void loseHealth() {
-        player.loseHealth();
+        gameSession.getPlayer().loseHealth();
     }
 
     public void rewardPlayer(int val) {
-        player.gainGold(val);
+        gameSession.getPlayer().gainGold(val);
     }
 
     public void pauseGame() {
@@ -163,28 +154,12 @@ public class GamePlayController {
     public void onEmptyLotClicked(TileView tileView, int x, int y) {
         TowerPopupPanel.show(x, y, selectedType -> {
             if (selectedType != null) {
-                // deduct gold from player
-                int requiredGold = 0;
+                boolean success = gameSession.buyNewTower(x, y, selectedType);
+
+                if (!success) return;
                 
-                switch (selectedType) {
-                    case TOWER_ARCHER:
-                        requiredGold = archerCost;
-                        break;
-                    case TOWER_ARTILLERY:
-                        requiredGold = artilleryCost;
-                        break;
-                    case TOWER_MAGE:
-                        requiredGold = mageCost;
-                }
-
-                if (player.getGoldAmount() < requiredGold) return;
-
-                tileView.setTileType(TileType.EMPTY);
-                Tower newTower = TowerFactory.createTower(selectedType, new Point(x, y), gameSession);
-
-                gameSession.addTower(newTower);
+                Tower newTower = gameSession.getNewestTower();
                 putObjectOnMapView(newTower);
-                player.deductGold(requiredGold);
                 view.updateUI();
             }
         });

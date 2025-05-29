@@ -14,9 +14,10 @@ import java.util.List;
 
 
 public class GameSession {
-    private final File optionFile;
+    private final Player player;
     private final File mapFile;
     private final Map map; // Assuming a Map object is part of GameSession
+    private File optionFile;
     private int[] optionValues;
 
     private SpeedState normalState;
@@ -42,7 +43,11 @@ public class GameSession {
         this.optionFile = new File("src/main/resources/options/options.kutdopt");
         this.mapFile = mapFile;
         this.map = new Map();
+
+        extractOptionValues();
         
+        this.player = new Player(optionValues[Option.GOLD.ordinal()], optionValues[Option.PLAYER_HITPOINT.ordinal()]);
+
         InitializeSession();
     }
 
@@ -50,7 +55,11 @@ public class GameSession {
         this.optionFile = optionFile;
         this.mapFile = mapFile;
         this.map = new Map();
+
+        extractOptionValues();
         
+        this.player = new Player(optionValues[Option.GOLD.ordinal()], optionValues[Option.PLAYER_HITPOINT.ordinal()]);
+
         InitializeSession();
     }
 
@@ -68,8 +77,6 @@ public class GameSession {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
-        extractOptionValues();
     }
 
     public void start() {
@@ -106,6 +113,10 @@ public class GameSession {
         return ultraFastState;
     }
 
+    public Player getPlayer() {
+        return this.player;
+    }
+
     public SpeedState getSlowState() {
         return slowState;
     }
@@ -135,6 +146,35 @@ public class GameSession {
 
     public String getOptionPath() {
         return optionFile.getPath();
+    }
+    
+    public Tower getNewestTower() {
+        if (activeTowers.isEmpty()) return null;
+
+        return activeTowers.get(activeTowers.size() - 1);
+    }
+
+    public boolean buyNewTower(int x, int y, MapObjectType selectedType) {
+        int cost = 0;
+
+        switch (selectedType) {
+            case TOWER_ARCHER:
+                cost = optionValues[Option.ARCHER_TOWER_COST.ordinal()];
+                break;
+            case TOWER_ARTILLERY:
+                cost = optionValues[Option.ARTILLERY_TOWER_COST.ordinal()];
+                break;
+            case TOWER_MAGE:
+                cost = optionValues[Option.MAGE_TOWER_COST.ordinal()];
+        }
+        if (player.getGoldAmount() < cost) return false;
+        
+        Tower newTower = TowerFactory.createTower(selectedType, new Point(x, y), this);
+        addTower(newTower);
+        player.deductGold(cost);
+        System.out.println(player.getGoldAmount());
+
+        return true;
     }
 }
 
