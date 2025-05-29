@@ -158,6 +158,7 @@ public class GamePlayController {
 
                 if (!success) return;
                 
+                tileView.setTileType(TileType.EMPTY);
                 Tower newTower = gameSession.getNewestTower();
                 putObjectOnMapView(newTower);
                 view.updateUI();
