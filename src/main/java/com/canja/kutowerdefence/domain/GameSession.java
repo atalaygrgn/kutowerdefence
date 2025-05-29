@@ -17,6 +17,8 @@ public class GameSession {
     private final Player player;
     private final File mapFile;
     private final Map map; // Assuming a Map object is part of GameSession
+    private final int dimX = 16;
+    private final int dimY = 12;
     private File optionFile;
     private int[] optionValues;
 
@@ -42,7 +44,7 @@ public class GameSession {
     public GameSession(File mapFile) {
         this.optionFile = new File("src/main/resources/options/options.kutdopt");
         this.mapFile = mapFile;
-        this.map = new Map();
+        this.map = new Map(dimX, dimY);
 
         extractOptionValues();
         
@@ -54,7 +56,7 @@ public class GameSession {
     public GameSession(File mapFile, File optionFile) {
         this.optionFile = optionFile;
         this.mapFile = mapFile;
-        this.map = new Map();
+        this.map = new Map(dimX, dimY);
 
         extractOptionValues();
         
@@ -166,9 +168,15 @@ public class GameSession {
                 break;
             case TOWER_MAGE:
                 cost = optionValues[Option.MAGE_TOWER_COST.ordinal()];
+                break;
+            default:
+                return false;
         }
+
         if (player.getGoldAmount() < cost) return false;
         
+        if (x < 0 || x >= dimX || y < 0 || y >= dimY) return false;
+
         Tower newTower = TowerFactory.createTower(selectedType, new Point(x, y), this);
         addTower(newTower);
         player.deductGold(cost);
