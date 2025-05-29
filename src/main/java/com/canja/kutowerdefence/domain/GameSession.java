@@ -17,6 +17,8 @@ public class GameSession {
     private final Player player;
     private final File mapFile;
     private final Map map; // Assuming a Map object is part of GameSession
+    private final int dimX = 16;
+    private final int dimY = 12;
     private File optionFile;
     private int[] optionValues;
 
@@ -42,7 +44,7 @@ public class GameSession {
     public GameSession(File mapFile) {
         this.optionFile = new File("src/main/resources/options/options.kutdopt");
         this.mapFile = mapFile;
-        this.map = new Map();
+        this.map = new Map(dimX, dimY);
 
         extractOptionValues();
         
@@ -54,7 +56,7 @@ public class GameSession {
     public GameSession(File mapFile, File optionFile) {
         this.optionFile = optionFile;
         this.mapFile = mapFile;
-        this.map = new Map();
+        this.map = new Map(dimX, dimY);
 
         extractOptionValues();
         
@@ -155,6 +157,26 @@ public class GameSession {
     }
 
     public boolean buyNewTower(int x, int y, MapObjectType selectedType) {
+        /*
+         * REQUIRES:
+         * - The map must be initialized i.e. map is not null.
+         * - pathStartEnd must contain two non-null Point objects representing the start and end positions of the path.
+         * - Each tile in the map must have a defined TileType.
+         *
+         * MODIFIES:
+         * - this.path: updated to store the valid traversable path if found.
+         *
+         * EFFECTS:
+         * - Returns true if a valid path exists between the start and end Points using tiles with valid accessibility.
+         * - The path must start and end on edge tiles of the map.
+         * - The search performs a BFS traversal, verifying that each step follows the access rules of TileType
+         *   (see getPathAccessibilityOfTileType).
+         * - If a valid path is found, it is stored in path.
+         * - Returns false if:
+         *   - Either start or end point is not on the map edge.
+         *   - No path is found between the two points using valid tiles.
+         */
+
         int cost = 0;
 
         switch (selectedType) {
@@ -166,9 +188,15 @@ public class GameSession {
                 break;
             case TOWER_MAGE:
                 cost = optionValues[Option.MAGE_TOWER_COST.ordinal()];
+                break;
+            default:
+                return false;
         }
+
         if (player.getGoldAmount() < cost) return false;
         
+        if (x < 0 || x >= dimX || y < 0 || y >= dimY) return false;
+
         Tower newTower = TowerFactory.createTower(selectedType, new Point(x, y), this);
         addTower(newTower);
         player.deductGold(cost);
