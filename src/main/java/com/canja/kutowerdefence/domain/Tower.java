@@ -3,7 +3,20 @@ package com.canja.kutowerdefence.domain;
 import java.util.List;
 
 public abstract class Tower extends MapObject {
+    // OVERVIEW: This class represents a general tower, which has coordinates on a map (inherited from MapObject),
+    // range to check for nearby enemies to attack, damage it deals per attack, cooldown time between attacks,
+    // and a reference to the current game session. Subclasses must define its tower type i.e. how the tower should
+    // attack an enemy.
 
+    // ABSTRACTION FUNCTION:
+    // AF(t) = (t.position.x, t.position.y) + t.range + t.damage + t.session
+
+    // REPRESENTATION INVARIANT:
+    // position.x >= 0 AND position.x <= 15 AND
+    // position.y >= 0 AND position.y <= 11 AND
+    // range >= 0 AND
+    // damage >= 0 AND
+    // session != null
 
     public abstract Enemy[] targetEnemies(List<Enemy> allEnemies);
     public abstract void attackEnemy(Enemy target);
@@ -63,4 +76,12 @@ public abstract class Tower extends MapObject {
     public static void setCooldownToDefault() {
         attackCooldownMillis = 800;
     }
+
+    public boolean repOk() {
+        // EFFECTS: Returns true if the representation invariant of the Tower class holds true, otherwise returns false.
+        return  (position.getX() >= 0 && position.getX() <= 15) &&
+                (position.getY() >= 0 && position.getY() <= 11) &&
+                range >= 0 && damage >= 0 && session != null;
+    }
+
 }
