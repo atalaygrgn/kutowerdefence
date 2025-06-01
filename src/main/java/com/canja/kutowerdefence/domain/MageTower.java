@@ -4,8 +4,8 @@ import java.util.List;
 
 public class MageTower extends Tower {
 
-    public MageTower(Point position, GameSession gameSession, int range, int damage) {
-        super(MapObjectType.TOWER_MAGE, position, gameSession, range, damage);
+    public MageTower(Point position, GameSession gameSession, int range, int damage, int cost) {
+        super(MapObjectType.TOWER_MAGE, position, gameSession, range, damage, cost);
     }
 
     @Override
