@@ -60,6 +60,22 @@ public class Map {
         this.objects = objects;
     }
 
+    /**
+     * Requires:
+     *  - None (can be called at any time to reset the map).
+     *
+     * Modifies:
+     *  - pathStartEnd: resets to a new array of size 2.
+     *  - path: clears the list of path points.
+     *  - objects: clears the list of map objects.
+     *  - map: re-initializes the 2D Tile array to default Tile objects.
+     *
+     * Effects:
+     *  - All existing path data and map objects are removed.
+     *  - The entire map grid is filled with new default Tile instances (TileType.EMPTY).
+     *  - Returns the newly reset 2D Tile array.
+     */
+
     public Tile[][] reset() {
         pathStartEnd = new Point[2];
         path.clear();
