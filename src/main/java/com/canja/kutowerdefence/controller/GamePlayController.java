@@ -23,17 +23,12 @@ public class GamePlayController {
     private final GameSession gameSession;
     private final EnemyDescription goblin = EnemyFactory.GOBLIN;
     private final EnemyDescription knight = EnemyFactory.KNIGHT;
-    private int waveNumber = 0;
-    private int currentWave = 1;
     private GamePlayView view;
-    private boolean isGamePaused;
 
     public GamePlayController(GameSession gameSession) {
         this.gameSession = gameSession;
         int[] options = gameSession.getOptionValues();
-
-        this.waveNumber = options[Option.WAVE_NUMBER.ordinal()];
-        
+    
         configureTowers(options);
         configureGoblin(options);
         configureKnight(options);
@@ -54,11 +49,8 @@ public class GamePlayController {
     public void configureTowers(int[] options) {
         TowerFactory.setRange(options[Option.TOWER_RANGE.ordinal()], options[Option.TOWER_RANGE.ordinal()], options[Option.TOWER_RANGE.ordinal()]);
         TowerFactory.setDamage(options[Option.ARROW_DAMAGE.ordinal()], options[Option.ARTILLERY_DAMAGE.ordinal()], options[Option.SPELL_DAMAGE.ordinal()]);
+        TowerFactory.setCost(options[Option.ARCHER_TOWER_COST.ordinal()], options[Option.ARTILLERY_TOWER_COST.ordinal()], options[Option.MAGE_TOWER_COST.ordinal()]);
         TowerFactory.setAoeRadius(options[Option.AOE_RANGE.ordinal()]);
-    }
-
-    public Player getPlayer() {
-        return gameSession.getPlayer();
     }
 
     public Map getMap() {
@@ -73,22 +65,12 @@ public class GamePlayController {
         return gameSession.getPlayer().getGoldAmount();
     }
 
-    public void setWaveNumber(int value) {
-        this.waveNumber = value;
-    }
-
-    public void setCurrentWave(int val) {
-        this.currentWave = val;
-    }
-
     public String getWaveInfo() {
-        String waveInfo = currentWave + "/" + waveNumber;
-
-        return waveInfo;
+       return gameSession.getWaveInfo();
     }
     
     public boolean getPauseState() {
-        return isGamePaused;
+        return gameSession.getPauseState();
     }
 
     public void setView(GamePlayView view) {
@@ -96,23 +78,20 @@ public class GamePlayController {
         gameSession.setGamePlayView(view);
     }
 
-
     public GameSession getGameSession() {
         return gameSession;
     }
 
     public void loseHealth() {
-        gameSession.getPlayer().loseHealth();
+        gameSession.loseHealth();
     }
 
     public void rewardPlayer(int val) {
-        gameSession.getPlayer().gainGold(val);
+        gameSession.rewardPlayer(val);
     }
 
     public void pauseGame() {
-        // Implement pause logic
-        isGamePaused = !isGamePaused;
-        System.out.println("Game Paused");
+        gameSession.togglePauseState();
     }
 
     public void toggleSpeed(Button clickedButton) {
@@ -132,7 +111,7 @@ public class GamePlayController {
         Gson gson = new GsonBuilder().create();
 
         try (FileWriter writer = new FileWriter(filename)) {
-            gson.toJson(new Object[]{mapPath, optionPath, currentWave}, writer);
+            gson.toJson(new Object[]{mapPath, optionPath}, writer);
             System.out.println("Game saved successfully to " + filename);
         } catch (IOException e) {
             System.err.println("Failed to save map: " + e.getMessage());

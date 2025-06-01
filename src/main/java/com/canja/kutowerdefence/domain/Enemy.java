@@ -8,20 +8,21 @@ public class Enemy {
     private EnemyDescription description;
     private LinkedList<Point> path;
     private int currentPathIndex;
-    private static int goldReward;
+    private int goldReward;
 
 
     public Enemy(EnemyDescription description, LinkedList<Point> path) {
         this.description = description;
         this.path = path;
-        speed= description.getSpeed();
+        this.speed = description.getSpeed();
         this.hitpoint = description.getHitpoints();
-        goldReward = description.getGold();
+        this.goldReward = description.getGold();
 
         Point start = path.get(0);
-        this.x= start.getX();
-        this.y= start.getY();
+        this.x = start.getX();
+        this.y = start.getY();
     }
+    
     public float getX() {
         return x;
     }

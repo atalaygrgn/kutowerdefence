@@ -140,10 +140,12 @@ public class GamePlayView implements Initializable {
         for (EnemyView view : enemyViews) {
             Enemy enemy = view.getEnemy();
             enemy.update(deltaTime);
+            System.out.println(enemy.getDescription().getName());
+            System.out.println(enemy.getDescription().getGold());
+            System.out.println(enemy.getGoldReward());
             view.update();
-
+            
             if (view.isDead()) {
-                controller.getPlayer().gainGold(enemy.getGoldReward());
                 controller.rewardPlayer(enemy.getGoldReward());
                 toRemove.add(view);
             }

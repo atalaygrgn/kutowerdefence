@@ -27,6 +27,10 @@ public class GameSession {
     private SpeedState ultraFastState;
     private SpeedState slowState;
     private SpeedState speedState;
+    private boolean pauseState = false;
+
+    private int waveNumber;
+    private int currentWave;
 
     private final List<Tower> activeTowers = new ArrayList<>();
     private final List<Enemy> activeEnemies = new ArrayList<>();
@@ -74,6 +78,9 @@ public class GameSession {
         slowState = new SlowState(this);
         speedState = normalState;
 
+        waveNumber = optionValues[Option.WAVE_NUMBER.ordinal()];
+        currentWave = optionValues[Option.CURRENT_WAVE.ordinal()];
+
         try {
             map.loadFromFile(mapFile);
         } catch (Exception e) {
@@ -115,20 +122,51 @@ public class GameSession {
         return ultraFastState;
     }
 
-    public Player getPlayer() {
-        return this.player;
-    }
-
+    
     public SpeedState getSlowState() {
         return slowState;
     }
-
+    
     public SpeedState getSpeedState() {
         return speedState;
     }
-
+    
     public void setSpeedState(SpeedState state) {
         speedState = state;
+    }
+
+    public boolean getPauseState() {
+        return pauseState;
+    }
+
+    public void togglePauseState() {
+        pauseState = !pauseState;
+    }
+
+    public int getCurrentWave() {
+        return currentWave;
+    }
+
+    public void setCurrentWave(int number) {
+        currentWave = number;
+    }
+
+    public int getWaveNumber() {
+        return waveNumber;
+    }
+
+    public void setWaveNumber(int number) {
+        waveNumber = number;
+    }
+
+    public String getWaveInfo() {
+        String waveInfo = currentWave + "/" + waveNumber;
+
+        return waveInfo;
+    }
+    
+    public Player getPlayer() {
+        return this.player;
     }
 
     public void tick(float deltaTime) {
@@ -183,6 +221,14 @@ public class GameSession {
         System.out.println(player.getGoldAmount());
 
         return true;
+    }
+
+    public void loseHealth() {
+        player.loseHealth();
+    }
+
+    public void rewardPlayer(int val) {
+        player.gainGold(val);
     }
 }
 
