@@ -43,6 +43,10 @@ public class Enemy {
         return speed;
     }
 
+    public void setSpeed(float speed) {
+        this.speed = speed;
+    }
+
     public int getHitpoint() {
         return hitpoint;
     }
