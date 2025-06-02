@@ -180,8 +180,9 @@ public class OptionController {
     public void saveButtonOnClick(List<Button> buttons) throws IOException{
         File saveDirectory = new File("src/main/resources/options");
         String saveName = "options.kutdopt";
-        int[] optionValues = new int[buttons.size()];
-        int index = 0;
+        int[] optionValues = new int[buttons.size() + 1];
+        optionValues[0] = 1; //Current wave is always 1 at the beginning
+        int index = 1;
 
         for (Button button : buttons) {
             int value = Integer.parseInt(button.getText());

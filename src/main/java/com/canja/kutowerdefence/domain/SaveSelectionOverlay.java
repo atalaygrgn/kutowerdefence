@@ -47,12 +47,11 @@ public class SaveSelectionOverlay {
                     Object[] content = extractFile(selectedSave);
                     File map = (File) content[0];
                     File options = (File) content[1];
-                    int currentWave = (int) content[2];
                     
                     GameSession session = new GameSession(map, options);
                     popupStage.close();
                     try {
-                        Routing.openGamePlay(session, currentWave);
+                        Routing.openGamePlay(session);
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }

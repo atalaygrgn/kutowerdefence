@@ -49,7 +49,7 @@ public class GamePlayView implements Initializable {
     private Button pauseButton;
 
     @FXML
-    private Button restartButton;
+    private Button speedButton;
 
     @FXML
     private Button exitButton;
@@ -96,7 +96,6 @@ public class GamePlayView implements Initializable {
                     int finalJ = j;
                     tileView.setOnMouseClicked(event -> {
                         controller.onEmptyLotClicked(tileView, finalI, finalJ);
-                        updateUI();
                     });
                 }
                 mapGridPane.add(tileView, i, j);
@@ -110,7 +109,7 @@ public class GamePlayView implements Initializable {
 
     private void initializeButtons() {
         pauseButton.setOnAction(event -> controller.pauseGame());
-        restartButton.setOnAction(event -> controller.restartGame());
+        speedButton.setOnAction(event -> controller.toggleSpeed(speedButton));
         exitButton.setOnAction(event -> handleExit());
     }
 
@@ -141,10 +140,12 @@ public class GamePlayView implements Initializable {
         for (EnemyView view : enemyViews) {
             Enemy enemy = view.getEnemy();
             enemy.update(deltaTime);
+            System.out.println(enemy.getDescription().getName());
+            System.out.println(enemy.getDescription().getGold());
+            System.out.println(enemy.getGoldReward());
             view.update();
-
+            
             if (view.isDead()) {
-                controller.getPlayer().gainGold(enemy.getGoldReward());
                 controller.rewardPlayer(enemy.getGoldReward());
                 toRemove.add(view);
             }

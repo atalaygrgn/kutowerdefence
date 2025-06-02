@@ -14,14 +14,15 @@ public class Enemy {
     public Enemy(EnemyDescription description, LinkedList<Point> path) {
         this.description = description;
         this.path = path;
-        this.speed= description.getSpeed();
+        this.speed = description.getSpeed();
         this.hitpoint = description.getHitpoints();
         this.goldReward = description.getGold();
 
         Point start = path.get(0);
-        this.x= start.getX();
-        this.y= start.getY();
+        this.x = start.getX();
+        this.y = start.getY();
     }
+    
     public float getX() {
         return x;
     }
@@ -37,7 +38,7 @@ public class Enemy {
     public int getGoldReward() {
         return goldReward;
     }
-    
+
     public float getSpeed() {
         return speed;
     }
@@ -66,6 +67,24 @@ public class Enemy {
             y += (dy/distance) * speed * deltaTime;
         }
     }
+
+    /*
+     * REQUIRES:
+     * - The damage must be a positive integer (damage >= 0).
+     * - The attackType must be one of the following strings (case-sensitive): "Arrow", "Spell", or any other string (treated as unknown type).
+     * - EnemyDescription must be non-null and initialized.
+     *
+     * MODIFIES:
+     * - this.hitpoint
+     *
+     * EFFECTS:
+     * - Computes effective damage based on resistance:
+     *   - For "Arrow", reduces damage using arrowResistance.
+     *   - For "Spell", reduces damage using spellResistance.
+     *   - For unknown types, applies full damage.
+     * - Deducts the resulting actual damage from this.hitpoint .
+     * - The hitpoint may become less than or equal to 0 (in case the enemy can "die").
+     */
 
     public void takeDamage(int damage, String attackType) {
         float multiplier = 1.0f;
