@@ -1,6 +1,7 @@
 package com.canja.kutowerdefence.domain;
 
 public enum Option {
+    CURRENT_WAVE,
     WAVE_NUMBER,
     WAVE_DELAY,
     WAVE_GROUP_DELAY,

@@ -8,24 +8,21 @@ public class Enemy {
     private EnemyDescription description;
     private LinkedList<Point> path;
     private int currentPathIndex;
-    private static int goldReward;
+    private int goldReward;
 
 
     public Enemy(EnemyDescription description, LinkedList<Point> path) {
         this.description = description;
         this.path = path;
-        speed= description.getSpeed();
+        this.speed = description.getSpeed();
         this.hitpoint = description.getHitpoints();
-        goldReward = description.getGold();
+        this.goldReward = description.getGold();
 
         Point start = path.get(0);
-        this.x= start.getX();
-        this.y= start.getY();
-
-        System.out.println("PATH: " + path.get(0).getX() + "," + path.get(0).getY() + " → " + path.get(1).getX() + "," + path.get(1).getY());
+        this.x = start.getX();
+        this.y = start.getY();
     }
-
-
+    
     public float getX() {
         return x;
     }
@@ -69,7 +66,6 @@ public class Enemy {
             x += (dx/distance) * speed * deltaTime;
             y += (dy/distance) * speed * deltaTime;
         }
-        System.out.println("x: " + x + " y: " + y + "deltaTime: " + deltaTime+"currentPathIndex: " + currentPathIndex);
     }
 
     /*
@@ -113,10 +109,5 @@ public class Enemy {
 
     public boolean reachedEnd() {
         return currentPathIndex >= path.size();
-    }
-
-    public void toggleSpeed(boolean willBeFaster) {
-        if (willBeFaster) speed *= 2;
-        else speed /= 2;
     }
 }
