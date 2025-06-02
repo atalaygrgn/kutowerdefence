@@ -38,13 +38,9 @@ public class Enemy {
     public int getGoldReward() {
         return goldReward;
     }
-    
+
     public float getSpeed() {
         return speed;
-    }
-
-    public void setSpeed(float speed) {
-        this.speed = speed;
     }
 
     public int getHitpoint() {
@@ -71,6 +67,24 @@ public class Enemy {
             y += (dy/distance) * speed * deltaTime;
         }
     }
+
+    /*
+     * REQUIRES:
+     * - The damage must be a positive integer (damage >= 0).
+     * - The attackType must be one of the following strings (case-sensitive): "Arrow", "Spell", or any other string (treated as unknown type).
+     * - EnemyDescription must be non-null and initialized.
+     *
+     * MODIFIES:
+     * - this.hitpoint
+     *
+     * EFFECTS:
+     * - Computes effective damage based on resistance:
+     *   - For "Arrow", reduces damage using arrowResistance.
+     *   - For "Spell", reduces damage using spellResistance.
+     *   - For unknown types, applies full damage.
+     * - Deducts the resulting actual damage from this.hitpoint .
+     * - The hitpoint may become less than or equal to 0 (in case the enemy can "die").
+     */
 
     public void takeDamage(int damage, String attackType) {
         float multiplier = 1.0f;

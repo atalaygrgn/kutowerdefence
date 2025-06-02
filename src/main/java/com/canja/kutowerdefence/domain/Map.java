@@ -60,6 +60,22 @@ public class Map {
         this.objects = objects;
     }
 
+    /**
+     * Requires:
+     *  - None (can be called at any time to reset the map).
+     *
+     * Modifies:
+     *  - pathStartEnd: resets to a new array of size 2.
+     *  - path: clears the list of path points.
+     *  - objects: clears the list of map objects.
+     *  - map: re-initializes the 2D Tile array to default Tile objects.
+     *
+     * Effects:
+     *  - All existing path data and map objects are removed.
+     *  - The entire map grid is filled with new default Tile instances (TileType.EMPTY).
+     *  - Returns the newly reset 2D Tile array.
+     */
+
     public Tile[][] reset() {
         pathStartEnd = new Point[2];
         path.clear();
@@ -132,6 +148,26 @@ public class Map {
     }
 
     public boolean validatePath() {
+        /*
+         * REQUIRES:
+         * - The map must be initialized i.e. map is not null.
+         * - pathStartEnd must contain two non-null Point objects representing the start and end positions of the path.
+         * - Each tile in the map must have a defined TileType.
+         *
+         * MODIFIES:
+         * - this.path: updated to store the valid traversable path if found.
+         *
+         * EFFECTS:
+         * - Returns true if a valid path exists between the start and end Points using tiles with valid accessibility.
+         * - The path must start and end on edge tiles of the map.
+         * - The search performs a BFS traversal, verifying that each step follows the access rules of TileType
+         *   (see getPathAccessibilityOfTileType).
+         * - If a valid path is found, it is stored in path.
+         * - Returns false if:
+         *   - Either start or end point is not on the map edge.
+         *   - No path is found between the two points using valid tiles.
+         */
+
         if (pathStartEnd[0] != null && pathStartEnd[1] != null) {
             Point start = pathStartEnd[0];
             Point end = pathStartEnd[1];

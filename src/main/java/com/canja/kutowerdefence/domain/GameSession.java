@@ -195,6 +195,27 @@ public class GameSession {
     }
 
     public boolean buyNewTower(int x, int y, MapObjectType selectedType) {
+        /*
+        * REQUIRES:
+        * - The game must be started.
+        * - The coordinates (x, y) must be valid (within the dimensions of the map).
+        * - The selectedType must correspond to a valid tower type.
+        *
+        * MODIFIES:
+        * - player.goldAmount: Cost of the tower is deducted if purchase is successful.
+        * - this.activeTowers: A new tower is added to the active towers list.
+        *
+        * EFFECTS:
+        * - If the player has enough gold and the inputs are valid:
+        *     - A new tower of the selected type is created at (x, y).
+        *     - The tower is added to the active towers list.
+        *     - The cost is deducted from the player’s gold.
+        *     - Returns true, indicating the operation was successful.
+        * - Otherwise:
+        *     - No changes are made to the game state.
+        *     - Returns false, indicating the operation failed.
+        */
+
         int cost = 0;
 
         switch (selectedType) {
