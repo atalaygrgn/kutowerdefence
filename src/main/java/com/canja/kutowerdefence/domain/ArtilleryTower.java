@@ -46,8 +46,8 @@ public class ArtilleryTower extends Tower {
                         if (dist <= aoeRadius) {
                             e.takeDamage(damage, "Shell");
                             //DEBUG ICIN
-                            System.out.println("Artillery AOE hit " + e.getDescription().getName() +
-                                    " (dist, " + dist + ") HP, " + e.getHitpoint());
+                            //System.out.println("Artillery AOE hit " + e.getDescription().getName() +
+                            //        " (dist, " + dist + ") HP, " + e.getHitpoint());
                         }
                     }
                 }

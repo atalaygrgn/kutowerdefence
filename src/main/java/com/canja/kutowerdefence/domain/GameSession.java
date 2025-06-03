@@ -122,7 +122,6 @@ public class GameSession {
         return ultraFastState;
     }
 
-    
     public SpeedState getSlowState() {
         return slowState;
     }

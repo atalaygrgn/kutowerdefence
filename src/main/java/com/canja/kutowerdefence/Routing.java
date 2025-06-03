@@ -2,6 +2,7 @@ package com.canja.kutowerdefence;
 
 import com.canja.kutowerdefence.controller.GamePlayController;
 import com.canja.kutowerdefence.controller.OptionController;
+import com.canja.kutowerdefence.controller.WaveController;
 import com.canja.kutowerdefence.domain.GameSession;
 import com.canja.kutowerdefence.ui.GamePlayView;
 import com.canja.kutowerdefence.ui.OptionsMenuView;
@@ -92,8 +93,10 @@ public final class Routing {
         FXMLLoader fxmlLoader = open("gameplay-view.fxml", "KU Tower Defence");
         GamePlayView view = fxmlLoader.getController();
         GamePlayController controller = new GamePlayController(gameSession);
+        WaveController waveController = new WaveController(gameSession);
         controller.setView(view);
-        view.setController(controller);
+        waveController.setView(view);
+        view.setController(controller, waveController);
 
         /* 
         FXMLLoader fxmlLoader = new FXMLLoader(Routing.class.getResource("gameplay-view.fxml"));

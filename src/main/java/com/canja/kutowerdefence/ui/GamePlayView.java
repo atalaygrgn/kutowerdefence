@@ -2,10 +2,12 @@ package com.canja.kutowerdefence.ui;
 
 import com.canja.kutowerdefence.Routing;
 import com.canja.kutowerdefence.controller.GamePlayController;
+import com.canja.kutowerdefence.controller.WaveController;
 import com.canja.kutowerdefence.domain.Enemy;
 import com.canja.kutowerdefence.domain.Map;
 import com.canja.kutowerdefence.domain.MapObject;
 import com.canja.kutowerdefence.domain.TileType;
+import com.canja.kutowerdefence.domain.Wave;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -64,16 +66,19 @@ public class GamePlayView implements Initializable {
     private ImageView waveIcon;
 
     private GamePlayController controller;
+    private WaveController waveController;
 
     private final List<EnemyView> enemyViews = new ArrayList<>();
 
-    public void setController(GamePlayController controller) {
+    public void setController(GamePlayController controller, WaveController waveController) {
         this.controller = controller;
+        this.waveController = waveController;
         initializeMapGridPane();
         updateUI();
         enemyLayer.prefWidthProperty().bind(mapGridPane.widthProperty());
         enemyLayer.prefHeightProperty().bind(mapGridPane.heightProperty());
-        controller.spawnTestEnemy();
+        //controller.spawnTestEnemy();
+        waveController.startWaves();
         startEnemyUpdateLoop();
     }
 
@@ -140,9 +145,6 @@ public class GamePlayView implements Initializable {
         for (EnemyView view : enemyViews) {
             Enemy enemy = view.getEnemy();
             enemy.update(deltaTime);
-            System.out.println(enemy.getDescription().getName());
-            System.out.println(enemy.getDescription().getGold());
-            System.out.println(enemy.getGoldReward());
             view.update();
             
             if (view.isDead()) {
