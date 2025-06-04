@@ -157,6 +157,22 @@ public class OptionController {
 
                 clickedButton.setText("" + value);
                 break;
+            case "enemyGroupSizeButton":
+                value = Integer.parseInt(clickedButton.getText());
+                value = (value + 1) % 6;
+
+                if (value == 0) value = 3;
+
+                clickedButton.setText("" + value);
+                break;
+            case "enemyGroupCountButton":
+                value = Integer.parseInt(clickedButton.getText());
+                value = (value + 1) % 6;
+
+                if (value == 0) value = 3;
+
+                clickedButton.setText("" + value);
+                break;
             default:
                 break;
         }
