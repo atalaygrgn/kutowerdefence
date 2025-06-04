@@ -149,4 +149,8 @@ public class GamePlayController {
         MapObjectView newObjectView = new MapObjectView(mapObject);
         view.getMapGridPane().add(newObjectView, mapObject.getPosition().getX(), mapObject.getPosition().getY());
     }
+
+    public void restartGameSession() {
+        gameSession.resetSession();
+    }
 }

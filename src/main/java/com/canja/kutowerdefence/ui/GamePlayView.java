@@ -55,7 +55,12 @@ public class GamePlayView implements Initializable {
 
     @FXML
     private Button exitButton;
+    
+    @FXML
+    private Button saveButton;
 
+    @FXML
+    private Button restartButton;
     @FXML
     private ImageView healthIcon;
 
@@ -91,7 +96,7 @@ public class GamePlayView implements Initializable {
         waveIcon.setImage(new Image("file:src/main/resources/assets/ui/button/2.png"));
     }
 
-    private void initializeMapGridPane() {
+    public void initializeMapGridPane() {
         Map gameMap = controller.getMap();
         for (int i = 0; i < gameMap.getArray().length; i++) {
             for (int j = 0; j < gameMap.getArray()[i].length; j++) {
@@ -116,6 +121,22 @@ public class GamePlayView implements Initializable {
         pauseButton.setOnAction(event -> controller.pauseGame());
         speedButton.setOnAction(event -> controller.toggleSpeed(speedButton));
         exitButton.setOnAction(event -> handleExit());
+        restartButton.setOnAction(event -> restartGame());
+        saveButton.setOnAction(event -> controller.saveGame());
+    }
+
+    private void restartGame() {
+        waveController.stopAll();
+        controller.restartGameSession();
+
+        enemyViews.clear();
+        enemyLayer.getChildren().clear();
+        mapGridPane.getChildren().clear();
+
+        initializeMapGridPane();
+        updateUI();
+        waveController.startWaves();
+
     }
 
     public void updateUI() {

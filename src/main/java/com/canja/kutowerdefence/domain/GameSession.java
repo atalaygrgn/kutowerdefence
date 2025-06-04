@@ -250,5 +250,21 @@ public class GameSession {
     public void rewardPlayer(int val) {
         player.gainGold(val);
     }
+
+    public void resetSession() {
+        this.currentWave = 1;
+        this.waveNumber = optionValues[Option.WAVE_NUMBER.ordinal()];
+
+        this.player.setHealth(optionValues[Option.PLAYER_HITPOINT.ordinal()]);
+        this.player.setGoldAmount(optionValues[Option.GOLD.ordinal()]);
+
+        activeEnemies.clear();
+        activeTowers.clear();
+
+        this.pauseState = false;
+        this.speedState = normalState;
+
+        Tower.setCooldownToDefault();
+    }
 }
 

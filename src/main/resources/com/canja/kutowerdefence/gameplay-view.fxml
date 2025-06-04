@@ -50,6 +50,8 @@
                 <Button fx:id="pauseButton" text="Pause" />
                 <Button fx:id="speedButton" text="x1" />
                 <Button fx:id="exitButton" text="Exit" />
+                <Button fx:id="saveButton" text="Save" />
+                <Button fx:id="restartButton" text="Restart" />
                 <HBox alignment="CENTER_LEFT" spacing="10">
                     <Pane prefHeight="24.0" prefWidth="24.0" />
                     <ImageView fx:id="healthIcon" fitHeight="24" fitWidth="24" />
