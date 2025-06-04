@@ -53,6 +53,15 @@ public class WaveController {
 
         delayBetweenWaves = options[Option.WAVE_DELAY.ordinal()];
         EnemyGroupFactory.setDelay(options[Option.ENEMY_SPAWN_DELAY.ordinal()]);
+
+        setStates();
+    }
+
+    public void setStates() {
+        gameSession.getSlowState().setWaveController(this);
+        gameSession.getNormalState().setWaveController(this);
+        gameSession.getFastState().setWaveController(this);
+        gameSession.getUltraFastState().setWaveController(this);
     }
 
     public void setView(GamePlayView view) {
@@ -139,10 +148,26 @@ public class WaveController {
         activeTimelines.add(timeline);
     }
 
+    public List<Timeline> getActiveTimelines() {
+        return activeTimelines;
+    }
+
     public void stopAll() {
         for (Timeline t : activeTimelines) {
             t.stop();
         }
         activeTimelines.clear();
+    }
+
+    public void pauseWaves() {
+        for (Timeline t : activeTimelines) {
+            t.pause();
+        }
+    }
+
+    public void resumeWaves() {
+        for (Timeline t : activeTimelines) {
+            t.play();
+        }
     }
 }

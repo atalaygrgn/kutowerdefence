@@ -94,6 +94,13 @@ public class GamePlayController {
 
     public void pauseGame() {
         gameSession.togglePauseState();
+
+        if (gameSession.getPauseState()) {
+            view.getWaveController().pauseWaves();
+        }
+        else {
+            view.getWaveController().resumeWaves();
+        }
     }
 
     public void toggleSpeed(Button clickedButton) {

@@ -93,6 +93,9 @@ public class GamePlayView implements Initializable {
         startEnemyUpdateLoop();
     }
 
+    public WaveController getWaveController() {
+        return waveController;
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
