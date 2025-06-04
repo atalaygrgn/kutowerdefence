@@ -119,10 +119,15 @@ public class GamePlayView implements Initializable {
 
     private void initializeButtons() {
         pauseButton.setOnAction(event -> controller.pauseGame());
+        setButtonImage(pauseButton,"file:src/main/resources/assets/ui/button/button_6.png");
         speedButton.setOnAction(event -> controller.toggleSpeed(speedButton));
+        setButtonImage(speedButton,"file:src/main/resources/assets/ui/button/button_5.png");
         exitButton.setOnAction(event -> handleExit());
+        setButtonImage(exitButton,"file:src/main/resources/assets/ui/button/button_3.png");
         restartButton.setOnAction(event -> restartGame());
+        setButtonImage(restartButton,"file:src/main/resources/assets/ui/button/button_14.png");
         saveButton.setOnAction(event -> controller.saveGame());
+        setButtonImage(saveButton,"file:src/main/resources/assets/ui/button/button_2.png");
     }
 
     private void restartGame() {
@@ -218,4 +223,9 @@ public class GamePlayView implements Initializable {
         enemyLayer.getChildren().add(projectile);
     }
 
+    private void setButtonImage(Button button, String resourcePath) {
+        Image image = new Image(resourcePath);
+        ImageView imageView = new ImageView(image);
+        button.setGraphic(imageView);
+    }
 }
