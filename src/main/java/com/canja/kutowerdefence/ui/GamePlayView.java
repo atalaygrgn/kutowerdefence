@@ -4,13 +4,19 @@ import com.canja.kutowerdefence.Routing;
 import com.canja.kutowerdefence.controller.GamePlayController;
 import com.canja.kutowerdefence.controller.WaveController;
 import com.canja.kutowerdefence.domain.Enemy;
+import com.canja.kutowerdefence.domain.GameSession;
 import com.canja.kutowerdefence.domain.Map;
 import com.canja.kutowerdefence.domain.MapObject;
+import com.canja.kutowerdefence.domain.MapObjectType;
+import com.canja.kutowerdefence.domain.Point;
 import com.canja.kutowerdefence.domain.TileType;
+import com.canja.kutowerdefence.domain.Tower;
+import com.canja.kutowerdefence.domain.TowerFactory;
 import com.canja.kutowerdefence.domain.Wave;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -114,6 +120,36 @@ public class GamePlayView implements Initializable {
         for (MapObject mapObject : gameMap.getObjects()) {
             MapObjectView objectView = new MapObjectView(mapObject);
             mapGridPane.add(objectView, mapObject.getPosition().getX(), mapObject.getPosition().getY());
+        }
+    }
+
+        public TileView getTileView(int x, int y) {
+        for (Node node : mapGridPane.getChildren()) {
+            Integer nodeCol = GridPane.getColumnIndex(node);
+            Integer nodeRow = GridPane.getRowIndex(node);
+
+            if ((nodeCol == null ? 0 : nodeCol) == x && (nodeRow == null ? 0 : nodeRow) == y) {
+
+                if (node instanceof TileView) {
+                    return (TileView) node;
+                }
+            }
+        }
+
+        return null;
+    }
+
+        public void reloadTowers(List<int[]> towerInfo, GameSession gameSession) {
+        for (int[] info : towerInfo) {
+            int x = info[1];
+            int y = info[2];
+
+            Tower newTower = TowerFactory.createTower(MapObjectType.values()[info[0]], new Point(x, y), gameSession);
+            gameSession.addTower(newTower);
+            TileView tileView = getTileView(x, y);
+            tileView.setTileType(TileType.EMPTY);
+            controller.putObjectOnMapView(newTower);
+            updateUI();
         }
     }
 

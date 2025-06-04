@@ -17,6 +17,7 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.Stack;
 
 /**
@@ -114,6 +115,17 @@ public final class Routing {
         mainStage.setTitle("KU Tower Defence");
         mainStage.setResizable(false);
         */
+    }
+
+    public static void openGamePlayFromSave(GameSession gameSession, List<int[]> towerInfo) throws IOException{
+        FXMLLoader fxmlLoader = open("gameplay-view.fxml", "KU Tower Defence");
+        GamePlayView view = fxmlLoader.getController();
+        GamePlayController controller = new GamePlayController(gameSession);
+        WaveController waveController = new WaveController(gameSession);
+        controller.setView(view);
+        waveController.setView(view);
+        view.setController(controller, waveController);
+        view.reloadTowers(towerInfo, gameSession);
     }
 
     /**

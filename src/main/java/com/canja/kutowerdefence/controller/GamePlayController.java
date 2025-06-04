@@ -13,8 +13,10 @@ import com.google.gson.GsonBuilder;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseButton;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -104,14 +106,27 @@ public class GamePlayController {
     }
 
     public void saveGame() {
-        String filename = "src/main/resources/saves/save.kutdsave";
+        List<File> saveFiles = SaveService.getSaveFiles();
+        String filename = "src/main/resources/saves/save" + String.valueOf(saveFiles.size() + 1) + ".kutdsave";
         String mapPath = gameSession.getMapPath();
-        String optionPath = gameSession.getOptionPath();
+
+        int[] options = gameSession.getOptionValues();
+        options[Option.CURRENT_WAVE.ordinal()] = gameSession.getCurrentWave();
+        options[Option.GOLD.ordinal()] = gameSession.getPlayerGold();
+        options[Option.PLAYER_HITPOINT.ordinal()] = gameSession.getPlayerHitpoint();
+
+        List<Tower> activeTowers = gameSession.getTowers();
+        List<int[]> towerInfo = new ArrayList<>();
+
+        for (Tower tower : activeTowers) {
+            int[] info = {tower.getType().ordinal(), tower.getPosition().getX(), tower.getPosition().getY()};
+            towerInfo.add(info);
+        }
 
         Gson gson = new GsonBuilder().create();
 
         try (FileWriter writer = new FileWriter(filename)) {
-            gson.toJson(new Object[]{mapPath, optionPath}, writer);
+            gson.toJson(new Object[]{mapPath, options, towerInfo}, writer);
             System.out.println("Game saved successfully to " + filename);
         } catch (IOException e) {
             System.err.println("Failed to save map: " + e.getMessage());
@@ -145,7 +160,7 @@ public class GamePlayController {
         });
     }
 
-    private void putObjectOnMapView(MapObject mapObject) {
+    public void putObjectOnMapView(MapObject mapObject) {
         MapObjectView newObjectView = new MapObjectView(mapObject);
         view.getMapGridPane().add(newObjectView, mapObject.getPosition().getX(), mapObject.getPosition().getY());
     }
