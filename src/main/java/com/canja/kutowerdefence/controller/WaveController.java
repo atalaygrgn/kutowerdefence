@@ -34,8 +34,6 @@ public class WaveController {
     private final WaveDescription waveDescription;
 
     private int delayBetweenWaves;
-    private int enemyGroupNumber = 3;
-    private int enemyGroupSize = 5;
     private int waveReward = 50;
     private int enemyIndex;
 
@@ -47,8 +45,8 @@ public class WaveController {
         int[] options = gameSession.getOptionValues();
 
         waveDescription = new WaveDescription(
-            enemyGroupNumber,
-            enemyGroupSize, 
+            options[Option.WAVE_GROUP_COUNT.ordinal()],
+            options[Option.ENEMY_GROUP_SIZE.ordinal()],
             waveReward, 
             options[Option.WAVE_GROUP_DELAY.ordinal()]
         );
