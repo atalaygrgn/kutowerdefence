@@ -4,9 +4,9 @@ import java.util.List;
 
 public class EnemyGroup {
     private List<EnemyDescription> enemies;
-    private int delayBetweenEnemies;
+    private float delayBetweenEnemies;
 
-    public EnemyGroup(List<EnemyDescription> enemies, int delay) {
+    public EnemyGroup(List<EnemyDescription> enemies, float delay) {
         this.enemies = enemies;
         this.delayBetweenEnemies = delay;
     }
@@ -15,7 +15,11 @@ public class EnemyGroup {
         return enemies;
     }
 
-    public int getDelay() {
+    public float getDelay() {
         return delayBetweenEnemies;
+    }
+
+    public void setDelay(float delay) {
+        this.delayBetweenEnemies = delay;
     }
 }

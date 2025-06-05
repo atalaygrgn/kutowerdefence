@@ -3,7 +3,7 @@ package com.canja.kutowerdefence.domain;
 public class Wave {
     private final WaveDescription description;
     private EnemyGroup activeGroup;
-    private int delayBetweenGroups;
+    private float delayBetweenGroups;
     private int enemyGroupNumber;
     private int currentGroupIndex;
     private int reward;
@@ -29,8 +29,12 @@ public class Wave {
         return activeGroup;
     }
 
-    public int getDelay() {
+    public float getDelay() {
         return delayBetweenGroups;
+    }
+
+    public void setDelay(float delay) {
+        this.delayBetweenGroups = delay;
     }
 
     public int getReward() {

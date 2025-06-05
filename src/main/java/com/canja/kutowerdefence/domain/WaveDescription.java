@@ -7,7 +7,7 @@ public class WaveDescription {
     private int enemyGroupNumber;
     private int enemyGroupSize;
     private int reward;
-    private int delayBetweenGroups;
+    private float delayBetweenGroups;
     private final List<EnemyDescription> enemyTypes;
 
     public WaveDescription(int enemyGroupNumber, int enemyGroupSize, int reward, int delayBetweenGroups) {
@@ -38,7 +38,11 @@ public class WaveDescription {
         return reward;
     }
 
-    public int getDelay() {
+    public float getDelay() {
         return delayBetweenGroups;
+    }
+
+    public void setDelay(float delay) {
+        this.delayBetweenGroups = delay;
     }
 }

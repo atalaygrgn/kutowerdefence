@@ -32,6 +32,7 @@ public class WaveController {
     private final LinkedList<Point> enemyPath;
     private final List<Timeline> activeTimelines;
     private final WaveDescription waveDescription;
+    private Wave wave;
 
     private int delayBetweenWaves;
     private int waveReward = 50;
@@ -68,6 +69,14 @@ public class WaveController {
         this.view = view;
     }
 
+    public WaveDescription getDescription() {
+        return waveDescription;
+    }
+    
+    public Wave getCurrentWave() {
+        return wave;
+    }
+
     public void startWaves() {
         runWaves();
     }
@@ -91,7 +100,7 @@ public class WaveController {
         initialDelay.setCycleCount(delayBetweenWaves);
 
         initialDelay.setOnFinished(e -> {
-            Wave wave = new Wave(waveDescription);
+            wave = new Wave(waveDescription);
             spawnEnemyGroups(wave, () -> {
                 int waveIndex = gameSession.getCurrentWave();
                 gameSession.setCurrentWave(++waveIndex);
@@ -119,7 +128,7 @@ public class WaveController {
         });
     }
 
-    private void spawnEnemyGroup(EnemyGroup group, int delay, Runnable onFinished) {
+    private void spawnEnemyGroup(EnemyGroup group, float delay, Runnable onFinished) {
         List<EnemyDescription> enemies = group.getEnemies();
 
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(group.getDelay()), e -> {

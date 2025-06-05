@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 public class EnemyGroupFactory {
-    public static int delayBetweenEnemies = 1;
+    public static float delayBetweenEnemies = 1;
 
     public static EnemyGroup generateRandomGroup(WaveDescription description) {
         List<EnemyDescription> result = new ArrayList<>();
@@ -29,7 +29,11 @@ public class EnemyGroupFactory {
         return group;
     }
 
-    public static void setDelay(int delay) {
+    public static float getDelay() {
+        return delayBetweenEnemies;
+    }
+
+    public static void setDelay(float delay) {
         delayBetweenEnemies = delay;
-    } 
+    }
 }
