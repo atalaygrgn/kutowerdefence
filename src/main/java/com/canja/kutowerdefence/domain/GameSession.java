@@ -57,12 +57,13 @@ public class GameSession {
         InitializeSession();
     }
 
-    public GameSession(File mapFile, int[] options) {
+    public GameSession(File mapFile, int[] options, int[] playerInfo) {
         this.optionValues = options;
         this.mapFile = mapFile;
         this.map = new Map(dimX, dimY);
         this.player = new Player(optionValues[Option.GOLD.ordinal()], optionValues[Option.PLAYER_HITPOINT.ordinal()]);
-
+        player.setGoldAmount(playerInfo[0]);
+        player.setHealth(playerInfo[1]);
         InitializeSession();
     }
 

@@ -7,11 +7,13 @@ public class SaveData {
     private File mapFile;
     private int[] options;
     private List<int[]> towerInfo;
+    private int[] playerInfo;
 
-    public SaveData(File mapFile, int[] options, List<int[]> towerInfo) {
+    public SaveData(File mapFile, int[] options, List<int[]> towerInfo, int[] playerInfo) {
         this.mapFile = mapFile;
         this.options = options;
         this.towerInfo = towerInfo;
+        this.playerInfo = playerInfo;
     }
 
     public File getMapFile() {
@@ -24,5 +26,9 @@ public class SaveData {
 
     public List<int[]> getTowerInfo() {
         return towerInfo;
+    }
+
+    public int[] getPlayerInfo() {
+        return playerInfo;
     }
 }

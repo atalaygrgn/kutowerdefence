@@ -49,9 +49,10 @@ public class SaveSelectionOverlay {
                     SaveData content = extractFile(selectedSave);
                     File map = content.getMapFile();
                     int[] options = content.getOptions();
+                    int[] playerInfo = content.getPlayerInfo();
                     List<int[]> towerInfo = content.getTowerInfo();
 
-                    GameSession session = new GameSession(map, options);
+                    GameSession session = new GameSession(map, options, playerInfo);
                     popupStage.close();
                     try {
                         Routing.openGamePlayFromSave(session, towerInfo);
@@ -78,12 +79,13 @@ public class SaveSelectionOverlay {
 
         String mapPath = gson.fromJson(gson.toJson(data[0]), String.class);
         int[] options = gson.fromJson(gson.toJson(data[1]), int[].class);
+        int[] playerInfo = gson.fromJson(gson.toJson(data[3]), int[].class);
         
         Type listOfIntArrayType = new TypeToken<List<int[]>>() {}.getType();
         List<int[]> towerInfo = gson.fromJson(gson.toJson(data[2]), listOfIntArrayType);
 
         File mapFile = new File(mapPath);
 
-        return new SaveData(mapFile, options, towerInfo);
+        return new SaveData(mapFile, options, towerInfo, playerInfo);
     }
 }

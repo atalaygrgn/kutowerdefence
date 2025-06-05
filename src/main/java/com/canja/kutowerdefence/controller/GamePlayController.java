@@ -118,10 +118,9 @@ public class GamePlayController {
         String mapPath = gameSession.getMapPath();
 
         int[] options = gameSession.getOptionValues();
+        int[] playerInfo = {gameSession.getPlayerGold(), gameSession.getPlayerHitpoint()};
         options[Option.CURRENT_WAVE.ordinal()] = gameSession.getCurrentWave();
-        options[Option.GOLD.ordinal()] = gameSession.getPlayerGold();
-        options[Option.PLAYER_HITPOINT.ordinal()] = gameSession.getPlayerHitpoint();
-
+    
         List<Tower> activeTowers = gameSession.getTowers();
         List<int[]> towerInfo = new ArrayList<>();
 
@@ -133,7 +132,7 @@ public class GamePlayController {
         Gson gson = new GsonBuilder().create();
 
         try (FileWriter writer = new FileWriter(filename)) {
-            gson.toJson(new Object[]{mapPath, options, towerInfo}, writer);
+            gson.toJson(new Object[]{mapPath, options, towerInfo, playerInfo}, writer);
             System.out.println("Game saved successfully to " + filename);
         } catch (IOException e) {
             System.err.println("Failed to save map: " + e.getMessage());
