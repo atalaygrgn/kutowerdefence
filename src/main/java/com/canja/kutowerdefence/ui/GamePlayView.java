@@ -246,6 +246,9 @@ public class GamePlayView implements Initializable {
                     float deltaTime = (now - lastTime) / 1_000_000_000f;
                     controller.getGameSession().tick(deltaTime);
 
+                    if(controller.getHealth()<=0){
+                        showGameOver();
+                    }
                     updateEnemies(deltaTime, controller.getPauseState());
                 }
                 lastTime = now;
@@ -253,6 +256,20 @@ public class GamePlayView implements Initializable {
         };
         timer.start();
     }
+
+    public void showGameOver() {
+        waveController.stopAll();
+        controller.getGameSession().clearActiveEnemiesTowers();
+        enemyViews.clear();
+        enemyLayer.getChildren().clear();
+
+        Label gameOverLabel = new Label("GAME OVER");
+        gameOverLabel.setTranslateX(500);
+        gameOverLabel.setTranslateY(300);
+
+        enemyLayer.getChildren().add(gameOverLabel);
+    }
+
 
     public void launchProjectile(int fromX, int fromY, float toX, float toY,
                                  String spritePath, int frameW, int frameH, int frameCount,

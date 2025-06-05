@@ -253,6 +253,11 @@ public class GameSession {
         player.gainGold(val);
     }
 
+    public void clearActiveEnemiesTowers() {
+        activeEnemies.clear();
+        activeTowers.clear();
+    }
+
     public void resetSession() {
         this.currentWave = 1;
         this.waveNumber = optionValues[Option.WAVE_NUMBER.ordinal()];
@@ -260,8 +265,7 @@ public class GameSession {
         this.player.setHealth(optionValues[Option.PLAYER_HITPOINT.ordinal()]);
         this.player.setGoldAmount(optionValues[Option.GOLD.ordinal()]);
 
-        activeEnemies.clear();
-        activeTowers.clear();
+        clearActiveEnemiesTowers();
 
         this.pauseState = false;
         this.speedState = normalState;
