@@ -4,6 +4,7 @@ import com.canja.kutowerdefence.Routing;
 import com.canja.kutowerdefence.state.*;
 import com.canja.kutowerdefence.ui.GamePlayView;
 import com.canja.kutowerdefence.ui.ProjectileView;
+import com.canja.kutowerdefence.ui.TileView;
 import com.google.gson.Gson;
 
 import java.io.File;
@@ -19,7 +20,6 @@ public class GameSession {
     private final Map map; // Assuming a Map object is part of GameSession
     private final int dimX = 16;
     private final int dimY = 12;
-    private File optionFile;
     private int[] optionValues;
 
     private SpeedState normalState;
@@ -46,26 +46,24 @@ public class GameSession {
     public GamePlayView getView() { return view; }
 
     public GameSession(File mapFile) {
-        this.optionFile = new File("src/main/resources/options/options.kutdopt");
+        File optionFile = new File("src/main/resources/options/options.kutdopt");
         this.mapFile = mapFile;
         this.map = new Map(dimX, dimY);
 
-        extractOptionValues();
+        extractOptionValues(optionFile);
         
         this.player = new Player(optionValues[Option.GOLD.ordinal()], optionValues[Option.PLAYER_HITPOINT.ordinal()]);
 
         InitializeSession();
     }
 
-    public GameSession(File mapFile, File optionFile) {
-        this.optionFile = optionFile;
+    public GameSession(File mapFile, int[] options, int[] playerInfo) {
+        this.optionValues = options;
         this.mapFile = mapFile;
         this.map = new Map(dimX, dimY);
-
-        extractOptionValues();
-        
         this.player = new Player(optionValues[Option.GOLD.ordinal()], optionValues[Option.PLAYER_HITPOINT.ordinal()]);
-
+        player.setGoldAmount(playerInfo[0]);
+        player.setHealth(playerInfo[1]);
         InitializeSession();
     }
 
@@ -96,7 +94,7 @@ public class GameSession {
         return map;
     }
 
-    public void extractOptionValues() {
+    public void extractOptionValues(File optionFile) {
         Gson gson = new Gson();
 
         try (FileReader reader = new FileReader(optionFile)) {
@@ -122,7 +120,6 @@ public class GameSession {
         return ultraFastState;
     }
 
-    
     public SpeedState getSlowState() {
         return slowState;
     }
@@ -169,6 +166,10 @@ public class GameSession {
         return this.player;
     }
 
+    public int getPlayerGold() {
+        return this.player.getGoldAmount();
+    }
+
     public void tick(float deltaTime) {
         for (Enemy enemy : activeEnemies) {
             enemy.update(deltaTime);
@@ -180,12 +181,12 @@ public class GameSession {
         activeEnemies.removeIf(e -> e.getHitpoint() <= 0);
     }
 
-    public String getMapPath() {
-        return mapFile.getPath();
+    public int getPlayerHitpoint() {
+        return this.player.getHealth();
     }
 
-    public String getOptionPath() {
-        return optionFile.getPath();
+    public String getMapPath() {
+        return mapFile.getPath();
     }
     
     public Tower getNewestTower() {
@@ -250,6 +251,22 @@ public class GameSession {
 
     public void rewardPlayer(int val) {
         player.gainGold(val);
+    }
+
+    public void resetSession() {
+        this.currentWave = 1;
+        this.waveNumber = optionValues[Option.WAVE_NUMBER.ordinal()];
+
+        this.player.setHealth(optionValues[Option.PLAYER_HITPOINT.ordinal()]);
+        this.player.setGoldAmount(optionValues[Option.GOLD.ordinal()]);
+
+        activeEnemies.clear();
+        activeTowers.clear();
+
+        this.pauseState = false;
+        this.speedState = normalState;
+
+        Tower.setCooldownToDefault();
     }
 }
 

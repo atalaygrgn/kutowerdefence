@@ -2,13 +2,21 @@ package com.canja.kutowerdefence.ui;
 
 import com.canja.kutowerdefence.Routing;
 import com.canja.kutowerdefence.controller.GamePlayController;
+import com.canja.kutowerdefence.controller.WaveController;
 import com.canja.kutowerdefence.domain.Enemy;
+import com.canja.kutowerdefence.domain.GameSession;
 import com.canja.kutowerdefence.domain.Map;
 import com.canja.kutowerdefence.domain.MapObject;
+import com.canja.kutowerdefence.domain.MapObjectType;
+import com.canja.kutowerdefence.domain.Point;
 import com.canja.kutowerdefence.domain.TileType;
+import com.canja.kutowerdefence.domain.Tower;
+import com.canja.kutowerdefence.domain.TowerFactory;
+import com.canja.kutowerdefence.domain.Wave;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -53,7 +61,12 @@ public class GamePlayView implements Initializable {
 
     @FXML
     private Button exitButton;
+    
+    @FXML
+    private Button saveButton;
 
+    @FXML
+    private Button restartButton;
     @FXML
     private ImageView healthIcon;
 
@@ -64,19 +77,25 @@ public class GamePlayView implements Initializable {
     private ImageView waveIcon;
 
     private GamePlayController controller;
+    private WaveController waveController;
 
     private final List<EnemyView> enemyViews = new ArrayList<>();
 
-    public void setController(GamePlayController controller) {
+    public void setController(GamePlayController controller, WaveController waveController) {
         this.controller = controller;
+        this.waveController = waveController;
         initializeMapGridPane();
         updateUI();
         enemyLayer.prefWidthProperty().bind(mapGridPane.widthProperty());
         enemyLayer.prefHeightProperty().bind(mapGridPane.heightProperty());
-        controller.spawnTestEnemy();
+        //controller.spawnTestEnemy();
+        waveController.startWaves();
         startEnemyUpdateLoop();
     }
 
+    public WaveController getWaveController() {
+        return waveController;
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -86,7 +105,7 @@ public class GamePlayView implements Initializable {
         waveIcon.setImage(new Image("file:src/main/resources/assets/ui/button/2.png"));
     }
 
-    private void initializeMapGridPane() {
+    public void initializeMapGridPane() {
         Map gameMap = controller.getMap();
         for (int i = 0; i < gameMap.getArray().length; i++) {
             for (int j = 0; j < gameMap.getArray()[i].length; j++) {
@@ -107,10 +126,61 @@ public class GamePlayView implements Initializable {
         }
     }
 
+        public TileView getTileView(int x, int y) {
+        for (Node node : mapGridPane.getChildren()) {
+            Integer nodeCol = GridPane.getColumnIndex(node);
+            Integer nodeRow = GridPane.getRowIndex(node);
+
+            if ((nodeCol == null ? 0 : nodeCol) == x && (nodeRow == null ? 0 : nodeRow) == y) {
+
+                if (node instanceof TileView) {
+                    return (TileView) node;
+                }
+            }
+        }
+
+        return null;
+    }
+
+        public void reloadTowers(List<int[]> towerInfo, GameSession gameSession) {
+        for (int[] info : towerInfo) {
+            int x = info[1];
+            int y = info[2];
+
+            Tower newTower = TowerFactory.createTower(MapObjectType.values()[info[0]], new Point(x, y), gameSession);
+            gameSession.addTower(newTower);
+            TileView tileView = getTileView(x, y);
+            tileView.setTileType(TileType.EMPTY);
+            controller.putObjectOnMapView(newTower);
+            updateUI();
+        }
+    }
+
     private void initializeButtons() {
         pauseButton.setOnAction(event -> controller.pauseGame());
+        setButtonImage(pauseButton,"file:src/main/resources/assets/ui/button/button_6.png");
         speedButton.setOnAction(event -> controller.toggleSpeed(speedButton));
+        setButtonImage(speedButton,"file:src/main/resources/assets/ui/button/button_5.png");
         exitButton.setOnAction(event -> handleExit());
+        setButtonImage(exitButton,"file:src/main/resources/assets/ui/button/button_3.png");
+        restartButton.setOnAction(event -> restartGame());
+        setButtonImage(restartButton,"file:src/main/resources/assets/ui/button/button_14.png");
+        saveButton.setOnAction(event -> controller.saveGame());
+        setButtonImage(saveButton,"file:src/main/resources/assets/ui/button/button_2.png");
+    }
+
+    private void restartGame() {
+        waveController.stopAll();
+        controller.restartGameSession();
+
+        enemyViews.clear();
+        enemyLayer.getChildren().clear();
+        mapGridPane.getChildren().clear();
+
+        initializeMapGridPane();
+        updateUI();
+        waveController.startWaves();
+
     }
 
     public void updateUI() {
@@ -121,6 +191,7 @@ public class GamePlayView implements Initializable {
 
     private void handleExit() {
         try {
+            waveController.stopAll();
             Routing.returnToPreviousScene();
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -140,9 +211,6 @@ public class GamePlayView implements Initializable {
         for (EnemyView view : enemyViews) {
             Enemy enemy = view.getEnemy();
             enemy.update(deltaTime);
-            System.out.println(enemy.getDescription().getName());
-            System.out.println(enemy.getDescription().getGold());
-            System.out.println(enemy.getGoldReward());
             view.update();
             
             if (view.isDead()) {
@@ -194,4 +262,9 @@ public class GamePlayView implements Initializable {
         enemyLayer.getChildren().add(projectile);
     }
 
+    private void setButtonImage(Button button, String resourcePath) {
+        Image image = new Image(resourcePath);
+        ImageView imageView = new ImageView(image);
+        button.setGraphic(imageView);
+    }
 }

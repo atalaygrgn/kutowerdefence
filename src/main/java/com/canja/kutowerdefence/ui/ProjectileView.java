@@ -61,7 +61,10 @@ public class ProjectileView extends Group {
             onHit.run();
             this.setVisible(false);
             this.getChildren().clear();
-            ((Pane)getParent()).getChildren().remove(this);
+
+            if (getParent() instanceof Pane parent) {
+                parent.getChildren().remove(this);
+            }
         });
         flight.play();
     }

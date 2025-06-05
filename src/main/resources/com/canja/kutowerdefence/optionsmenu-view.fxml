@@ -11,7 +11,7 @@
          <font>
             <Font name="System Bold" size="22.0" />
          </font></Label>
-      <Pane prefHeight="120.0" prefWidth="1280.0">
+      <Pane prefHeight="66.0" prefWidth="1280.0">
          <children>
             <Button fx:id="exitButton" layoutX="1199.0" mnemonicParsing="false" text="X">
                <font>
@@ -102,6 +102,14 @@
                         <Button id="mageTowerCostButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="250" />
                      </children>
                   </HBox>
+                  <Pane prefHeight="5.0" prefWidth="200.0" />
+                  <HBox alignment="TOP_CENTER" layoutX="10.0" layoutY="40.0" prefHeight="40.0" prefWidth="580.0">
+                     <children>
+                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="300.0" text="Wave | Enemy Group Count:" />
+                        <Pane prefHeight="40.0" prefWidth="30.0" />
+                        <Button id="enemyGroupCountButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="3" />
+                     </children>
+                  </HBox>
                </children></VBox>
             <Pane prefHeight="463.0" prefWidth="72.0" />
             <VBox fx:id="rightOptionBox" prefHeight="480.0" prefWidth="580.0">
@@ -184,11 +192,19 @@
                         <Button id="knightSpeedButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="1" />
                      </children>
                   </HBox>
+                  <Pane prefHeight="5.0" prefWidth="200.0" />
+                  <HBox alignment="TOP_CENTER" layoutX="10.0" layoutY="40.0" prefHeight="40.0" prefWidth="580.0">
+                     <children>
+                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="300.0" text="Enemy Group | Size:" />
+                        <Pane prefHeight="40.0" prefWidth="30.0" />
+                        <Button id="enemyGroupSizeButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="3" />
+                     </children>
+                  </HBox>
                </children>
             </VBox>
          </children>
       </HBox>
-      <Pane prefHeight="50.0" prefWidth="200.0" />
+      <Pane prefHeight="25.0" prefWidth="1280.0" />
       <HBox alignment="TOP_CENTER" prefHeight="120.0" prefWidth="1280.0">
          <children>
             <Button fx:id="saveButton" mnemonicParsing="false" text="Save Settings" />

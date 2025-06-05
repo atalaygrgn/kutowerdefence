@@ -4,9 +4,11 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.List;
+import java.lang.reflect.Type;
 
 import com.canja.kutowerdefence.Routing;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -44,14 +46,16 @@ public class SaveSelectionOverlay {
             File selectedSave = listView.getSelectionModel().getSelectedItem();
             if (selectedSave != null) {
                 try {
-                    Object[] content = extractFile(selectedSave);
-                    File map = (File) content[0];
-                    File options = (File) content[1];
-                    
-                    GameSession session = new GameSession(map, options);
+                    SaveData content = extractFile(selectedSave);
+                    File map = content.getMapFile();
+                    int[] options = content.getOptions();
+                    int[] playerInfo = content.getPlayerInfo();
+                    List<int[]> towerInfo = content.getTowerInfo();
+
+                    GameSession session = new GameSession(map, options, playerInfo);
                     popupStage.close();
                     try {
-                        Routing.openGamePlay(session);
+                        Routing.openGamePlayFromSave(session, towerInfo);
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
@@ -68,18 +72,20 @@ public class SaveSelectionOverlay {
         return scene;
     }
 
-    private static Object[] extractFile(File saveFile) throws IOException{
+    private static SaveData extractFile(File saveFile) throws IOException{
         String content = new String(Files.readAllBytes(saveFile.toPath()));
         Gson gson = new Gson();
         Object[] data = gson.fromJson(content, Object[].class);
 
         String mapPath = gson.fromJson(gson.toJson(data[0]), String.class);
-        String optionPath = gson.fromJson(gson.toJson(data[1]), String.class);
-        int currentWave = gson.fromJson(gson.toJson(data[2]), int.class);
+        int[] options = gson.fromJson(gson.toJson(data[1]), int[].class);
+        int[] playerInfo = gson.fromJson(gson.toJson(data[3]), int[].class);
+        
+        Type listOfIntArrayType = new TypeToken<List<int[]>>() {}.getType();
+        List<int[]> towerInfo = gson.fromJson(gson.toJson(data[2]), listOfIntArrayType);
 
         File mapFile = new File(mapPath);
-        File optionFile = new File(optionPath);
 
-        return new Object[] {mapFile, optionFile, currentWave};
+        return new SaveData(mapFile, options, towerInfo, playerInfo);
     }
 }
