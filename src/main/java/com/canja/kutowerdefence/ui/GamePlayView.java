@@ -21,10 +21,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.*;
 import javafx.animation.AnimationTimer;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -75,6 +75,10 @@ public class GamePlayView implements Initializable {
 
     @FXML
     private ImageView waveIcon;
+
+    @FXML private VBox gameOverOverlay;
+    @FXML private Button restartGameOverBtn;
+    @FXML private Button exitGameOverBtn;
 
     private GamePlayController controller;
     private WaveController waveController;
@@ -167,11 +171,33 @@ public class GamePlayView implements Initializable {
         setButtonImage(restartButton,"file:src/main/resources/assets/ui/button/button_14.png");
         saveButton.setOnAction(event -> controller.saveGame());
         setButtonImage(saveButton,"file:src/main/resources/assets/ui/button/button_2.png");
+        restartGameOverBtn.setOnAction(event -> {
+            System.out.println("Restart clicked!");
+            controller.restartGameSession();
+            speedButton.setText(" x1 ");
+            mapGridPane.getChildren().clear();
+            initializeMapGridPane();
+            updateUI();
+            gameOverOverlay.setVisible(false);
+            waveController.startWaves();
+        });
+        setButtonImage(restartGameOverBtn, "file:src/main/resources/assets/ui/button/button_14.png");
+        exitGameOverBtn.setOnAction(event -> {
+            System.out.println("Exit clicked!");
+            try {
+                waveController.stopAll();
+                Routing.returnToPreviousScene();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+        setButtonImage(exitGameOverBtn, "file:src/main/resources/assets/ui/button/button_3.png");
     }
 
     private void restartGame() {
         waveController.stopAll();
         controller.restartGameSession();
+        speedButton.setText(" x1 ");
 
         enemyViews.clear();
         enemyLayer.getChildren().clear();
@@ -220,6 +246,7 @@ public class GamePlayView implements Initializable {
 
             if (enemy.reachedEnd()) {
                 controller.loseHealth();
+                controller.updateGameState();
                 toRemove.add(view);
             }
         }
@@ -246,7 +273,7 @@ public class GamePlayView implements Initializable {
                     float deltaTime = (now - lastTime) / 1_000_000_000f;
                     controller.getGameSession().tick(deltaTime);
 
-                    if(controller.getHealth()<=0){
+                    if(controller.getGameState()){
                         showGameOver();
                     }
                     updateEnemies(deltaTime, controller.getPauseState());
@@ -262,12 +289,12 @@ public class GamePlayView implements Initializable {
         controller.getGameSession().clearActiveEnemiesTowers();
         enemyViews.clear();
         enemyLayer.getChildren().clear();
-
-        Label gameOverLabel = new Label("GAME OVER");
-        gameOverLabel.setTranslateX(500);
-        gameOverLabel.setTranslateY(300);
-
-        enemyLayer.getChildren().add(gameOverLabel);
+        File bgFile = new File("src/main/resources/assets/gameover.png");
+        BackgroundImage bgImage = new BackgroundImage(new Image(bgFile.toURI().toString()),
+                BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
+                new BackgroundSize(600, 800, false, false, true, true));
+        gameOverOverlay.setBackground(new Background(bgImage));
+        gameOverOverlay.setVisible(true);
     }
 
 

@@ -42,6 +42,17 @@
                 </rowConstraints>
             </GridPane>
             <Pane fx:id="enemyLayer" pickOnBounds="false" />
+            <VBox fx:id="gameOverOverlay" alignment="TOP_CENTER" maxHeight="600.0" maxWidth="800.0" spacing="20" style="-fx-background-color: rgba(0,0,0,0.6);" visible="false">
+                <children>
+                    <Label prefHeight="45.0" prefWidth="215.0" style="-fx-font-size: 30px; -fx-text-fill: #000000;" text="Enemies Killed: " />
+               <HBox alignment="CENTER" prefHeight="50.0" prefWidth="800.0">
+                  <children>
+                          <Button fx:id="restartGameOverBtn" text="Restart" />
+                     <Pane prefHeight="50.0" prefWidth="30.0" />
+                          <Button fx:id="exitGameOverBtn" text="Exit" />
+                  </children></HBox>
+                </children>
+            </VBox>
         </StackPane>
     </center>
     <right>
@@ -49,18 +60,18 @@
             <children>
             <HBox alignment="TOP_CENTER" prefHeight="35.0" prefWidth="256.0">
                <children>
-                   <Button fx:id="pauseButton"/>
+                   <Button fx:id="pauseButton" />
                    <Pane prefHeight="35.0" prefWidth="10.0" />
-                   <Button fx:id="restartButton"/>
+                   <Button fx:id="restartButton" />
                    <Pane prefHeight="35.0" prefWidth="10.0" />
-                   <Button fx:id="exitButton"/>
+                   <Button fx:id="exitButton" />
                </children>
             </HBox>
             <HBox alignment="TOP_CENTER" prefHeight="35.0" prefWidth="256.0">
                <children>
-                   <Button fx:id="speedButton" text= " x1 " />
+                   <Button fx:id="speedButton" text=" x1 " />
                    <Pane prefHeight="35.0" prefWidth="10.0" />
-                   <Button fx:id="saveButton"/>
+                   <Button fx:id="saveButton" />
                </children>
             </HBox>
                 <HBox alignment="CENTER_LEFT" spacing="10">

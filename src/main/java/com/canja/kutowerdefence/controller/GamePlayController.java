@@ -75,6 +75,8 @@ public class GamePlayController {
         return gameSession.getPauseState();
     }
 
+    public boolean getGameState(){return gameSession.isGameOver();}
+
     public void setView(GamePlayView view) {
         this.view = view;
         gameSession.setGamePlayView(view);
@@ -166,6 +168,11 @@ public class GamePlayController {
         });
     }
 
+    public void updateGameState(){
+        if(getHealth()<=0) {
+            gameSession.setGameOver(true);
+        }
+    }
     public void putObjectOnMapView(MapObject mapObject) {
         MapObjectView newObjectView = new MapObjectView(mapObject);
         view.getMapGridPane().add(newObjectView, mapObject.getPosition().getX(), mapObject.getPosition().getY());
