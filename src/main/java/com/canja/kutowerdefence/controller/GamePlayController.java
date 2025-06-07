@@ -169,7 +169,7 @@ public class GamePlayController {
     }
 
     public void updateGameState(){
-        if(getHealth()<=0) {
+        if(getHealth()<=0 || (gameSession.getCurrentWave() > gameSession.getWaveNumber() && gameSession.getEnemies().isEmpty())) {
             gameSession.setGameOver(true);
         }
     }

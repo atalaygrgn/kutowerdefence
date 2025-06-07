@@ -195,7 +195,6 @@ public class GamePlayView implements Initializable {
     }
 
     private void restartGame() {
-        waveController.stopAll();
         controller.restartGameSession();
         speedButton.setText(" x1 ");
 
@@ -204,9 +203,8 @@ public class GamePlayView implements Initializable {
         mapGridPane.getChildren().clear();
 
         initializeMapGridPane();
+        waveController.restartWaves();
         updateUI();
-        waveController.startWaves();
-
     }
 
     public void updateUI() {
@@ -255,6 +253,8 @@ public class GamePlayView implements Initializable {
             enemyViews.remove(view);
             updateUI();
         }
+        
+        controller.updateGameState();
     }
 
 
