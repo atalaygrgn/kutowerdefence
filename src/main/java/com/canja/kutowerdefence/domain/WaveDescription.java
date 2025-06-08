@@ -30,8 +30,16 @@ public class WaveDescription {
         return enemyGroupNumber;
     }
 
+    public void setEnemyGroupNumber(int number) {
+        enemyGroupNumber = number;
+    }
+
     public int getEnemyGroupSize() {
         return enemyGroupSize;
+    }
+
+    public void setEnemyGroupSize(int size) {
+        enemyGroupSize = size;
     }
 
     public int getReward() {

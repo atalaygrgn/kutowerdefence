@@ -185,7 +185,7 @@ public class GameSession {
             tower.tryAttack(activeEnemies);
 
         }
-        activeEnemies.removeIf(e -> e.getHitpoint() <= 0);
+        activeEnemies.removeIf(e -> e.getHitpoint() <= 0 || e.reachedEnd());
     }
 
     public int getPlayerHitpoint() {
@@ -273,14 +273,15 @@ public class GameSession {
         this.player.setHealth(optionValues[Option.PLAYER_HITPOINT.ordinal()]);
         this.player.setGoldAmount(optionValues[Option.GOLD.ordinal()]);
 
-        if(gameOver){
-            clearActiveEnemiesTowers();
-        }
+        clearActiveEnemiesTowers();
 
         this.pauseState = false;
         this.speedState = normalState;
 
         Tower.setCooldownToDefault();
+        ProjectileView.setAnimationDurationToDefault();
+        EnemyFactory.GOBLIN.setSpeed(optionValues[Option.GOBLIN_SPEED.ordinal()]);
+        EnemyFactory.KNIGHT.setSpeed(optionValues[Option.KNIGHT_SPEED.ordinal()]);
     }
 }
 

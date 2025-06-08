@@ -1,6 +1,7 @@
 package com.canja.kutowerdefence.controller;
 
 import com.canja.kutowerdefence.domain.WaveDescription;
+import com.canja.kutowerdefence.domain.WaveFactory;
 import com.canja.kutowerdefence.ui.EnemyView;
 import com.canja.kutowerdefence.ui.GamePlayView;
 import com.canja.kutowerdefence.domain.Enemy;
@@ -31,11 +32,10 @@ public class WaveController {
     private GamePlayView view;
     private final LinkedList<Point> enemyPath;
     private final List<Timeline> activeTimelines;
-    private final WaveDescription waveDescription;
+    private final WaveDescription waveDescription = WaveFactory.DEFAULT;
     private Wave wave;
 
     private int delayBetweenWaves;
-    private int waveReward = 50;
     private int enemyIndex;
 
     public WaveController(GameSession gameSession) {
@@ -45,17 +45,17 @@ public class WaveController {
 
         int[] options = gameSession.getOptionValues();
 
-        waveDescription = new WaveDescription(
-            options[Option.WAVE_GROUP_COUNT.ordinal()],
-            options[Option.ENEMY_GROUP_SIZE.ordinal()],
-            waveReward, 
-            options[Option.WAVE_GROUP_DELAY.ordinal()]
-        );
-
+        configureWaves(options);
         delayBetweenWaves = options[Option.WAVE_DELAY.ordinal()];
         EnemyGroupFactory.setDelay(options[Option.ENEMY_SPAWN_DELAY.ordinal()]);
 
         setStates();
+    }
+
+    public void configureWaves(int[] options) {
+        waveDescription.setDelay(options[Option.WAVE_GROUP_DELAY.ordinal()]);
+        waveDescription.setEnemyGroupNumber(options[Option.WAVE_GROUP_COUNT.ordinal()]);
+        waveDescription.setEnemyGroupSize(options[Option.ENEMY_GROUP_SIZE.ordinal()]);
     }
 
     public void setStates() {
@@ -178,5 +178,16 @@ public class WaveController {
         for (Timeline t : activeTimelines) {
             t.play();
         }
+    }
+
+    public void restartWaves() {
+        stopAll();
+
+        int[] options = gameSession.getOptionValues();
+
+        EnemyGroupFactory.setDelay(options[Option.ENEMY_SPAWN_DELAY.ordinal()]);
+        configureWaves(options);
+
+        startWaves();
     }
 }
