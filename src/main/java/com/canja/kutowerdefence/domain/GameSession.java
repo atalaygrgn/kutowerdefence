@@ -185,7 +185,7 @@ public class GameSession {
             tower.tryAttack(activeEnemies);
 
         }
-        activeEnemies.removeIf(e -> e.getHitpoint() <= 0);
+        activeEnemies.removeIf(e -> e.getHitpoint() <= 0 || e.reachedEnd());
     }
 
     public int getPlayerHitpoint() {
