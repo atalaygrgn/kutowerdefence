@@ -75,7 +75,7 @@ public class GamePlayController {
         return gameSession.getPauseState();
     }
 
-    public boolean getGameState(){return gameSession.isGameOver();}
+    public int getGameState(){return gameSession.isGameOver();}
 
     public void setView(GamePlayView view) {
         this.view = view;
@@ -169,8 +169,10 @@ public class GamePlayController {
     }
 
     public void updateGameState(){
-        if(getHealth()<=0 || (gameSession.getCurrentWave() > gameSession.getWaveNumber() && gameSession.getEnemies().isEmpty())) {
-            gameSession.setGameOver(true);
+        if(getHealth()<=0) {
+            gameSession.setGameOver(2);
+        } else if (gameSession.getCurrentWave() > gameSession.getWaveNumber() && gameSession.getEnemies().isEmpty()){
+            gameSession.setGameOver(1);
         }
     }
     public void putObjectOnMapView(MapObject mapObject) {

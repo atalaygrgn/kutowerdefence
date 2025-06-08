@@ -273,8 +273,10 @@ public class GamePlayView implements Initializable {
                     float deltaTime = (now - lastTime) / 1_000_000_000f;
                     controller.getGameSession().tick(deltaTime);
 
-                    if(controller.getGameState()){
-                        showGameOver();
+                    if(controller.getGameState()==2){
+                        showGameOver(false);
+                    } else if (controller.getGameState()==1) {
+                        showGameOver(true);
                     }
                     updateEnemies(deltaTime, controller.getPauseState());
                 }
@@ -284,12 +286,17 @@ public class GamePlayView implements Initializable {
         timer.start();
     }
 
-    public void showGameOver() {
+    public void showGameOver(boolean success) {
         waveController.stopAll();
         controller.getGameSession().clearActiveEnemiesTowers();
         enemyViews.clear();
         enemyLayer.getChildren().clear();
-        File bgFile = new File("src/main/resources/assets/gameover.png");
+        File bgFile;
+        if (success) {
+            bgFile = new File("src/main/resources/assets/gamesuccess.png");
+        } else {
+            bgFile = new File("src/main/resources/assets/gameover.png");
+        }
         BackgroundImage bgImage = new BackgroundImage(new Image(bgFile.toURI().toString()),
                 BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
                 new BackgroundSize(600, 800, false, false, true, true));

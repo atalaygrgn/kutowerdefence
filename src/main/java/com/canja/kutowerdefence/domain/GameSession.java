@@ -32,7 +32,7 @@ public class GameSession {
     private int waveNumber;
     private int currentWave;
 
-    public boolean gameOver;
+    public int gameOver;
 
     private final List<Tower> activeTowers = new ArrayList<>();
     private final List<Enemy> activeEnemies = new ArrayList<>();
@@ -66,7 +66,7 @@ public class GameSession {
         this.player = new Player(optionValues[Option.GOLD.ordinal()], optionValues[Option.PLAYER_HITPOINT.ordinal()]);
         player.setGoldAmount(playerInfo[0]);
         player.setHealth(playerInfo[1]);
-        this.gameOver = false;
+        this.gameOver=0;
         InitializeSession();
     }
 
@@ -159,9 +159,9 @@ public class GameSession {
         waveNumber = number;
     }
 
-    public boolean isGameOver() {return gameOver;}
+    public int isGameOver() {return gameOver;}
 
-    public void setGameOver(boolean over) {gameOver = over;}
+    public void setGameOver(int over) {gameOver = over;}
 
     public String getWaveInfo() {
         String waveInfo = currentWave + "/" + waveNumber;
@@ -266,7 +266,7 @@ public class GameSession {
     }
 
     public void resetSession() {
-        this.gameOver = false;
+        this.gameOver = 0;
         this.currentWave = 1;
         this.waveNumber = optionValues[Option.WAVE_NUMBER.ordinal()];
 
