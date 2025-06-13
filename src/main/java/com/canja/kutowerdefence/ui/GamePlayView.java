@@ -37,7 +37,6 @@ import javafx.scene.input.MouseEvent;
 
 public class GamePlayView implements Initializable {
 
-
     @FXML
     private Pane enemyLayer;
 
@@ -98,6 +97,12 @@ public class GamePlayView implements Initializable {
 
     @FXML
     private Label remainingTimeLabel;
+
+    @FXML
+    private ImageView towerUpgradeButton;
+
+    @FXML
+    private Label towerUpgradeCostLabel;
 
     @FXML private VBox gameOverOverlay;
     @FXML private Button restartGameOverBtn;
