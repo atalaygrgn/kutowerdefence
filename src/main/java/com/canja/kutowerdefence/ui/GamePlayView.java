@@ -88,6 +88,8 @@ public class GamePlayView implements Initializable {
 
     private final List<EnemyView> enemyViews = new ArrayList<>();
 
+    private KuTowerView kuTowerView;
+
     public void setController(GamePlayController controller, WaveController waveController) {
         this.controller = controller;
         this.waveController = waveController;
@@ -128,8 +130,15 @@ public class GamePlayView implements Initializable {
             }
         }
         for (MapObject mapObject : gameMap.getObjects()) {
-            MapObjectView objectView = new MapObjectView(mapObject);
-            mapGridPane.add(objectView, mapObject.getPosition().getX(), mapObject.getPosition().getY());
+            if (mapObject.getType() == MapObjectType.KU_TOWER) {
+                int maxHealth = controller.getGameSession().getPlayerHitpoint();
+                kuTowerView = new KuTowerView(mapObject, maxHealth);
+                kuTowerView.setHealth(controller.getHealth());
+                mapGridPane.add(kuTowerView, mapObject.getPosition().getX(), mapObject.getPosition().getY());
+            } else {
+                MapObjectView objectView = new MapObjectView(mapObject);
+                mapGridPane.add(objectView, mapObject.getPosition().getX(), mapObject.getPosition().getY());
+            }
         }
     }
 
@@ -249,6 +258,9 @@ public class GamePlayView implements Initializable {
                 controller.loseHealth();
                 controller.updateGameState();
                 toRemove.add(view);
+            }
+            if (kuTowerView != null) {
+                kuTowerView.setHealth(controller.getHealth());
             }
         }
         for (EnemyView view : toRemove) {

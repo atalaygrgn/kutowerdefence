@@ -21,5 +21,6 @@ public enum MapObjectType {
     WAY1,
     WAY2,
     WAY3,
-    WAY4
+    WAY4,
+    KU_TOWER
 }
