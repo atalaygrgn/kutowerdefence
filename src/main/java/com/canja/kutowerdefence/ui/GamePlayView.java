@@ -12,16 +12,20 @@ import com.canja.kutowerdefence.domain.Point;
 import com.canja.kutowerdefence.domain.TileType;
 import com.canja.kutowerdefence.domain.Tower;
 import com.canja.kutowerdefence.domain.TowerFactory;
+import com.canja.kutowerdefence.domain.Option;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.animation.AnimationTimer;
+import javafx.scene.shape.Circle;
+import javafx.scene.paint.Color;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,6 +33,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.List;
 import java.util.ArrayList;
+import javafx.scene.input.MouseEvent;
 
 public class GamePlayView implements Initializable {
 
@@ -66,14 +71,33 @@ public class GamePlayView implements Initializable {
 
     @FXML
     private Button restartButton;
+
     @FXML
     private ImageView healthIcon;
 
     @FXML
-    private ImageView goldIcon;
+    private ImageView waveIcon;
 
     @FXML
-    private ImageView waveIcon;
+    private ImageView archerTowerSelectButton;
+
+    @FXML
+    private ImageView artilleryTowerSelectButton;
+
+    @FXML
+    private ImageView mageTowerSelectButton;
+
+    @FXML
+    private Label archerCostLabel;
+
+    @FXML
+    private Label artilleryCostLabel;
+
+    @FXML
+    private Label mageCostLabel;
+
+    @FXML
+    private Label remainingTimeLabel;
 
     @FXML private VBox gameOverOverlay;
     @FXML private Button restartGameOverBtn;
@@ -86,6 +110,27 @@ public class GamePlayView implements Initializable {
     private WaveController waveController;
 
     private final List<EnemyView> enemyViews = new ArrayList<>();
+    private MapObjectType selectedTowerType = null;
+    private ImageView selectedTowerButton = null;
+
+    private static final Glow glow = new Glow(0.5);
+    private Circle rangePreview;
+    private static final int TILE_SIZE = 64;
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        initializeButtons();
+        healthIcon.setImage(new Image("file:src/main/resources/assets/ui/button/1.png"));
+        waveIcon.setImage(new Image("file:src/main/resources/assets/ui/button/2.png"));
+        remainingTimeLabel.setText("--:--");
+    }
+
+    public void updateTowerCosts() {
+        int[] options = controller.getGameSession().getOptionValues();
+        archerCostLabel.setText(String.valueOf(options[Option.ARCHER_TOWER_COST.ordinal()]));
+        artilleryCostLabel.setText(String.valueOf(options[Option.ARTILLERY_TOWER_COST.ordinal()]));
+        mageCostLabel.setText(String.valueOf(options[Option.MAGE_TOWER_COST.ordinal()]));
+    }
 
     private KuTowerView kuTowerView;
 
@@ -94,6 +139,7 @@ public class GamePlayView implements Initializable {
         this.waveController = waveController;
         initializeMapGridPane();
         updateUI();
+        updateTowerCosts();  // Add this line
         enemyLayer.prefWidthProperty().bind(mapGridPane.widthProperty());
         enemyLayer.prefHeightProperty().bind(mapGridPane.heightProperty());
         //controller.spawnTestEnemy();
@@ -105,12 +151,50 @@ public class GamePlayView implements Initializable {
         return waveController;
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        initializeButtons();
-        goldIcon.setImage(new Image("file:src/main/resources/assets/ui/button/0.png"));
-        healthIcon.setImage(new Image("file:src/main/resources/assets/ui/button/1.png"));
-        waveIcon.setImage(new Image("file:src/main/resources/assets/ui/button/2.png"));
+    private void showRangePreview(int x, int y, MapObjectType towerType) {
+        if (rangePreview != null) {
+            enemyLayer.getChildren().remove(rangePreview);
+        }
+
+        int range = switch (towerType) {
+            case TOWER_ARCHER, TOWER_ARTILLERY, TOWER_MAGE ->
+                controller.getGameSession().getOptionValues()[Option.TOWER_RANGE.ordinal()];
+            default -> 0;
+        };
+
+        rangePreview = new Circle(
+            (x + 0.5) * TILE_SIZE,
+            (y + 0.5) * TILE_SIZE,
+            range * TILE_SIZE
+        );
+        rangePreview.setFill(Color.rgb(255, 255, 255, 0.2));
+        rangePreview.setStroke(Color.WHITE);
+        rangePreview.setStrokeWidth(2);
+        rangePreview.setMouseTransparent(true);
+
+        enemyLayer.getChildren().add(rangePreview);
+    }
+
+    private void hideRangePreview() {
+        if (rangePreview != null) {
+            enemyLayer.getChildren().remove(rangePreview);
+            rangePreview = null;
+        }
+    }
+
+    private boolean isTowerPlaced(int x, int y) {
+        for (Node node : mapGridPane.getChildren()) {
+            Integer nodeCol = GridPane.getColumnIndex(node);
+            Integer nodeRow = GridPane.getRowIndex(node);
+
+            if ((nodeCol == null ? 0 : nodeCol) == x &&
+                (nodeRow == null ? 0 : nodeRow) == y) {
+                if (node instanceof MapObjectView) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public void initializeMapGridPane() {
@@ -122,8 +206,23 @@ public class GamePlayView implements Initializable {
                     int finalI = i;
                     int finalJ = j;
                     tileView.setOnMouseClicked(event -> {
-                        controller.onEmptyLotClicked(tileView, finalI, finalJ);
+                        if (selectedTowerType != null) {
+                            boolean success = controller.buyNewTower(finalI, finalJ, selectedTowerType);
+                            if (success) {
+                                tileView.setTileType(TileType.EMPTY);
+                                Tower newTower = controller.getGameSession().getNewestTower();
+                                controller.putObjectOnMapView(newTower);
+                                updateUI();
+                                hideRangePreview();
+                            }
+                        }
                     });
+                    tileView.setOnMouseEntered(event -> {
+                        if (selectedTowerType != null && !isTowerPlaced(finalI, finalJ)) {
+                            showRangePreview(finalI, finalJ, selectedTowerType);
+                        }
+                    });
+                    tileView.setOnMouseExited(event -> hideRangePreview());
                 }
                 mapGridPane.add(tileView, i, j);
             }
@@ -267,7 +366,7 @@ public class GamePlayView implements Initializable {
             enemyViews.remove(view);
             updateUI();
         }
-        
+
         controller.updateGameState();
     }
 
@@ -333,6 +432,35 @@ public class GamePlayView implements Initializable {
     public void setButtonImage(Button button, String resourcePath) {
         Image image = new Image(resourcePath);
         ImageView imageView = new ImageView(image);
+        imageView.setPreserveRatio(true);
+        imageView.setFitWidth(32.0);
         button.setGraphic(imageView);
+    }
+
+    @FXML
+    private void onTowerToolSelect(MouseEvent event) {
+        ImageView clickedButton = (ImageView) event.getSource();
+
+        // Deselect previous button
+        if (selectedTowerButton != null) {
+            selectedTowerButton.setEffect(null);
+        }
+
+        // If clicking the same button, deselect it
+        if (clickedButton == selectedTowerButton) {
+            selectedTowerButton = null;
+            selectedTowerType = null;
+            hideRangePreview();
+            return;
+        }
+
+        // Select new button
+        selectedTowerButton = clickedButton;
+        selectedTowerButton.setEffect(glow);
+        selectedTowerType = MapObjectType.valueOf((String)clickedButton.getUserData());
+    }
+
+    public void updateRemainingTime(String time) {
+        remainingTimeLabel.setText(time);
     }
 }

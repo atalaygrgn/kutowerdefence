@@ -6,6 +6,123 @@
 <?import javafx.scene.text.*?>
 
 <BorderPane xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.canja.kutowerdefence.ui.GamePlayView">
+    <top>
+        <HBox alignment="CENTER_LEFT">
+        <AnchorPane prefHeight="64.0" prefWidth="256.0">
+            <StackPane>
+                <ImageView fitHeight="96.0" pickOnBounds="true" preserveRatio="true" translateX="-20.0" translateY="-36.0">
+                    <image>
+                        <Image url="@../../../assets/ui/banner_hanging.png" />
+                    </image></ImageView>
+                <HBox alignment="CENTER_LEFT" prefHeight="64.0" prefWidth="256.0">
+                    <Pane prefWidth="16.0" />
+                    <StackPane prefWidth="72.0" translateY="-12.0">
+                        <children>
+                            <ImageView fitWidth="96.0" pickOnBounds="true" preserveRatio="true">
+                                <image>
+                                    <Image url="@../../../assets/ui/button_grey.png" />
+                                </image></ImageView>
+                            <ImageView fitWidth="16" preserveRatio="true" translateX="-24">
+                                <image>
+                                    <Image url="@../../../assets/ui/button/0.png" />
+                                </image></ImageView>
+                            <Label fx:id="goldLabel" text="1500" translateX="12">
+                                <font>
+                                    <Font name="System Bold" size="20.0" />
+                                </font></Label>
+                        </children></StackPane>
+                    <Pane prefWidth="4.0" />
+                    <StackPane prefWidth="72.0">
+                        <children>
+                            <ImageView fx:id="archerTowerSelectButton" fitWidth="64.0" onMouseClicked="#onTowerToolSelect" pickOnBounds="true" preserveRatio="true">
+                                <userData>TOWER_ARCHER</userData>
+                                <image>
+                                    <Image url="@../../../assets/ui/button/tower_option_buttons_0.png" />
+                                </image>
+                            </ImageView>
+                            <Label fx:id="archerCostLabel" text="150" translateX="16" translateY="24">
+                                <font>
+                                    <Font name="System Bold" size="13.0" />
+                                </font></Label>
+                        </children></StackPane>
+                    <Pane prefWidth="8.0" />
+                    <StackPane prefWidth="72.0">
+                        <children>
+                            <ImageView fx:id="artilleryTowerSelectButton" fitWidth="64.0" onMouseClicked="#onTowerToolSelect" pickOnBounds="true" preserveRatio="true">
+                                <userData>TOWER_ARTILLERY</userData>
+                                <image>
+                                    <Image url="@../../../assets/ui/button/tower_option_buttons_1.png" />
+                                </image>
+                            </ImageView>
+                            <Label fx:id="artilleryCostLabel" text="300" translateX="16" translateY="24">
+                                <font>
+                                    <Font name="System Bold" size="13.0" />
+                                </font></Label>
+                        </children></StackPane>
+                    <Pane prefWidth="8.0" />
+                    <StackPane prefWidth="72.0">
+                        <children>
+                            <ImageView fx:id="mageTowerSelectButton" fitWidth="64.0" onMouseClicked="#onTowerToolSelect" pickOnBounds="true" preserveRatio="true">
+                                <userData>TOWER_MAGE</userData>
+                                <image>
+                                    <Image url="@../../../assets/ui/button/tower_option_buttons_2.png" />
+                                </image>
+                            </ImageView>
+                            <Label fx:id="mageCostLabel" text="300" translateX="16" translateY="24">
+                                <font>
+                                    <Font name="System Bold" size="13.0" />
+                                </font></Label>
+                        </children>
+                    </StackPane>
+                </HBox>
+            </StackPane>
+        </AnchorPane>
+            <Pane prefWidth="55.0" />
+            <HBox alignment="CENTER">
+                <VBox alignment="CENTER">
+                <HBox alignment="CENTER">
+                    <ImageView fx:id="healthIcon" fitHeight="32" fitWidth="32" />
+                    <Pane prefWidth="10.0" />
+                <Label fx:id="healthLabel" text="100">
+                    <font>
+                        <Font size="24.0" />
+                    </font>
+                </Label>
+                <Pane prefWidth="16.0" />
+                <ImageView fx:id="waveIcon" fitHeight="32" fitWidth="32" />
+                <Label fx:id="waveLabel" text="1/10">
+                    <font>
+                        <Font size="24.0" />
+                    </font>
+                </Label>
+                </HBox>
+                    <Pane prefHeight="10.0" />
+                    <HBox alignment="CENTER">
+                        <ImageView fitHeight="32" fitWidth="32">
+                     <image>
+                        <Image url="@../../../assets/ui/hourglass.png" />
+                     </image></ImageView>
+                        <Pane prefWidth="10.0" />
+                        <Label fx:id="remainingTimeLabel" text="0:30">
+                            <font>
+                                <Font size="24.0" />
+                            </font>
+                        </Label>
+                    </HBox>
+                </VBox>
+                <Pane prefWidth="100.0" />
+                <Button fx:id="speedButton" text=" x1 " />
+                <Pane prefWidth="10.0" />
+                <Button fx:id="pauseButton" />
+                <Pane prefWidth="10.0" />
+                <Button fx:id="saveButton" />
+                <Pane prefWidth="16.0" />
+                <Button fx:id="restartButton" />
+                <Pane prefWidth="10.0" />
+                <Button fx:id="exitButton" />
+            </HBox>
+        </HBox>
+    </top>
     <center>
         <StackPane>
             <GridPane fx:id="mapGridPane" gridLinesVisible="true" prefHeight="768.0" prefWidth="1024.0">
@@ -43,71 +160,6 @@
                 </rowConstraints>
             </GridPane>
             <Pane fx:id="enemyLayer" pickOnBounds="false" />
-         <AnchorPane prefHeight="64.0" prefWidth="256.0">
-                <StackPane>
-                  <ImageView fitHeight="96.0" pickOnBounds="true" preserveRatio="true" translateX="-20.0" translateY="-36.0">
-                     <image>
-                        <Image url="@../../../assets/ui/banner_hanging.png" />
-                     </image></ImageView>
-               <HBox alignment="CENTER_LEFT" prefHeight="64.0" prefWidth="256.0">
-                   <Pane prefWidth="16.0" />
-                   <StackPane prefWidth="72.0" translateY="-8.0">
-                     <children>
-                        <ImageView fitWidth="72.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../../assets/ui/button_grey.png" />
-                           </image></ImageView>
-                         <ImageView fitWidth="16" translateX="-20" preserveRatio="true">
-                           <image>
-                              <Image url="@../../../assets/ui/button/0.png" />
-                           </image></ImageView>
-                         <Label text="1500" translateX="12">
-                             <font>
-                                 <Font name="System Bold" size="13.0" />
-                             </font></Label>
-                     </children></StackPane>
-                   <Pane prefWidth="16.0" />
-                     <StackPane prefWidth="72.0">
-                        <children>
-                         <ImageView fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
-                             <image>
-                                 <Image url="@../../../assets/ui/button/tower_option_buttons_0.png" />
-                             </image>
-                           </ImageView>
-                            <Label text="150" translateX="16" translateY="24">
-                           <font>
-                              <Font name="System Bold" size="13.0" />
-                           </font></Label>
-                        </children></StackPane>
-                   <Pane prefWidth="8.0" />
-                   <StackPane prefWidth="72.0">
-                       <children>
-                           <ImageView fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
-                               <image>
-                                   <Image url="@../../../assets/ui/button/tower_option_buttons_1.png" />
-                               </image>
-                           </ImageView>
-                           <Label text="300" translateX="16" translateY="24">
-                               <font>
-                                   <Font name="System Bold" size="13.0" />
-                               </font></Label>
-                       </children></StackPane>
-                   <Pane prefWidth="8.0" />
-                <StackPane prefWidth="72.0">
-                    <children>
-                        <ImageView fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="@../../../assets/ui/button/tower_option_buttons_2.png" />
-                            </image>
-                        </ImageView>
-                        <Label text="300" translateX="16" translateY="24">
-                            <font>
-                                <Font name="System Bold" size="13.0" />
-                            </font></Label>
-                    </children></StackPane>
-               </HBox>
-                </StackPane>
-         </AnchorPane>
             <VBox fx:id="gameOverOverlay" alignment="TOP_CENTER" maxHeight="600.0" maxWidth="800.0" spacing="20" style="-fx-background-color: rgba(0,0,0,0.6);" visible="false">
                 <children>
                     <Label fx:id="enemiesKilledLabel" prefHeight="45.0" prefWidth="300.0" style="-fx-font-size: 30px; -fx-text-fill: #F8E8A0; -fx-font-weight: bold; -fx-effect: dropshadow(one-pass-box, black, 5, 0.3, 2, 2);" alignment="CENTER" text="Enemies Killed: 0" />
@@ -123,51 +175,4 @@
             </VBox>
         </StackPane>
     </center>
-    <right>
-        <VBox alignment="TOP_CENTER" prefWidth="256.0" spacing="10" BorderPane.alignment="CENTER">
-            <children>
-            <HBox alignment="TOP_CENTER" prefHeight="35.0" prefWidth="256.0">
-               <children>
-                   <Button fx:id="pauseButton" />
-                   <Pane prefHeight="35.0" prefWidth="10.0" />
-                   <Button fx:id="restartButton" />
-                   <Pane prefHeight="35.0" prefWidth="10.0" />
-                   <Button fx:id="exitButton" />
-               </children>
-            </HBox>
-            <HBox alignment="TOP_CENTER" prefHeight="35.0" prefWidth="256.0">
-               <children>
-                   <Button fx:id="speedButton" text=" x1 " />
-                   <Pane prefHeight="35.0" prefWidth="10.0" />
-                   <Button fx:id="saveButton" />
-               </children>
-            </HBox>
-                <HBox alignment="CENTER_LEFT" spacing="10">
-                    <Pane prefHeight="24.0" prefWidth="24.0" />
-                    <ImageView fx:id="healthIcon" fitHeight="24" fitWidth="24" />
-                    <Pane prefWidth="4.0" />
-                    <Label fx:id="healthLabel" text="100">
-                  <font>
-                     <Font size="16.0" />
-                  </font></Label>
-                    <Pane prefWidth="16.0" />
-                    <ImageView fx:id="goldIcon" fitHeight="24" fitWidth="24" />
-                    <Pane prefWidth="4.0" />
-                    <Label fx:id="goldLabel" text="500">
-                  <font>
-                     <Font size="16.0" />
-                  </font></Label>
-                    <Pane prefWidth="16.0" />
-                    <ImageView fx:id="waveIcon" fitHeight="24" fitWidth="24" />
-                    <Pane prefWidth="4.0" />
-                    <Label fx:id="waveLabel" text="1/10">
-                  <font>
-                     <Font size="16.0" />
-                  </font></Label>
-                </HBox>
-                <Pane prefHeight="16.0" />
-
-            </children>
-        </VBox>
-    </right>
 </BorderPane>

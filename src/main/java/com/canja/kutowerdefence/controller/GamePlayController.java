@@ -162,6 +162,7 @@ public class GamePlayController {
       view.spawnEnemy(knight);
     }
 
+    /* DEPRECATED
     public void onEmptyLotClicked(TileView tileView, int x, int y) {
         TowerPopupPanel.show(x, y, selectedType -> {
             if (selectedType != null) {
@@ -176,6 +177,7 @@ public class GamePlayController {
             }
         });
     }
+    */
 
     public void updateGameState(){
         if(getHealth()<=0) {
@@ -193,5 +195,9 @@ public class GamePlayController {
 
     public void restartGameSession() {
         gameSession.resetSession();
+    }
+
+    public boolean buyNewTower(int finalI, int finalJ, MapObjectType selectedTowerType) {
+        return gameSession.buyNewTower(finalI, finalJ, selectedTowerType);
     }
 }
