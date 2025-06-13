@@ -37,4 +37,8 @@ public class Player {
     public boolean isPlayerDead() {
         return currentHealth <= 0;
     }
+
+    public void setHealth(int health) {this.currentHealth=health;}
+
+    public void setGoldAmount(int gold) {this.goldAmount = gold;}
 }

@@ -14,15 +14,13 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
 public class OptionsMenuView  implements Initializable{
-    int[] defaultValues = {1, 30, 5, 1, 250, 10, 25, 125, 500, 250, 3, 100, 100, 10, 25, 5, 2, 2, 1, 1};
+    int[] defaultValues = {1, 1, 30, 5, 1, 250, 10, 25, 125, 500, 250, 3, 3, 100, 100, 10, 25, 5, 2, 2, 1, 1, 3};
     int[] optionValues;
     private List<Button> optionButtons = new ArrayList<>();
     private OptionController controller;
@@ -67,7 +65,7 @@ public class OptionsMenuView  implements Initializable{
     }
 
     private void initializeButtons(List<Button> buttons) {
-        int index = 0;
+        int index = 1;
 
         for (Button button : buttons) {
             button.setUserData(defaultValues[index]);

@@ -2,6 +2,7 @@ package com.canja.kutowerdefence;
 
 import com.canja.kutowerdefence.controller.GamePlayController;
 import com.canja.kutowerdefence.controller.OptionController;
+import com.canja.kutowerdefence.controller.WaveController;
 import com.canja.kutowerdefence.domain.GameSession;
 import com.canja.kutowerdefence.ui.GamePlayView;
 import com.canja.kutowerdefence.ui.OptionsMenuView;
@@ -16,6 +17,7 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.Stack;
 
 /**
@@ -92,8 +94,10 @@ public final class Routing {
         FXMLLoader fxmlLoader = open("gameplay-view.fxml", "KU Tower Defence");
         GamePlayView view = fxmlLoader.getController();
         GamePlayController controller = new GamePlayController(gameSession);
+        WaveController waveController = new WaveController(gameSession);
         controller.setView(view);
-        view.setController(controller);
+        waveController.setView(view);
+        view.setController(controller, waveController);
 
         /* 
         FXMLLoader fxmlLoader = new FXMLLoader(Routing.class.getResource("gameplay-view.fxml"));
@@ -113,13 +117,15 @@ public final class Routing {
         */
     }
 
-    public static void openGamePlay(GameSession gameSession, int currentWave) throws IOException {   
+    public static void openGamePlayFromSave(GameSession gameSession, List<int[]> towerInfo) throws IOException{
         FXMLLoader fxmlLoader = open("gameplay-view.fxml", "KU Tower Defence");
         GamePlayView view = fxmlLoader.getController();
         GamePlayController controller = new GamePlayController(gameSession);
-        controller.setCurrentWave(currentWave);
+        WaveController waveController = new WaveController(gameSession);
         controller.setView(view);
-        view.setController(controller);
+        waveController.setView(view);
+        view.setController(controller, waveController);
+        view.reloadTowers(towerInfo, gameSession);
     }
 
     /**

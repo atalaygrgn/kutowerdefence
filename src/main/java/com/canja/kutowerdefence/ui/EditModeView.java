@@ -41,10 +41,12 @@ public class EditModeView implements Initializable {
     private boolean isSettingPathStart = false;
     private boolean isSettingPathEnd = false;
     private boolean tileEdit = true;
+    private static int dimX = 16;
+    private static int dimY = 12;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        mapEditor = new MapEditor();
+        mapEditor = new MapEditor(dimX, dimY);
         initializeMapGridPane();
         initializeTilePaletteGridPane();
         initializeToolButtons();

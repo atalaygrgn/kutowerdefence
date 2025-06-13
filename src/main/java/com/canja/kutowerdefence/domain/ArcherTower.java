@@ -4,8 +4,8 @@ import java.util.List;
 
 public class ArcherTower extends Tower {
 
-    public ArcherTower(Point position, GameSession gameSession, int range, int damage) {
-        super(MapObjectType.TOWER_ARCHER, position, gameSession, range, damage);
+    public ArcherTower(Point position, GameSession gameSession, int range, int damage, int cost) {
+        super(MapObjectType.TOWER_ARCHER, position, gameSession, range, damage, cost);
     }
 
     @Override

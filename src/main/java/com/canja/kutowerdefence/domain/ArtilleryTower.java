@@ -5,8 +5,8 @@ import java.util.List;
 public class ArtilleryTower extends Tower {
     private int aoeRadius;
 
-    public ArtilleryTower(Point position, GameSession gameSession, int range, int damage, int aoeRadius) {
-        super(MapObjectType.TOWER_ARTILLERY, position, gameSession, range, damage);
+    public ArtilleryTower(Point position, GameSession gameSession, int range, int damage, int cost, int aoeRadius) {
+        super(MapObjectType.TOWER_ARTILLERY, position, gameSession, range, damage, cost);
         this.aoeRadius = aoeRadius;
     }
 
@@ -15,6 +15,17 @@ public class ArtilleryTower extends Tower {
         Enemy best = getFurthestInRange(allEnemies);
         return best != null ? new Enemy[]{best} : new Enemy[0];
     }
+
+
+
+
+/*
+  REQUIRES: target must be an alive enemy currently present in the game session's enemy list.
+  MODIFIES: the hitpoints of any enemies within the area-of-effect radius of the target location.
+  EFFECTS: launches a projectile animation from this tower's position to the target's location.
+           Once the projectile lands, it applies damage to all enemies within aoeRadius
+            of the impact location.
+ */
 
     @Override
     public void attackEnemy(Enemy target) {
@@ -35,8 +46,8 @@ public class ArtilleryTower extends Tower {
                         if (dist <= aoeRadius) {
                             e.takeDamage(damage, "Shell");
                             //DEBUG ICIN
-                            System.out.println("Artillery AOE hit " + e.getDescription().getName() +
-                                    " (dist, " + dist + ") HP, " + e.getHitpoint());
+                            //System.out.println("Artillery AOE hit " + e.getDescription().getName() +
+                            //        " (dist, " + dist + ") HP, " + e.getHitpoint());
                         }
                     }
                 }

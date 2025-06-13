@@ -11,8 +11,8 @@ Please list the changes you made here during development
 - Introducing controller package for the controller pattern, and _GamePlayController_ for handling game logic
 - This file renamed to README to show the changes directly on the repo page
 
-  
 ### Çınar:
+
 - Created _OptionsMenuView_ and layout.
 - Handled the exit button case.
 
@@ -40,6 +40,7 @@ Please list the changes you made here during development
 - Code refactoring and slight modifications in _OptionController_ in _Routing_ & _OptionsMenuViewmake_ to make them compatible with _OptionController_ (please review)
 
 ### Çınar:
+
 - Implemented _Enemy_ domain classes: _Enemy_, _EnemyDescription_, and _EnemyFactory_.
 - _EnemyDescription_ holds the necessary informations for enemy creation, used in _Enemy_.
 - _Enemy_ class includes an _update()_ function for handling enemy movement and a _takeDamage()_ that sets damage multiplier for different enemy and projectile combinations.
@@ -57,7 +58,8 @@ Please list the changes you made here during development
 - _Tower_ classes implemented
 - Build tower by clicking an empty lot and choosing a tower type with the popup panel
 
-### Çınar: 
+### Çınar:
+
 - Implemented basic enemy spawning and path movement animation, many changes here and there.
 - Modified _GamePlayController_ and _Routing_ to test enemy movement, includes _spawnTestEnemy()_ which creates 1 goblin and 1 knight.
 - _Enemy_ and _EnemyDescription_ classes are modified for _takeDamage()_ logic with new resistance fields.
@@ -82,4 +84,27 @@ Please list the changes you made here during development
 - Options now modify tower properties
 
 ### Çınar:
+
 - Added health, gold, and wave icons on gameplay screen, slight modification on _GamePlayView_ layout.
+
+## 23.05
+
+### Anıl:
+
+- Introduced state pattern for toggle speed functionality (now there are 4 different states)
+- Bug fix
+
+## 05.06
+
+### Anıl:
+
+- Introduced wave mechanics to the game. User may change the delay between waves/enemy groups/enemies within the group, and also the number of enemy groups a wave has and group size of each group. All the waves are identical in terms of the number of enemy groups they have, and the size of the groups (each enemy group has the same size). However, each enemy group is initialized randomly (ie, group size is same for all enemy groups throughout the game, but they may have different number of goblins and knights).
+- Speed toggle/pause-resume states are integrated to wave mechanics.
+- Load-save game functionality is completed. Users can now save their games and/or load the games they previously saved. Currently they do not select a slot when saving, the game automatically creates another save file and stores it under saves folder. When loading all the files under saves folder are displayed and user chooses a save to open.
+
+
+## 13.06
+
+### Jahan:
+
+- On game over screen, number of enemies killed is now displayed. Game over text is now visually more fitting to the background.

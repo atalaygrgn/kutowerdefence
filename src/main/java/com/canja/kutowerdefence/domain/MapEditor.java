@@ -20,8 +20,8 @@ public class MapEditor {
     private TileType selectedTileType;
     private MapObjectType selectedObjectType;
 
-    public MapEditor() {
-        this.map = new Map();
+    public MapEditor(int m, int n) {
+        this.map = new Map(m, n);
         this.selectedTileType = TileType.EMPTY;
         this.selectedObjectType = MapObjectType.TREE1;
     }

@@ -1,6 +1,7 @@
 package com.canja.kutowerdefence.domain;
 
 public enum Option {
+    CURRENT_WAVE,
     WAVE_NUMBER,
     WAVE_DELAY,
     WAVE_GROUP_DELAY,
@@ -11,6 +12,7 @@ public enum Option {
     ARCHER_TOWER_COST,
     ARTILLERY_TOWER_COST,
     MAGE_TOWER_COST,
+    WAVE_GROUP_COUNT,
     PLAYER_HITPOINT,
     GOBLIN_HITPOINT,
     KNIGHT_HITPOINT,
@@ -20,5 +22,6 @@ public enum Option {
     TOWER_RANGE,
     AOE_RANGE,
     GOBLIN_SPEED,
-    KNIGHT_SPEED
+    KNIGHT_SPEED,
+    ENEMY_GROUP_SIZE
 }
