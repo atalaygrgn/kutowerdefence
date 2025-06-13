@@ -7,10 +7,18 @@
 
 <BorderPane xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.canja.kutowerdefence.ui.GamePlayView">
     <top>
+        <StackPane>
+            <Region prefHeight="128">
+                <style>
+                    -fx-background-image: url("file:src/main/resources/assets/tile64/tile64_05.png");
+                    -fx-background-repeat: repeat;
+                    -fx-background-size: 64 64;
+                </style>
+            </Region>
         <HBox alignment="CENTER_LEFT">
         <AnchorPane prefHeight="64.0" prefWidth="256.0">
             <StackPane>
-                <ImageView fitHeight="96.0" pickOnBounds="true" translateX="-24.0" translateY="-36.0" fitWidth="480.0">
+                <ImageView fitHeight="96.0" fitWidth="480.0" pickOnBounds="true" translateX="-24.0" translateY="-36.0">
                     <image>
                         <Image url="@../../../assets/ui/banner_hanging.png" />
                     </image></ImageView>
@@ -125,18 +133,46 @@
                         </Label>
                     </HBox>
                 </VBox>
-                <Pane prefWidth="40.0" />
-                <Button fx:id="speedButton" text=" x1 " />
+                <Pane prefWidth="20.0" />
+                <HBox alignment="CENTER">
+                    <ImageView fx:id="speedButton" fitHeight="48.0" fitWidth="48.0" pickOnBounds="true">
+                        <image>
+                            <Image url="@../../../assets/ui/button/button_5.png" />
+                        </image>
+                    </ImageView>
+                    <Label fx:id="speedLabel" prefWidth="48.0" text=" x1 ">
+                        <font>
+                            <Font name="System Bold" size="20.0" />
+                        </font>
+                    </Label>
+                </HBox>
                 <Pane prefWidth="10.0" />
-                <Button fx:id="pauseButton" />
+                <ImageView fx:id="pauseButton" fitHeight="48.0" fitWidth="48.0" pickOnBounds="true">
+                    <image>
+                        <Image url="@../../../assets/ui/button/button_6.png" />
+                    </image>
+                </ImageView>
                 <Pane prefWidth="10.0" />
-                <Button fx:id="saveButton" />
-                <Pane prefWidth="16.0" />
-                <Button fx:id="restartButton" />
+                <ImageView fx:id="saveButton" fitHeight="48.0" fitWidth="48.0" pickOnBounds="true">
+                    <image>
+                        <Image url="@../../../assets/ui/button/button_2.png" />
+                    </image>
+                </ImageView>
                 <Pane prefWidth="10.0" />
-                <Button fx:id="exitButton" />
+                <ImageView fx:id="restartButton" fitHeight="48.0" fitWidth="48.0" pickOnBounds="true">
+                    <image>
+                        <Image url="@../../../assets/ui/button/button_14.png" />
+                    </image>
+                </ImageView>
+                <Pane prefWidth="10.0" />
+                <ImageView fx:id="exitButton" fitHeight="48.0" fitWidth="48.0" pickOnBounds="true">
+                    <image>
+                        <Image url="@../../../assets/ui/button/button_3.png" />
+                    </image>
+                </ImageView>
             </HBox>
         </HBox>
+        </StackPane>
     </top>
     <center>
         <StackPane>

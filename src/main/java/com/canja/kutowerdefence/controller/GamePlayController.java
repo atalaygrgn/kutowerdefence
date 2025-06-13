@@ -5,14 +5,10 @@ import com.canja.kutowerdefence.state.FlowState;
 import com.canja.kutowerdefence.state.SpeedState;
 import com.canja.kutowerdefence.ui.GamePlayView;
 import com.canja.kutowerdefence.ui.MapObjectView;
-import com.canja.kutowerdefence.ui.ProjectileView;
-import com.canja.kutowerdefence.ui.TileView;
-import com.canja.kutowerdefence.ui.TowerPopupPanel;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import javafx.scene.control.Button;
-import javafx.scene.input.MouseButton;
+import javafx.scene.control.Label;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -104,13 +100,11 @@ public class GamePlayController {
         view.setButtonImage(clickedButton, path);
     }
 
-    public void toggleSpeed(Button clickedButton) {
+    public void toggleSpeed(Label speedLabel) {
         SpeedState currentState = gameSession.getSpeedState();
-        
         currentState.toggleSpeed();
         String text = currentState.getNextText();
-
-        clickedButton.setText(text);
+        speedLabel.setText(" " + text + " ");
     }
 
     public void saveGame() {

@@ -57,19 +57,22 @@ public class GamePlayView implements Initializable {
     private Label waveLabel;
 
     @FXML
-    private Button pauseButton;
+    private ImageView pauseButton;
 
     @FXML
-    private Button speedButton;
+    private ImageView speedButton;
 
     @FXML
-    private Button exitButton;
-    
-    @FXML
-    private Button saveButton;
+    private Label speedLabel;
 
     @FXML
-    private Button restartButton;
+    private ImageView exitButton;
+
+    @FXML
+    private ImageView saveButton;
+
+    @FXML
+    private ImageView restartButton;
 
     @FXML
     private ImageView healthIcon;
@@ -275,7 +278,44 @@ public class GamePlayView implements Initializable {
         }
     }
 
+    private static final Glow HOVER_GLOW = new Glow(0.5);
+
     private void initializeButtons() {
+        configurePauseButton();
+        configureSpeedButton();
+        configureExitButton();
+        configureRestartButton();
+        configureSaveButton();
+    }
+
+    private void configurePauseButton() {
+        pauseButton.setOnMouseClicked(event -> controller.pauseGame());
+        setupHoverEffect(pauseButton);
+    }
+
+    private void configureSpeedButton() {
+        speedButton.setOnMouseClicked(event -> controller.toggleSpeed(speedLabel));
+        setupHoverEffect(speedButton);
+    }
+
+    private void configureExitButton() {
+        exitButton.setOnMouseClicked(event -> handleExit());
+        setupHoverEffect(exitButton);
+    }
+
+    private void configureRestartButton() {
+        restartButton.setOnMouseClicked(event -> restartGame());
+        setupHoverEffect(restartButton);
+    }
+
+    private void configureSaveButton() {
+        saveButton.setOnMouseClicked(event -> controller.saveGame());
+        setupHoverEffect(saveButton);
+    }
+
+    private void setupHoverEffect(ImageView button) {
+        button.setOnMouseEntered(e -> button.setEffect(HOVER_GLOW));
+        button.setOnMouseExited(e -> button.setEffect(null));
         pauseButton.setOnAction(event -> controller.pauseGame(pauseButton));
         setButtonImage(pauseButton,"file:src/main/resources/assets/ui/button/button_6.png");
         speedButton.setOnAction(event -> controller.toggleSpeed(speedButton));
