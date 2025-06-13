@@ -44,8 +44,9 @@
             <Pane fx:id="enemyLayer" pickOnBounds="false" />
             <VBox fx:id="gameOverOverlay" alignment="TOP_CENTER" maxHeight="600.0" maxWidth="800.0" spacing="20" style="-fx-background-color: rgba(0,0,0,0.6);" visible="false">
                 <children>
-                    <Label prefHeight="45.0" prefWidth="215.0" style="-fx-font-size: 30px; -fx-text-fill: #000000;" text="Enemies Killed: " />
-               <Pane prefHeight="290.0" prefWidth="800.0" />
+                    <Label fx:id="enemiesKilledLabel" prefHeight="45.0" prefWidth="300.0" style="-fx-font-size: 30px; -fx-text-fill: #F8E8A0; -fx-font-weight: bold; -fx-effect: dropshadow(one-pass-box, black, 5, 0.3, 2, 2);" alignment="CENTER" text="Enemies Killed: 0" />
+
+                    <Pane prefHeight="290.0" prefWidth="800.0" />
                <HBox alignment="CENTER" prefHeight="50.0" prefWidth="800.0">
                   <children>
                           <Button fx:id="restartGameOverBtn" text="Restart" />

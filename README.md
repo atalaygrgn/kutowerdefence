@@ -101,3 +101,10 @@ Please list the changes you made here during development
 - Introduced wave mechanics to the game. User may change the delay between waves/enemy groups/enemies within the group, and also the number of enemy groups a wave has and group size of each group. All the waves are identical in terms of the number of enemy groups they have, and the size of the groups (each enemy group has the same size). However, each enemy group is initialized randomly (ie, group size is same for all enemy groups throughout the game, but they may have different number of goblins and knights).
 - Speed toggle/pause-resume states are integrated to wave mechanics.
 - Load-save game functionality is completed. Users can now save their games and/or load the games they previously saved. Currently they do not select a slot when saving, the game automatically creates another save file and stores it under saves folder. When loading all the files under saves folder are displayed and user chooses a save to open.
+
+
+## 13.06
+
+### Jahan:
+
+- On game over screen, number of enemies killed is now displayed. Game over text is now visually more fitting to the background.

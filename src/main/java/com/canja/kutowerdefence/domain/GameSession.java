@@ -37,6 +37,17 @@ public class GameSession {
     private final List<Tower> activeTowers = new ArrayList<>();
     private final List<Enemy> activeEnemies = new ArrayList<>();
 
+    private int enemiesKilled = 0;
+
+    public void incrementEnemiesKilled() {
+        enemiesKilled++;
+    }
+
+    public int getEnemiesKilled() {
+        return enemiesKilled;
+    }
+
+
     public List<Tower> getTowers() { return activeTowers; }
     public List<Enemy> getEnemies() { return activeEnemies; }
 
@@ -185,7 +196,15 @@ public class GameSession {
             tower.tryAttack(activeEnemies);
 
         }
-        activeEnemies.removeIf(e -> e.getHitpoint() <= 0 || e.reachedEnd());
+
+        activeEnemies.removeIf(e -> {
+            if (e.getHitpoint() <= 0) {
+                incrementEnemiesKilled();
+                return true;
+            }
+            return e.reachedEnd();
+        });
+
     }
 
     public int getPlayerHitpoint() {

@@ -80,6 +80,9 @@ public class GamePlayView implements Initializable {
     @FXML private Button restartGameOverBtn;
     @FXML private Button exitGameOverBtn;
 
+    @FXML
+    private Label enemiesKilledLabel;
+
     private GamePlayController controller;
     private WaveController waveController;
 
@@ -232,7 +235,7 @@ public class GamePlayView implements Initializable {
         if (isGamePaused) return;
 
         List<EnemyView> toRemove = new ArrayList<>();
-        for (EnemyView view : enemyViews) {
+        for (EnemyView view : new ArrayList<>(enemyViews)) {
             Enemy enemy = view.getEnemy();
             enemy.update(deltaTime);
             view.update();
@@ -291,6 +294,9 @@ public class GamePlayView implements Initializable {
         controller.getGameSession().clearActiveEnemiesTowers();
         enemyViews.clear();
         enemyLayer.getChildren().clear();
+        int kills = controller.getGameSession().getEnemiesKilled();
+        enemiesKilledLabel.setText("Enemies Killed: " + kills);
+
         File bgFile;
         if (success) {
             bgFile = new File("src/main/resources/assets/gamesuccess.png");
