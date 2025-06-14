@@ -2,7 +2,6 @@ package com.canja.kutowerdefence.controller;
 
 import com.canja.kutowerdefence.domain.WaveDescription;
 import com.canja.kutowerdefence.domain.WaveFactory;
-import com.canja.kutowerdefence.ui.EnemyView;
 import com.canja.kutowerdefence.ui.GamePlayView;
 import com.canja.kutowerdefence.domain.Enemy;
 import com.canja.kutowerdefence.domain.EnemyDescription;
@@ -37,6 +36,8 @@ public class WaveController {
 
     private int delayBetweenWaves;
     private int enemyIndex;
+    private int waveIndex = 0;
+    private float frameRate = 1f;
 
     public WaveController(GameSession gameSession) {
         this.gameSession = gameSession;
@@ -74,6 +75,14 @@ public class WaveController {
     public WaveDescription getDescription() {
         return waveDescription;
     }
+
+    public float getRate() {
+        return frameRate;
+    }
+
+    public void setRate(float rate) {
+        frameRate = rate;
+    }
     
     public Wave getCurrentWave() {
         return wave;
@@ -90,27 +99,22 @@ public class WaveController {
     private void runWaves() {
         if (!hasWaves()) return;
 
-        Timeline initialDelay = new Timeline();
         IntegerProperty remainingSeconds = new SimpleIntegerProperty(delayBetweenWaves);
-
-        KeyFrame countdownFrame = new KeyFrame(Duration.seconds(1), e -> {
+        Timeline initialDelay = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
             System.out.printf("Next wave in: %d seconds%n", remainingSeconds.get());
             remainingSeconds.set(remainingSeconds.get() - 1);
-        });
-
-        initialDelay.getKeyFrames().add(countdownFrame);
+        }));
         initialDelay.setCycleCount(delayBetweenWaves);
-
+        initialDelay.setRate(frameRate);
         initialDelay.setOnFinished(e -> {
+            activeTimelines.remove(initialDelay);
+            gameSession.setCurrentWave(++waveIndex);
+            view.updateUI();
             wave = new Wave(waveDescription);
             spawnEnemyGroups(wave, () -> {
-                int waveIndex = gameSession.getCurrentWave();
-                gameSession.setCurrentWave(++waveIndex);
-                view.updateUI();
                 runWaves();  
             });
         });
-
         initialDelay.play();
         activeTimelines.add(initialDelay);
     }    
@@ -144,6 +148,7 @@ public class WaveController {
             }
         }));
         timeline.setCycleCount(enemies.size());
+        timeline.setRate(frameRate);
         timeline.setOnFinished(e -> {
             activeTimelines.remove(timeline);
             Timeline delayTimeline = new Timeline(new KeyFrame(
@@ -151,6 +156,7 @@ public class WaveController {
                 ev -> onFinished.run() 
             ));
             delayTimeline.setCycleCount(1);
+            delayTimeline.setRate(frameRate);
             delayTimeline.setOnFinished(event -> activeTimelines.remove(delayTimeline));
             delayTimeline.play();
             activeTimelines.add(delayTimeline);

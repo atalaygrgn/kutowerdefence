@@ -41,15 +41,8 @@ public abstract class AbstractSpeedState implements SpeedState {
         long cooldown = Tower.getCooldown();
         Tower.setCooldown((int) (cooldown/speedMultiplier));
 
-        WaveDescription description = controller.getDescription();
-        float delay = description.getDelay();
-
-        Wave wave = controller.getCurrentWave();
-        if (wave != null) wave.setDelay(delay/speedMultiplier);
-
-        description.setDelay(delay/speedMultiplier);
-        EnemyGroupFactory.setDelay(EnemyGroupFactory.getDelay()/speedMultiplier);
-
+        controller.setRate(controller.getRate()*speedMultiplier);
+        
         for (Timeline timeline : controller.getActiveTimelines()) {
             timeline.setRate(timeline.getRate()*speedMultiplier);
         }
