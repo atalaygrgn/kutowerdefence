@@ -18,7 +18,6 @@ import java.util.ResourceBundle;
 import java.util.List;
 
 import com.canja.kutowerdefence.domain.MapService;
-import com.canja.kutowerdefence.domain.SaveSelectionOverlay;
 import com.canja.kutowerdefence.domain.SaveService;
 import javafx.stage.Stage;
 

@@ -1,4 +1,4 @@
-package com.canja.kutowerdefence.domain;
+package com.canja.kutowerdefence.ui;
 
 import java.io.File;
 import java.io.IOException;
@@ -7,6 +7,8 @@ import java.util.List;
 import java.lang.reflect.Type;
 
 import com.canja.kutowerdefence.Routing;
+import com.canja.kutowerdefence.domain.GameSession;
+import com.canja.kutowerdefence.domain.SaveData;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
