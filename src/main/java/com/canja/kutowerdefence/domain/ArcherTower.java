@@ -16,16 +16,17 @@ public class ArcherTower extends Tower {
 
     @Override
     public void attackEnemy(Enemy target) {
+        System.out.printf("Arrow fired at enemy pos: (%.2f, %.2f)%n", target.getX(), target.getY());
         session.getView().launchProjectile(
                 position.getX(), position.getY(),
                 target.getX(), target.getY(),
-                "/assets/effects/Fire.png",
-                128, 128, 7,
+                "/assets/effects/Arrow.png",
+                32, 32, 1,
                 () -> {
                     target.takeDamage(damage, "Arrow");
                     //DEBUG ICIN TEMP
-                    System.out.println("Archer Tower attacked: " + target.getDescription().getName() + " HP=" + target.getHitpoint());
-                }
+                    //System.out.println("Archer Tower attacked: " + target.getDescription().getName() + " HP=" + target.getHitpoint());
+                }, true
         );
     }
 }

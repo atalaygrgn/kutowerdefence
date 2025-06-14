@@ -9,8 +9,6 @@ public class Enemy {
     private LinkedList<Point> path;
     private int currentPathIndex;
     private int goldReward;
-
-
     public Enemy(EnemyDescription description, LinkedList<Point> path) {
         this.description = description;
         this.path = path;
