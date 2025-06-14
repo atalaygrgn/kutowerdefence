@@ -8,7 +8,10 @@ import com.canja.kutowerdefence.ui.MapObjectView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -91,13 +94,13 @@ public class GamePlayController {
         gameSession.rewardPlayer(val);
     }
 
-    public void pauseGame(Button clickedButton) {
+    public void pauseGame(ImageView clickedButton) {
         FlowState state = gameSession.getFlowState();
 
         state.togglePauseState();
         String path = state.getNextIcon();
 
-        view.setButtonImage(clickedButton, path);
+        clickedButton.setImage(new Image(getClass().getClassLoader().getResourceAsStream(path)));
     }
 
     public void toggleSpeed(Label speedLabel) {

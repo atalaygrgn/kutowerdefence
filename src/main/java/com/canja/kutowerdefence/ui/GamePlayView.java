@@ -289,7 +289,7 @@ public class GamePlayView implements Initializable {
     }
 
     private void configurePauseButton() {
-        pauseButton.setOnMouseClicked(event -> controller.pauseGame());
+        pauseButton.setOnMouseClicked(event -> controller.pauseGame(pauseButton));
         setupHoverEffect(pauseButton);
     }
 
@@ -316,20 +316,16 @@ public class GamePlayView implements Initializable {
     private void setupHoverEffect(ImageView button) {
         button.setOnMouseEntered(e -> button.setEffect(HOVER_GLOW));
         button.setOnMouseExited(e -> button.setEffect(null));
-        pauseButton.setOnAction(event -> controller.pauseGame(pauseButton));
-        setButtonImage(pauseButton,"file:src/main/resources/assets/ui/button/button_6.png");
-        speedButton.setOnAction(event -> controller.toggleSpeed(speedButton));
-        setButtonImage(speedButton,"file:src/main/resources/assets/ui/button/button_5.png");
-        exitButton.setOnAction(event -> handleExit());
-        setButtonImage(exitButton,"file:src/main/resources/assets/ui/button/button_3.png");
-        restartButton.setOnAction(event -> restartGame());
-        setButtonImage(restartButton,"file:src/main/resources/assets/ui/button/button_14.png");
-        saveButton.setOnAction(event -> controller.saveGame());
-        setButtonImage(saveButton,"file:src/main/resources/assets/ui/button/button_2.png");
+        pauseButton.setOnMouseClicked(event -> controller.pauseGame(pauseButton));
+        speedButton.setOnMouseClicked(event -> controller.toggleSpeed(speedLabel));
+        exitButton.setOnMouseClicked(event -> handleExit());
+        restartButton.setOnMouseClicked(event -> restartGame());
+        saveButton.setOnMouseClicked(event -> controller.saveGame());
         restartGameOverBtn.setOnAction(event -> {
             System.out.println("Restart clicked!");
+            setControlsDisabled(false); // Enable controls when restarting
             controller.restartGameSession();
-            speedButton.setText(" x1 ");
+            speedLabel.setText(" x1 ");
             mapGridPane.getChildren().clear();
             initializeMapGridPane();
             updateUI();
@@ -349,9 +345,59 @@ public class GamePlayView implements Initializable {
         setButtonImage(exitGameOverBtn, "file:src/main/resources/assets/ui/button/button_3.png");
     }
 
+    public void showGameOver(boolean success) {
+        waveController.stopAll();
+        controller.getGameSession().clearActiveEnemiesTowers();
+        enemyViews.clear();
+        enemyLayer.getChildren().clear();
+        int kills = controller.getGameSession().getEnemiesKilled();
+        enemiesKilledLabel.setText("Enemies Killed: " + kills);
+
+        // Disable all game controls
+        setControlsDisabled(true);
+
+        File bgFile;
+        if (success) {
+            bgFile = new File("src/main/resources/assets/gamesuccess.png");
+        } else {
+            bgFile = new File("src/main/resources/assets/gameover.png");
+        }
+        BackgroundImage bgImage = new BackgroundImage(new Image(bgFile.toURI().toString()),
+                BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
+                new BackgroundSize(600, 800, false, false, true, true));
+        gameOverOverlay.setBackground(new Background(bgImage));
+        gameOverOverlay.setVisible(true);
+    }
+
+    private void setControlsDisabled(boolean disabled) {
+        // Disable tower selection buttons
+        archerTowerSelectButton.setDisable(disabled);
+        artilleryTowerSelectButton.setDisable(disabled);
+        mageTowerSelectButton.setDisable(disabled);
+        towerUpgradeButton.setDisable(disabled);
+
+        // Disable game control buttons
+        speedButton.setDisable(disabled);
+        pauseButton.setDisable(disabled);
+        saveButton.setDisable(disabled);
+        restartButton.setDisable(disabled);
+        exitButton.setDisable(disabled);
+
+        // Clear tower selection if game is over
+        if (disabled && selectedTowerButton != null) {
+            selectedTowerButton.setEffect(null);
+            selectedTowerButton = null;
+            selectedTowerType = null;
+            hideRangePreview();
+        }
+    }
+
     private void restartGame() {
+        // Enable controls when restarting
+        setControlsDisabled(false);
+        
         controller.restartGameSession();
-        speedButton.setText(" x1 ");
+        speedLabel.setText(" x1 ");
 
         enemyViews.clear();
         enemyLayer.getChildren().clear();
@@ -443,28 +489,6 @@ public class GamePlayView implements Initializable {
         };
         timer.start();
     }
-
-    public void showGameOver(boolean success) {
-        waveController.stopAll();
-        controller.getGameSession().clearActiveEnemiesTowers();
-        enemyViews.clear();
-        enemyLayer.getChildren().clear();
-        int kills = controller.getGameSession().getEnemiesKilled();
-        enemiesKilledLabel.setText("Enemies Killed: " + kills);
-
-        File bgFile;
-        if (success) {
-            bgFile = new File("src/main/resources/assets/gamesuccess.png");
-        } else {
-            bgFile = new File("src/main/resources/assets/gameover.png");
-        }
-        BackgroundImage bgImage = new BackgroundImage(new Image(bgFile.toURI().toString()),
-                BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
-                new BackgroundSize(600, 800, false, false, true, true));
-        gameOverOverlay.setBackground(new Background(bgImage));
-        gameOverOverlay.setVisible(true);
-    }
-
 
     public void launchProjectile(int fromX, int fromY, float toX, float toY,
                                  String spritePath, int frameW, int frameH, int frameCount,

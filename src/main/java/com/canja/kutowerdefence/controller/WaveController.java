@@ -111,6 +111,7 @@ public class WaveController {
             remainingSeconds.set(remainingSeconds.get() - 1);
         });
 
+        initialDelay.getKeyFrames().add(countdownFrame);
         initialDelay.setCycleCount(delayBetweenWaves);
         initialDelay.setRate(frameRate);
         initialDelay.setOnFinished(e -> {
