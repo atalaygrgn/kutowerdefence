@@ -36,7 +36,7 @@
                                 </image></ImageView>
                             <Label fx:id="goldLabel" text="1500" translateX="12">
                                 <font>
-                                    <Font name="System Bold" size="20.0" />
+                                    <Font name="System" size="20.0" />
                                 </font></Label>
                         </children></StackPane>
                     <Pane prefWidth="8.0" />
@@ -50,7 +50,7 @@
                             </ImageView>
                             <Label fx:id="archerCostLabel" text="150" translateX="16" translateY="24">
                                 <font>
-                                    <Font name="System Bold" size="13.0" />
+                                    <Font name="System" size="13.0" />
                                 </font></Label>
                         </children></StackPane>
                     <Pane prefWidth="8.0" />
@@ -64,7 +64,7 @@
                             </ImageView>
                             <Label fx:id="artilleryCostLabel" text="300" translateX="16" translateY="24">
                                 <font>
-                                    <Font name="System Bold" size="13.0" />
+                                    <Font name="System" size="13.0" />
                                 </font></Label>
                         </children></StackPane>
                     <Pane prefWidth="8.0" />
@@ -78,7 +78,7 @@
                             </ImageView>
                             <Label fx:id="mageCostLabel" text="300" translateX="16" translateY="24">
                                 <font>
-                                    <Font name="System Bold" size="13.0" />
+                                    <Font name="System" size="13.0" />
                                 </font></Label>
                         </children>
                     </StackPane>
@@ -93,14 +93,13 @@
                             </ImageView>
                             <Label fx:id="towerUpgradeCostLabel" text="300" translateX="16" translateY="24">
                                 <font>
-                                    <Font name="System Bold" size="13.0" />
+                                    <Font name="System" size="13.0" />
                                 </font></Label>
                         </children>
                     </StackPane>
                 </HBox>
             </StackPane>
         </AnchorPane>
-            <Pane prefWidth="10.0" />
             <HBox alignment="CENTER">
                 <VBox alignment="CENTER">
                 <HBox alignment="CENTER">
@@ -108,14 +107,14 @@
                     <Pane prefWidth="10.0" />
                 <Label fx:id="healthLabel" text="100">
                     <font>
-                        <Font size="24.0" />
+                        <Font name="System" size="24.0" />
                     </font>
                 </Label>
                 <Pane prefWidth="16.0" />
                 <ImageView fx:id="waveIcon" fitHeight="32" fitWidth="32" />
                 <Label fx:id="waveLabel" text="1/10">
                     <font>
-                        <Font size="24.0" />
+                        <Font name="System" size="24.0" />
                     </font>
                 </Label>
                 </HBox>
@@ -128,7 +127,7 @@
                         <Pane prefWidth="10.0" />
                         <Label fx:id="remainingTimeLabel" text="0:30">
                             <font>
-                                <Font size="24.0" />
+                                <Font name="System" size="24.0" />
                             </font>
                         </Label>
                     </HBox>
@@ -140,9 +139,9 @@
                             <Image url="@../../../assets/ui/button/button_5.png" />
                         </image>
                     </ImageView>
-                    <Label fx:id="speedLabel" prefWidth="48.0" text=" x1 ">
+                    <Label fx:id="speedLabel" prefWidth="60.0" text=" x1 ">
                         <font>
-                            <Font name="System Bold" size="20.0" />
+                            <Font name="System" size="20.0" />
                         </font>
                     </Label>
                 </HBox>
@@ -213,7 +212,7 @@
             <Pane fx:id="enemyLayer" pickOnBounds="false" />
             <VBox fx:id="gameOverOverlay" alignment="TOP_CENTER" maxHeight="600.0" maxWidth="800.0" spacing="20" style="-fx-background-color: rgba(0,0,0,0.6);" visible="false">
                 <children>
-                    <Label fx:id="enemiesKilledLabel" prefHeight="45.0" prefWidth="300.0" style="-fx-font-size: 30px; -fx-text-fill: #F8E8A0; -fx-font-weight: bold; -fx-effect: dropshadow(one-pass-box, black, 5, 0.3, 2, 2);" alignment="CENTER" text="Enemies Killed: 0" />
+                    <Label fx:id="enemiesKilledLabel" prefHeight="45.0" prefWidth="300.0" style="-fx-font-family: 'System'; -fx-font-size: 30px; -fx-text-fill: #F8E8A0; -fx-font-weight: bold; -fx-effect: dropshadow(one-pass-box, black, 5, 0.3, 2, 2);" alignment="CENTER" text="Enemies Killed: 0" />
 
                     <Pane prefHeight="290.0" prefWidth="800.0" />
                     <HBox alignment="CENTER" prefHeight="50.0" prefWidth="800.0">
