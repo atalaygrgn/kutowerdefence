@@ -8,7 +8,6 @@ import com.canja.kutowerdefence.ui.MapObjectView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -185,9 +184,10 @@ public class GamePlayController {
             view.showGameOver(true);
         }
     }
-    public void putObjectOnMapView(MapObject mapObject) {
+    public MapObjectView putObjectOnMapView(MapObject mapObject) {
         MapObjectView newObjectView = new MapObjectView(mapObject);
         view.getMapGridPane().add(newObjectView, mapObject.getPosition().getX(), mapObject.getPosition().getY());
+        return newObjectView;
     }
 
     public void restartGameSession() {

@@ -159,6 +159,17 @@ public class GamePlayView implements Initializable {
         return waveController;
     }
 
+    private boolean isTowerView(Node node) {
+        if (node instanceof MapObjectView) {
+            MapObjectView view = (MapObjectView) node;
+            MapObjectType type = view.getMapObject().getType();
+            return type == MapObjectType.TOWER_ARCHER || 
+                   type == MapObjectType.TOWER_ARTILLERY || 
+                   type == MapObjectType.TOWER_MAGE;
+        }
+        return false;
+    }
+
     private void showRangePreview(int x, int y, MapObjectType towerType) {
         if (rangePreview != null) {
             enemyLayer.getChildren().remove(rangePreview);
@@ -219,22 +230,28 @@ public class GamePlayView implements Initializable {
                             if (success) {
                                 tileView.setTileType(TileType.EMPTY);
                                 Tower newTower = controller.getGameSession().getNewestTower();
-                                controller.putObjectOnMapView(newTower);
+                                MapObjectView objectView = controller.putObjectOnMapView(newTower);
+                                
+                                // Add hover events for the new tower
+                                final int towerX = finalI;
+                                final int towerY = finalJ;
+                                objectView.setOnMouseEntered(e -> {
+                                    if (isTowerView(objectView)) {
+                                        showRangePreview(towerX, towerY, newTower.getType());
+                                    }
+                                });
+                                objectView.setOnMouseExited(e -> hideRangePreview());
+                                
                                 updateUI();
                                 hideRangePreview();
                             }
                         }
                     });
-                    tileView.setOnMouseEntered(event -> {
-                        if (selectedTowerType != null && !isTowerPlaced(finalI, finalJ)) {
-                            showRangePreview(finalI, finalJ, selectedTowerType);
-                        }
-                    });
-                    tileView.setOnMouseExited(event -> hideRangePreview());
                 }
                 mapGridPane.add(tileView, i, j);
             }
         }
+        
         for (MapObject mapObject : gameMap.getObjects()) {
             if (mapObject.getType() == MapObjectType.KU_TOWER) {
                 int maxHealth = controller.getGameSession().getPlayerHitpoint();
@@ -243,6 +260,17 @@ public class GamePlayView implements Initializable {
                 mapGridPane.add(kuTowerView, mapObject.getPosition().getX(), mapObject.getPosition().getY());
             } else {
                 MapObjectView objectView = new MapObjectView(mapObject);
+                if (isTowerView(objectView)) {
+                    // Store position values to avoid potential issues with closure
+                    final int towerX = mapObject.getPosition().getX();
+                    final int towerY = mapObject.getPosition().getY();
+                    final MapObjectType towerType = mapObject.getType();
+                    
+                    objectView.setOnMouseEntered(e -> {
+                        showRangePreview(towerX, towerY, towerType);
+                    });
+                    objectView.setOnMouseExited(e -> hideRangePreview());
+                }
                 mapGridPane.add(objectView, mapObject.getPosition().getX(), mapObject.getPosition().getY());
             }
         }
