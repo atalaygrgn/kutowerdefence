@@ -56,6 +56,10 @@ public class GamePlayController {
         TowerFactory.setAoeRadius(options[Option.AOE_RANGE.ordinal()]);
     }
 
+    public int getLevel() {
+        return gameSession.getLevel();
+    }
+
     public Map getMap() {
         return gameSession.getMap();
     }
@@ -114,7 +118,7 @@ public class GamePlayController {
     }
 
     public void saveGame() {
-        if (gameSession.waveActive) {
+        if (gameSession.isWaveActive()) {
             System.out.println("Cannot save while a wave is active!");
             return;
         }
@@ -181,7 +185,7 @@ public class GamePlayController {
         if(getHealth()<=0) {
             gameSession.setGameOver(2);
             view.showGameOver(false);
-        } else if (gameSession.getCurrentWave() > gameSession.getWaveNumber() && gameSession.getEnemies().isEmpty()){
+        } else if (gameSession.getCurrentWave() == gameSession.getWaveNumber() && !gameSession.isWaveActive()){
             gameSession.setGameOver(1);
             view.showGameOver(true);
         }

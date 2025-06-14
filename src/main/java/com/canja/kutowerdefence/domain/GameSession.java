@@ -1,10 +1,10 @@
 package com.canja.kutowerdefence.domain;
 
 import com.canja.kutowerdefence.Routing;
-import com.canja.kutowerdefence.state.*;
 import com.canja.kutowerdefence.ui.GamePlayView;
 import com.canja.kutowerdefence.ui.ProjectileView;
 import com.canja.kutowerdefence.ui.TileView;
+import com.canja.kutowerdefence.state.*;
 import com.google.gson.Gson;
 
 import java.io.File;
@@ -35,7 +35,9 @@ public class GameSession {
     private int currentWave;
     public int gameOver;
 
-    public boolean waveActive = false;
+    private boolean waveActive = false;
+    private boolean isCampaign = false;
+    private int level; 
 
     private final List<Tower> activeTowers = new ArrayList<>();
     private final List<Enemy> activeEnemies = new ArrayList<>();
@@ -78,12 +80,28 @@ public class GameSession {
         this.mapFile = mapFile;
         this.map = new Map(dimX, dimY);
         this.player = new Player(optionValues[Option.GOLD.ordinal()], optionValues[Option.PLAYER_HITPOINT.ordinal()]);
+
         player.setGoldAmount(playerInfo[0]);
         player.setHealth(playerInfo[1]);
+        isCampaign = true;
+        
         this.gameOver=0;
         InitializeSession();
     }
+    
+    public GameSession(File mapFile, int[] options, int level) {
+        this.optionValues = options;
+        this.mapFile = mapFile;
+        this.map = new Map(dimX, dimY);
+        this.player = new Player(optionValues[Option.GOLD.ordinal()], optionValues[Option.PLAYER_HITPOINT.ordinal()]);
 
+        isCampaign = true;
+        this.level = level;
+
+        this.gameOver=0;
+        InitializeSession();
+     }
+    
     public void InitializeSession() {
         Tower.setCooldownToDefault();
         ProjectileView.setAnimationDurationToDefault();
@@ -105,6 +123,14 @@ public class GameSession {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public boolean isCampaign() {
+        return this.isCampaign;
+    }
+
+    public int getLevel() {
+        return level;
     }
 
     public void start() {
@@ -190,7 +216,12 @@ public class GameSession {
     public void setGameOver(int over) {gameOver = over;}
 
     public String getWaveInfo() {
-        String waveInfo = currentWave + "/" + waveNumber;
+        String text = "" + currentWave;
+        if (currentWave == 0) {
+            text = "1";
+        }
+        
+        String waveInfo = text + "/" + waveNumber;
 
         return waveInfo;
     }

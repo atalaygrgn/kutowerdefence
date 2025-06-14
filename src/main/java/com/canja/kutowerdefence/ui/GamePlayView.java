@@ -2,6 +2,7 @@ package com.canja.kutowerdefence.ui;
 
 import com.canja.kutowerdefence.Routing;
 import com.canja.kutowerdefence.controller.GamePlayController;
+import com.canja.kutowerdefence.controller.LevelManager;
 import com.canja.kutowerdefence.controller.WaveController;
 import com.canja.kutowerdefence.domain.Enemy;
 import com.canja.kutowerdefence.domain.GameSession;
@@ -278,6 +279,12 @@ public class GamePlayView implements Initializable {
                     if(controller.getGameState()==2){
                         showGameOver(false);
                     } else if (controller.getGameState()==1) {
+                        int level = LevelManager.getCurrentLevel();
+
+                        if (controller.getLevel() == level) {
+                            LevelManager.saveLevel(++level);
+                        }
+
                         showGameOver(true);
                     }
                     updateEnemies(deltaTime, controller.getPauseState());

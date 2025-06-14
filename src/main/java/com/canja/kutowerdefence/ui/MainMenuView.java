@@ -1,6 +1,8 @@
 package com.canja.kutowerdefence.ui;
 
 import com.canja.kutowerdefence.Routing;
+import com.canja.kutowerdefence.controller.LevelManager;
+
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
@@ -17,8 +19,11 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.List;
 
+import com.canja.kutowerdefence.domain.GameSession;
 import com.canja.kutowerdefence.domain.MapService;
 import com.canja.kutowerdefence.domain.SaveService;
+import com.canja.kutowerdefence.domain.WaveDescription;
+
 import javafx.stage.Stage;
 
 public class MainMenuView implements Initializable {
@@ -74,6 +79,7 @@ public class MainMenuView implements Initializable {
 
         newGameButton.setOnAction((event) -> handleNewGame());
         loadGameButton.setOnAction((event) -> handleLoadGame());
+        levelButton.setOnAction((event) -> handleCampaign());
     }
 
 
@@ -108,5 +114,23 @@ public class MainMenuView implements Initializable {
     private void handleLoadGame() {
         List<File> saves = SaveService.getInstance().getSaveFiles();
         SaveSelectionOverlay.show(saves);
+    }
+
+    private void handleCampaign() {
+        try {
+            int level = LevelManager.getCurrentLevel();
+            List<Object> info = LevelManager.extractLevelInfo(level);
+
+            GameSession session = new GameSession((File) info.get(0), (int[]) info.get(1), level);
+
+            try {
+                Routing.openCampaignLevel(session, (List<int[]>) info.get(2));
+                
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

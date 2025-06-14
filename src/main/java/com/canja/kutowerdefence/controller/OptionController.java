@@ -197,7 +197,7 @@ public class OptionController {
         File saveDirectory = new File("src/main/resources/options");
         String saveName = "options.kutdopt";
         int[] optionValues = new int[buttons.size() + 1];
-        optionValues[0] = 1; //Current wave is always 1 at the beginning
+        optionValues[0] = 0; //Current wave is always 0 at the beginning
         int index = 1;
 
         for (Button button : buttons) {

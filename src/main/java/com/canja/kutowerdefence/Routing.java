@@ -4,6 +4,7 @@ import com.canja.kutowerdefence.controller.GamePlayController;
 import com.canja.kutowerdefence.controller.OptionController;
 import com.canja.kutowerdefence.controller.WaveController;
 import com.canja.kutowerdefence.domain.GameSession;
+import com.canja.kutowerdefence.domain.WaveDescription;
 import com.canja.kutowerdefence.ui.GamePlayView;
 import com.canja.kutowerdefence.ui.OptionsMenuView;
 
@@ -17,6 +18,7 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
@@ -126,6 +128,25 @@ public final class Routing {
         waveController.setView(view);
         view.setController(controller, waveController);
         view.reloadTowers(towerInfo, gameSession);
+    }
+
+    public static void openCampaignLevel(GameSession gameSession, List<int[]> waves) throws IOException{
+        FXMLLoader fxmlLoader = open("gameplay-view.fxml", "KU Tower Defence");
+        GamePlayView view = fxmlLoader.getController();
+        GamePlayController controller = new GamePlayController(gameSession);
+
+        List<WaveDescription> descriptions = new ArrayList<>();
+    
+        for (int[] wave : waves) {
+            WaveDescription description = new WaveDescription(wave[0], wave[1], wave[2], wave[3]);
+            descriptions.add(description);
+        }
+
+        WaveController waveController = new WaveController(gameSession, descriptions);
+
+        controller.setView(view);
+        waveController.setView(view);
+        view.setController(controller, waveController);
     }
 
     /**

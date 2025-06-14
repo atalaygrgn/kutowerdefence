@@ -107,6 +107,7 @@ public class WaveController {
     }
 
     public void startWaves() {
+        gameSession.setCurrentWave(0);
         if (isCampaign) {
             runWaves(descriptions);
         } else {
@@ -118,13 +119,14 @@ public class WaveController {
         if (descriptions != null) {
             return waveIndex < descriptions.size();
         }
-        return gameSession.getCurrentWave() <= gameSession.getWaveNumber();
+        return gameSession.getCurrentWave() < gameSession.getWaveNumber();
     }
 
     private void runWaves(List<WaveDescription> descriptions) {
+        gameSession.setWaveState(false);
+        
         if (!hasWaves()) return;
 
-        gameSession.setWaveState(false);
         IntegerProperty remainingSeconds = new SimpleIntegerProperty(delayBetweenWaves);
         Timeline initialDelay = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
             System.out.printf("Next wave in: %d seconds%n", remainingSeconds.get());
@@ -135,9 +137,9 @@ public class WaveController {
         initialDelay.setOnFinished(e -> {
             activeTimelines.remove(initialDelay);
             gameSession.setWaveState(true);
-            view.updateUI();
             wave = new Wave(descriptions.get(waveIndex));
             gameSession.setCurrentWave(++waveIndex);
+            view.updateUI();
             spawnEnemyGroups(wave, () -> {
                 runWaves(descriptions);  
             });
@@ -147,9 +149,10 @@ public class WaveController {
     }
 
     private void runWaves() {
+        gameSession.setWaveState(false);
+
         if (!hasWaves()) return;
 
-        gameSession.setWaveState(false);
         IntegerProperty remainingSeconds = new SimpleIntegerProperty(delayBetweenWaves);
         Timeline initialDelay = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
             System.out.printf("Next wave in: %d seconds%n", remainingSeconds.get());
@@ -247,7 +250,7 @@ public class WaveController {
 
         EnemyGroupFactory.setDelay(options[Option.ENEMY_SPAWN_DELAY.ordinal()]);
         configureWaves(options);
-
+        frameRate = 1;
         startWaves();
     }
 }
