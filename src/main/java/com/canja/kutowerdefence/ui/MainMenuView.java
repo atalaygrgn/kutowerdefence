@@ -30,6 +30,7 @@ public class MainMenuView implements Initializable {
     public Button optionsButton;
     public Button newGameButton;
     public Button loadGameButton;
+    public Button levelButton;
 
     public void onQuitButtonClick(ActionEvent actionEvent) {
         Platform.exit();
