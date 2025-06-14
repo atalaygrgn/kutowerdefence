@@ -99,6 +99,7 @@ public class WaveController {
     private void runWaves() {
         if (!hasWaves()) return;
 
+        gameSession.setWaveState(false);
         IntegerProperty remainingSeconds = new SimpleIntegerProperty(delayBetweenWaves);
         Timeline initialDelay = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
             System.out.printf("Next wave in: %d seconds%n", remainingSeconds.get());
@@ -108,6 +109,7 @@ public class WaveController {
         initialDelay.setRate(frameRate);
         initialDelay.setOnFinished(e -> {
             activeTimelines.remove(initialDelay);
+            gameSession.setWaveState(true);
             gameSession.setCurrentWave(++waveIndex);
             view.updateUI();
             wave = new Wave(waveDescription);
