@@ -19,13 +19,13 @@ public class ArcherTower extends Tower {
         session.getView().launchProjectile(
                 position.getX(), position.getY(),
                 target.getX(), target.getY(),
-                "/assets/effects/Fire.png",
-                128, 128, 7,
+                "/assets/effects/Arrow.png",
+                32, 32, 1,
                 () -> {
                     target.takeDamage(damage, "Arrow");
                     //DEBUG ICIN TEMP
-                    System.out.println("Archer Tower attacked: " + target.getDescription().getName() + " HP=" + target.getHitpoint());
-                }
+                    //System.out.println("Archer Tower attacked: " + target.getDescription().getName() + " HP=" + target.getHitpoint());
+                }, true
         );
     }
 }

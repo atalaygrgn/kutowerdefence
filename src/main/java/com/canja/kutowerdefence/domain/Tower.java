@@ -10,7 +10,7 @@ public abstract class Tower extends MapObject {
     protected int range;
     protected int damage;
     protected int cost;
-    protected GameSession session;
+    public GameSession session;
     protected long lastAttackTime = 0;
     protected static long attackCooldownMillis = 800;
 

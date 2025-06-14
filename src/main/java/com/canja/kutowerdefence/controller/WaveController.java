@@ -101,7 +101,7 @@ public class WaveController {
     public void setRate(float rate) {
         frameRate = rate;
     }
-    
+
     public Wave getCurrentWave() {
         return wave;
     }
@@ -165,6 +165,7 @@ public class WaveController {
             gameSession.setWaveState(true);
             gameSession.setCurrentWave(++waveIndex);
             view.updateUI();
+            view.updateRemainingTime("--:--");
             wave = new Wave(waveDescription);
             spawnEnemyGroups(wave, () -> {
                 runWaves();  

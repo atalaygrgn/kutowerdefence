@@ -30,6 +30,8 @@ public class MapObjectView extends ImageView {
     public Image getObjectImage() {
         if (mapObject.getType().equals(MapObjectType.CASTLE)) {
             return new Image("file:src/main/resources/assets/tile64/castle64.png");
+        } else if (mapObject.getType().equals(MapObjectType.KU_TOWER)){
+            return new Image("file:src/main/resources/assets/tile64/tile64_37.png");
         }
         String index_f = new DecimalFormat("00").format(mapObject.getType().ordinal() + 16);
         return new Image(new File("src/main/resources/assets/tile64/tile64_" + index_f + ".png").toURI().toString());
