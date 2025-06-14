@@ -313,9 +313,9 @@ public class GamePlayView implements Initializable {
 
     public void launchProjectile(int fromX, int fromY, float toX, float toY,
                                  String spritePath, int frameW, int frameH, int frameCount,
-                                 Runnable onHit) {
+                                 Runnable onHit, boolean useBezier) {
         ProjectileView projectile = new ProjectileView(fromX, fromY, toX, toY,
-                spritePath, frameW, frameH, frameCount, onHit);
+                spritePath, frameW, frameH, frameCount, onHit, useBezier);
         enemyLayer.getChildren().add(projectile);
     }
 

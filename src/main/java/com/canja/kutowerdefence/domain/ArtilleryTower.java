@@ -50,7 +50,7 @@ public class ArtilleryTower extends Tower {
                             //        " (dist, " + dist + ") HP, " + e.getHitpoint());
                         }
                     }
-                }
+                } , false
         );
     }
 }

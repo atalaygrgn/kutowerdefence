@@ -26,7 +26,7 @@ public class MageTower extends Tower {
                     target.takeDamage(damage, "Spell");
                     //DBG ICN
                     System.out.println("Mage Tower attacked: " + target.getDescription().getName() + " HP=" + target.getHitpoint());
-                }
+                } , false
         );
     }
 }
