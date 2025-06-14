@@ -27,7 +27,9 @@ public class GameSession {
     private SpeedState ultraFastState;
     private SpeedState slowState;
     private SpeedState speedState;
-    private boolean pauseState = false;
+    private FlowState flowState;
+    private FlowState pausedState;
+    private FlowState playingState;
 
     private int waveNumber;
     private int currentWave;
@@ -84,11 +86,15 @@ public class GameSession {
     public void InitializeSession() {
         Tower.setCooldownToDefault();
         ProjectileView.setAnimationDurationToDefault();
+
         normalState = new NormalState(this);
         fastState = new FastState(this);
         ultraFastState = new UltraFastState(this);
         slowState = new SlowState(this);
         speedState = normalState;
+        pausedState = new PausedState(this);
+        playingState = new PlayingState(this);
+        flowState = playingState;
 
         waveNumber = optionValues[Option.WAVE_NUMBER.ordinal()];
         currentWave = optionValues[Option.CURRENT_WAVE.ordinal()];
@@ -141,17 +147,25 @@ public class GameSession {
     public SpeedState getSpeedState() {
         return speedState;
     }
+
+    public FlowState getPlayingState() {
+        return playingState;
+    }
+
+    public FlowState getPausedState() {
+        return pausedState;
+    }
+
+    public FlowState getFlowState() {
+        return flowState;
+    }
     
     public void setSpeedState(SpeedState state) {
         speedState = state;
     }
 
-    public boolean getPauseState() {
-        return pauseState;
-    }
-
-    public void togglePauseState() {
-        pauseState = !pauseState;
+    public void setFlowState(FlowState state) {
+        flowState = state;
     }
 
     public int getCurrentWave() {
@@ -294,7 +308,7 @@ public class GameSession {
 
         clearActiveEnemiesTowers();
 
-        this.pauseState = false;
+        this.flowState = playingState;
         this.speedState = normalState;
 
         Tower.setCooldownToDefault();
