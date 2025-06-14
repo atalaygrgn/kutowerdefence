@@ -15,7 +15,7 @@ import javafx.animation.Timeline;
 public abstract class AbstractSpeedState implements SpeedState {
     GameSession gameSession;
     WaveController controller;
-    
+
     public AbstractSpeedState(GameSession gameSession) {
         this.gameSession = gameSession;
     }
@@ -35,8 +35,7 @@ public abstract class AbstractSpeedState implements SpeedState {
         speed = EnemyFactory.KNIGHT.getSpeed();
         EnemyFactory.KNIGHT.setSpeed(speed*speedMultiplier);
 
-        int currentDuration = ProjectileView.getAnimationDuration();
-        ProjectileView.setAnimationDuration((int) (currentDuration/speedMultiplier));
+        ProjectileView.setRate(ProjectileView.getRate()*speedMultiplier);
         
         long cooldown = Tower.getCooldown();
         Tower.setCooldown((int) (cooldown/speedMultiplier));

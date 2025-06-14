@@ -16,7 +16,6 @@ public class ArcherTower extends Tower {
 
     @Override
     public void attackEnemy(Enemy target) {
-        System.out.printf("Arrow fired at enemy pos: (%.2f, %.2f)%n", target.getX(), target.getY());
         session.getView().launchProjectile(
                 position.getX(), position.getY(),
                 target.getX(), target.getY(),

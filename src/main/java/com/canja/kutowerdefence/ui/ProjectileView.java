@@ -24,7 +24,14 @@ public class ProjectileView extends Group {
     private static int animationDuration = 50;
     private double endX, endY;
     private final Runnable onHit;
+    private static float rate=1;
 
+    public static float getRate() {
+        return rate;
+    }
+    public static void setRate(float num) {
+        rate = num;
+    }
     public ProjectileView(double startX, double startY, double endX, double endY,
         String spritePath, int frameW, int frameH, int frameCount, Runnable onHit, boolean useBezier){
 
@@ -58,6 +65,7 @@ public class ProjectileView extends Group {
                     })
             );
             animationTimeline.setCycleCount(Animation.INDEFINITE);
+            animationTimeline.setRate(rate);
             animationTimeline.play();
         }
 
@@ -74,6 +82,7 @@ public class ProjectileView extends Group {
             startBezierAnimation();
         } else {
             TranslateTransition flight = new TranslateTransition(Duration.millis(400), this);
+            flight.setRate(rate);
             flight.setToX(endX * TILE_SIZE);
             flight.setToY(endY * TILE_SIZE);
             flight.setOnFinished(e -> handleHit());
@@ -148,6 +157,7 @@ public class ProjectileView extends Group {
 
         PathTransition pathTransition = new PathTransition();
         pathTransition.setDuration(Duration.millis(400));
+        pathTransition.setRate(rate);
         pathTransition.setNode(this);
         pathTransition.setPath(path);
         pathTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
