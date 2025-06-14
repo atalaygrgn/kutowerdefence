@@ -1,33 +1,14 @@
 package com.canja.kutowerdefence.state;
 
-import java.util.List;
-
-import com.canja.kutowerdefence.domain.Enemy;
 import com.canja.kutowerdefence.domain.GameSession;
-import com.canja.kutowerdefence.domain.Tower;
-import com.canja.kutowerdefence.ui.ProjectileView;
-
-public class FastState implements SpeedState{
-    GameSession gameSession;
-
+public class FastState extends AbstractSpeedState{
     public FastState(GameSession gameSession) {
-        this.gameSession = gameSession;
+        super(gameSession);
     }
 
     @Override
     public void toggleSpeed() {
-        List<Enemy> enemies = gameSession.getEnemies();
-        
-        for (Enemy enemy : enemies) {
-            float currentSpeed = enemy.getSpeed();
-            enemy.setSpeed(2*currentSpeed);
-        }
-
-        int currentDuration = ProjectileView.getAnimationDuration();
-        ProjectileView.setAnimationDuration(currentDuration/2);
-        
-        long cooldown = Tower.getCooldown();
-        Tower.setCooldown(cooldown/2);
+        speedMultiplier(2f);
         
         gameSession.setSpeedState(gameSession.getUltraFastState());
     }
