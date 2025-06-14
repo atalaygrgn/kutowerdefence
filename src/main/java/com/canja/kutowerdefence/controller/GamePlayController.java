@@ -1,6 +1,7 @@
 package com.canja.kutowerdefence.controller;
 
 import com.canja.kutowerdefence.domain.*;
+import com.canja.kutowerdefence.state.FlowState;
 import com.canja.kutowerdefence.state.SpeedState;
 import com.canja.kutowerdefence.ui.GamePlayView;
 import com.canja.kutowerdefence.ui.MapObjectView;
@@ -72,7 +73,7 @@ public class GamePlayController {
     }
     
     public boolean getPauseState() {
-        return gameSession.getPauseState();
+        return gameSession.getFlowState() == gameSession.getPausedState();
     }
 
     public int getGameState(){return gameSession.isGameOver();}
@@ -94,15 +95,13 @@ public class GamePlayController {
         gameSession.rewardPlayer(val);
     }
 
-    public void pauseGame() {
-        gameSession.togglePauseState();
+    public void pauseGame(Button clickedButton) {
+        FlowState state = gameSession.getFlowState();
 
-        if (gameSession.getPauseState()) {
-            view.getWaveController().pauseWaves();
-        }
-        else {
-            view.getWaveController().resumeWaves();
-        }
+        state.togglePauseState();
+        String path = state.getNextIcon();
+
+        view.setButtonImage(clickedButton, path);
     }
 
     public void toggleSpeed(Button clickedButton) {

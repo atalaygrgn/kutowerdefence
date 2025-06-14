@@ -63,6 +63,8 @@ public class WaveController {
         gameSession.getNormalState().setWaveController(this);
         gameSession.getFastState().setWaveController(this);
         gameSession.getUltraFastState().setWaveController(this);
+        gameSession.getPausedState().setWaveController(this);
+        gameSession.getPlayingState().setWaveController(this);
     }
 
     public void setView(GamePlayView view) {
