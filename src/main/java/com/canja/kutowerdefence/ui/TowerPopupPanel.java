@@ -1,12 +1,15 @@
 package com.canja.kutowerdefence.ui;
 
 import com.canja.kutowerdefence.domain.MapObjectType;
+import com.canja.kutowerdefence.domain.Player;
+import com.canja.kutowerdefence.domain.Tower;
+import javafx.application.Platform;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.scene.Scene;
 
 import java.util.function.Consumer;
 
@@ -52,4 +55,8 @@ public class TowerPopupPanel {
         popupStage.setScene(scene);
         popupStage.showAndWait();
     }
+
+
+
+
 }

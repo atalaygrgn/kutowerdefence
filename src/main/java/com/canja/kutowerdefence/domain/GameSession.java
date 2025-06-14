@@ -189,6 +189,8 @@ public class GameSession {
     }
 
     public void tick(float deltaTime) {
+        Enemy.setSharedEnemies(activeEnemies);
+
         for (Enemy enemy : activeEnemies) {
             enemy.update(deltaTime);
         }
@@ -270,6 +272,7 @@ public class GameSession {
 
         return true;
     }
+
 
     public void loseHealth() {
         player.loseHealth();

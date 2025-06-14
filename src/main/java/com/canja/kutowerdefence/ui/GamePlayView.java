@@ -21,6 +21,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
 import javafx.animation.AnimationTimer;
 
@@ -129,6 +130,8 @@ public class GamePlayView implements Initializable {
         }
         for (MapObject mapObject : gameMap.getObjects()) {
             MapObjectView objectView = new MapObjectView(mapObject);
+
+
             mapGridPane.add(objectView, mapObject.getPosition().getX(), mapObject.getPosition().getY());
         }
     }
@@ -324,4 +327,19 @@ public class GamePlayView implements Initializable {
         ImageView imageView = new ImageView(image);
         button.setGraphic(imageView);
     }
+
+    public MapObjectView getMapObjectViewAt(int x, int y) {
+        for (Node node : mapGridPane.getChildren()) {
+            if (node instanceof MapObjectView) {
+                Integer col = GridPane.getColumnIndex(node);
+                Integer row = GridPane.getRowIndex(node);
+                if ((col == null ? 0 : col) == x && (row == null ? 0 : row) == y) {
+                    return (MapObjectView) node;
+                }
+            }
+        }
+        return null;
+    }
+
+
 }

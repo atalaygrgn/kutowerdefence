@@ -28,4 +28,20 @@ public class ArcherTower extends Tower {
                 }
         );
     }
+
+    @Override
+    public int getUpgradeCost() {
+        return (int)(cost * 1.5);
+    }
+
+    @Override
+    public void upgrade() {
+        if (level == 1) {
+            this.level = 2;
+            this.range = (int)(this.range * 1.5);
+            cooldownMillis /= 2;
+        }
+    }
+
+
 }

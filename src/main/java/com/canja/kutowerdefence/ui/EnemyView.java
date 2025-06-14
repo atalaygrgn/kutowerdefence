@@ -22,6 +22,9 @@ public class EnemyView extends Group {
     private final List<Image> animationFrames = new ArrayList<>();
     private int currentFrame = 0;
     private Timeline animationTimeline;
+    private ImageView slowEffectIcon;
+    private ImageView synergyIcon;
+
 
 
     public EnemyView(Enemy enemy) {
@@ -49,6 +52,24 @@ public class EnemyView extends Group {
         healthBarFront.setFill(Color.LIMEGREEN);
 
         this.getChildren().addAll(imageView, healthBarBack, healthBarFront);
+
+        Image snowflakeImage = new Image(getClass().getResourceAsStream("/assets/icons/snowflake.png"));
+        slowEffectIcon = new ImageView(snowflakeImage);
+        slowEffectIcon.setFitWidth(16);
+        slowEffectIcon.setFitHeight(16);
+        slowEffectIcon.setTranslateY(-10);
+        slowEffectIcon.setVisible(false);
+
+        this.getChildren().add(slowEffectIcon);
+
+
+        Image synergyImage = new Image(getClass().getResourceAsStream("/assets/icons/synergy.png"));
+        synergyIcon = new ImageView(synergyImage);
+        synergyIcon.setFitWidth(16);
+        synergyIcon.setFitHeight(16);
+        synergyIcon.setTranslateY(-10);
+        synergyIcon.setVisible(false);
+        this.getChildren().add(synergyIcon);
 
 
         animationTimeline = new Timeline(
@@ -88,6 +109,25 @@ public class EnemyView extends Group {
         int maxHP = enemy.getDescription().getHitpoints();
         float ratio = Math.max(0, (float) currentHP / maxHP);
         healthBarFront.setWidth(TILE_SIZE * ratio);
+
+        boolean slowed = enemy.isSlowed();
+        boolean synergy = enemy.isSynergyActive();
+
+        slowEffectIcon.setVisible(slowed);
+        synergyIcon.setVisible(synergy);
+
+        if (slowed && synergy) {
+            slowEffectIcon.setTranslateX(-10);
+            synergyIcon.setTranslateX(10);
+        } else if (slowed) {
+            slowEffectIcon.setTranslateX(0);
+        } else if (synergy) {
+            synergyIcon.setTranslateX(0);
+        }
+
+        slowEffectIcon.setTranslateY(-12);
+        synergyIcon.setTranslateY(-12);
+
     }
 
     public boolean isDead() {

@@ -17,16 +17,36 @@ public class MageTower extends Tower {
 
     @Override
     public void attackEnemy(Enemy target) {
+
+
         session.getView().launchProjectile(
                 position.getX(), position.getY(),
                 target.getX(), target.getY(),
-                "/assets/effects/Fire.png",
+                level == 1 ? "/assets/effects/Fire.png" : "/assets/effects/BlueFire.png", // 🔹 Different graphic
                 128, 128, 7,
                 () -> {
                     target.takeDamage(damage, "Spell");
+                    if (Math.random() < 0.03) {
+                        target.teleportToStart();
+                    }
+
                     //DBG ICN
                     System.out.println("Mage Tower attacked: " + target.getDescription().getName() + " HP=" + target.getHitpoint());
                 }
         );
     }
+
+    @Override
+    public int getUpgradeCost() {
+        return (int)(cost * 1.5);
+    }
+
+    @Override
+    public void upgrade() {
+        if (level == 1) {
+            this.level = 2;
+        }
+    }
+
+
 }

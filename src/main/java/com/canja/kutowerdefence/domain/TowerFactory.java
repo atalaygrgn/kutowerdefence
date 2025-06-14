@@ -39,4 +39,17 @@ public final class TowerFactory {
             default -> null;
         };
     }
+
+    public static boolean upgradeTower(Tower tower, Player player) {
+        if (!tower.canUpgrade()) return false;
+
+        int upgradeCost = tower.getUpgradeCost();
+        if (player.getGoldAmount() < upgradeCost) return false;
+
+        player.deductGold(upgradeCost);
+        tower.upgrade();
+        return true;
+    }
+
+
 }

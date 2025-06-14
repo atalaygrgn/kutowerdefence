@@ -3,6 +3,7 @@ package com.canja.kutowerdefence.ui;
 import com.canja.kutowerdefence.domain.MapObject;
 import com.canja.kutowerdefence.domain.MapObjectType;
 import com.canja.kutowerdefence.domain.TileType;
+import com.canja.kutowerdefence.domain.Tower;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -31,6 +32,24 @@ public class MapObjectView extends ImageView {
         if (mapObject.getType().equals(MapObjectType.CASTLE)) {
             return new Image("file:src/main/resources/assets/tile64/castle64.png");
         }
+
+        if (mapObject instanceof Tower) {
+            Tower tower = (Tower) mapObject;
+            if (tower.getLevel() == 2) {
+                int imageIndex = switch (tower.getType()) {
+                    case TOWER_ARCHER -> 37;
+                    case TOWER_ARTILLERY -> 38;
+                    case TOWER_MAGE -> 39;
+                    default -> -1;
+                };
+
+                if (imageIndex != -1) {
+                    return new Image(new File("src/main/resources/assets/tile64/tile64_" + String.format("%02d", imageIndex) + ".png").toURI().toString());
+                }
+            }
+        }
+
+
         String index_f = new DecimalFormat("00").format(mapObject.getType().ordinal() + 16);
         return new Image(new File("src/main/resources/assets/tile64/tile64_" + index_f + ".png").toURI().toString());
     }
