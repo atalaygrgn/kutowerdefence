@@ -205,7 +205,7 @@ public class WaveController {
 
         EnemyGroupFactory.setDelay(options[Option.ENEMY_SPAWN_DELAY.ordinal()]);
         configureWaves(options);
-
+        frameRate=1;
         startWaves();
     }
 }

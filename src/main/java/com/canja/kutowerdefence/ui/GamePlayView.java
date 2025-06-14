@@ -330,7 +330,7 @@ public class GamePlayView implements Initializable {
             initializeMapGridPane();
             updateUI();
             gameOverOverlay.setVisible(false);
-            waveController.startWaves();
+            waveController.restartWaves();
         });
         setButtonImage(restartGameOverBtn, "file:src/main/resources/assets/ui/button/button_14.png");
         exitGameOverBtn.setOnAction(event -> {
