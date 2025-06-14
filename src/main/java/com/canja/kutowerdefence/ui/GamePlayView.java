@@ -12,7 +12,6 @@ import com.canja.kutowerdefence.domain.Point;
 import com.canja.kutowerdefence.domain.TileType;
 import com.canja.kutowerdefence.domain.Tower;
 import com.canja.kutowerdefence.domain.TowerFactory;
-import com.canja.kutowerdefence.domain.Wave;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;

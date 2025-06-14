@@ -114,6 +114,16 @@ public class GamePlayController {
     }
 
     public void saveGame() {
+        if (gameSession.waveActive) {
+            System.out.println("Cannot save while a wave is active!");
+            return;
+        }
+
+        if (!gameSession.getEnemies().isEmpty()) {
+            System.out.println("Cannot save while there are enemies alive!");
+            return;
+        }
+
         List<File> saveFiles = SaveService.getSaveFiles();
         String filename = "src/main/resources/saves/save" + String.valueOf(saveFiles.size() + 1) + ".kutdsave";
         String mapPath = gameSession.getMapPath();

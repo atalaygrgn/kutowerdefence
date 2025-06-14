@@ -33,8 +33,9 @@ public class GameSession {
 
     private int waveNumber;
     private int currentWave;
-
     public int gameOver;
+
+    public boolean waveActive = false;
 
     private final List<Tower> activeTowers = new ArrayList<>();
     private final List<Enemy> activeEnemies = new ArrayList<>();
@@ -315,6 +316,14 @@ public class GameSession {
         ProjectileView.setAnimationDurationToDefault();
         EnemyFactory.GOBLIN.setSpeed(optionValues[Option.GOBLIN_SPEED.ordinal()]);
         EnemyFactory.KNIGHT.setSpeed(optionValues[Option.KNIGHT_SPEED.ordinal()]);
+    }
+
+    public boolean isWaveActive() {
+        return waveActive;
+    }
+
+    public void setWaveState(boolean bool) {
+        waveActive = bool;
     }
 }
 
