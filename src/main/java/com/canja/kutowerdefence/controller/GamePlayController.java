@@ -185,7 +185,7 @@ public class GamePlayController {
         if(getHealth()<=0) {
             gameSession.setGameOver(2);
             view.showGameOver(false);
-        } else if (gameSession.getCurrentWave() == gameSession.getWaveNumber() && !gameSession.isWaveActive()){
+        } else if (gameSession.getCurrentWave() == gameSession.getWaveNumber() && !gameSession.isWaveActive() && gameSession.getEnemies().isEmpty()){
             gameSession.setGameOver(1);
             view.showGameOver(true);
         }

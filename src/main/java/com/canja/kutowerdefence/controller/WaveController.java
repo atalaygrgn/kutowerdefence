@@ -124,7 +124,7 @@ public class WaveController {
 
     private void runWaves(List<WaveDescription> descriptions) {
         gameSession.setWaveState(false);
-        
+
         if (!hasWaves()) return;
 
         IntegerProperty remainingSeconds = new SimpleIntegerProperty(delayBetweenWaves);
@@ -251,6 +251,11 @@ public class WaveController {
         EnemyGroupFactory.setDelay(options[Option.ENEMY_SPAWN_DELAY.ordinal()]);
         configureWaves(options);
         frameRate = 1;
+
+        if (isCampaign) {
+            waveIndex = 0;
+        }
+        
         startWaves();
     }
 }

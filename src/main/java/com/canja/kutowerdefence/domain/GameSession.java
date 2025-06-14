@@ -220,7 +220,7 @@ public class GameSession {
         if (currentWave == 0) {
             text = "1";
         }
-        
+
         String waveInfo = text + "/" + waveNumber;
 
         return waveInfo;
@@ -332,7 +332,7 @@ public class GameSession {
 
     public void resetSession() {
         this.gameOver = 0;
-        this.currentWave = 1;
+        this.currentWave = 0;
         this.waveNumber = optionValues[Option.WAVE_NUMBER.ordinal()];
 
         this.player.setHealth(optionValues[Option.PLAYER_HITPOINT.ordinal()]);
