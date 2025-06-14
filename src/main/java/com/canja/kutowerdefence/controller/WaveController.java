@@ -39,11 +39,29 @@ public class WaveController {
     private int waveIndex = 0;
     private float frameRate = 1f;
 
+    private boolean isCampaign;
+    private List<WaveDescription> descriptions = null;
+
     public WaveController(GameSession gameSession) {
         this.gameSession = gameSession;
         this.enemyPath = gameSession.getMap().getPath();
         this.activeTimelines = new ArrayList<>();
+        this.isCampaign = false;
 
+        configureSession();
+    }
+
+    public WaveController(GameSession gameSession, List<WaveDescription> descriptions) {
+        this.gameSession = gameSession;
+        this.enemyPath = gameSession.getMap().getPath();
+        this.activeTimelines = new ArrayList<>();
+        this.descriptions = descriptions;
+        this.isCampaign = true;
+
+        configureSession();
+    }
+
+    public void configureSession() {
         int[] options = gameSession.getOptionValues();
 
         configureWaves(options);
@@ -89,11 +107,43 @@ public class WaveController {
     }
 
     public void startWaves() {
-        runWaves();
+        if (isCampaign) {
+            runWaves(descriptions);
+        } else {
+            runWaves();
+        }
     }
 
     public boolean hasWaves() {
+        if (descriptions != null) {
+            return waveIndex < descriptions.size();
+        }
         return gameSession.getCurrentWave() <= gameSession.getWaveNumber();
+    }
+
+    private void runWaves(List<WaveDescription> descriptions) {
+        if (!hasWaves()) return;
+
+        gameSession.setWaveState(false);
+        IntegerProperty remainingSeconds = new SimpleIntegerProperty(delayBetweenWaves);
+        Timeline initialDelay = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
+            System.out.printf("Next wave in: %d seconds%n", remainingSeconds.get());
+            remainingSeconds.set(remainingSeconds.get() - 1);
+        }));
+        initialDelay.setCycleCount(delayBetweenWaves);
+        initialDelay.setRate(frameRate);
+        initialDelay.setOnFinished(e -> {
+            activeTimelines.remove(initialDelay);
+            gameSession.setWaveState(true);
+            view.updateUI();
+            wave = new Wave(descriptions.get(waveIndex));
+            gameSession.setCurrentWave(++waveIndex);
+            spawnEnemyGroups(wave, () -> {
+                runWaves(descriptions);  
+            });
+        });
+        initialDelay.play();
+        activeTimelines.add(initialDelay);
     }
 
     private void runWaves() {
