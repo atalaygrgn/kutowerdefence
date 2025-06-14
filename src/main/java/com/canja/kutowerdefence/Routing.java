@@ -157,7 +157,7 @@ public final class Routing {
         FXMLLoader fxmlLoader = new FXMLLoader(Routing.class.getResource(layoutPath));
         Parent editorRoot = fxmlLoader.load();
 
-        Scene scene = new Scene(editorRoot, 1280, 768);
+        Scene scene = new Scene(editorRoot, layoutPath.equals("gameplay-view.fxml") ? 1024 : 1280, layoutPath.equals("gameplay-view.fxml") ? 896 : 768);
         route.push(scene);
         titles.push(title); // Store new title
         mainStage.setScene(scene);

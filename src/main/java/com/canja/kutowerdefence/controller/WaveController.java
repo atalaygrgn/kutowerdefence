@@ -83,7 +83,7 @@ public class WaveController {
     public void setRate(float rate) {
         frameRate = rate;
     }
-    
+
     public Wave getCurrentWave() {
         return wave;
     }
@@ -100,11 +100,18 @@ public class WaveController {
         if (!hasWaves()) return;
 
         gameSession.setWaveState(false);
+        Timeline initialDelay = new Timeline();
         IntegerProperty remainingSeconds = new SimpleIntegerProperty(delayBetweenWaves);
-        Timeline initialDelay = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
-            System.out.printf("Next wave in: %d seconds%n", remainingSeconds.get());
+
+        KeyFrame countdownFrame = new KeyFrame(Duration.seconds(1), e -> {
+            int minutes = remainingSeconds.get() / 60;
+            int seconds = remainingSeconds.get() % 60;
+            String timeText = String.format("%d:%02d", minutes, seconds);
+            view.updateRemainingTime(timeText);
             remainingSeconds.set(remainingSeconds.get() - 1);
-        }));
+        });
+
+        initialDelay.getKeyFrames().add(countdownFrame);
         initialDelay.setCycleCount(delayBetweenWaves);
         initialDelay.setRate(frameRate);
         initialDelay.setOnFinished(e -> {
@@ -112,6 +119,7 @@ public class WaveController {
             gameSession.setWaveState(true);
             gameSession.setCurrentWave(++waveIndex);
             view.updateUI();
+            view.updateRemainingTime("--:--");
             wave = new Wave(waveDescription);
             spawnEnemyGroups(wave, () -> {
                 runWaves();  

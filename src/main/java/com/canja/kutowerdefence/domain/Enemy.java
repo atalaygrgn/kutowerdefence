@@ -9,6 +9,14 @@ public class Enemy {
     private LinkedList<Point> path;
     private int currentPathIndex;
     private int goldReward;
+
+    private static final float NOISE_AMPLITUDE = 0.15f; // Maximum deviation from path
+    private static final float NOISE_FREQUENCY = 1.5f; // How fast the noise changes
+    private float noiseOffsetX;
+    private float noiseOffsetY;
+    private float noiseTime;
+
+
     public Enemy(EnemyDescription description, LinkedList<Point> path) {
         this.description = description;
         this.path = path;
@@ -19,6 +27,10 @@ public class Enemy {
         Point start = path.get(0);
         this.x = start.getX();
         this.y = start.getY();
+
+        this.noiseOffsetX = (float) (Math.random() * 2 * Math.PI);
+        this.noiseOffsetY = (float) (Math.random() * 2 * Math.PI);
+        this.noiseTime = 0;
     }
     
     public float getX() {
@@ -60,13 +72,27 @@ public class Enemy {
         float dy = targetY - y;
         float distance = (float)Math.sqrt(dx*dx+dy*dy);
 
-        if(distance< speed * deltaTime){
+        // Update noise
+        noiseTime += deltaTime;
+        float noiseX = (float) (Math.sin(noiseTime * NOISE_FREQUENCY + noiseOffsetX) * NOISE_AMPLITUDE);
+        float noiseY = (float) (Math.cos(noiseTime * NOISE_FREQUENCY + noiseOffsetY) * NOISE_AMPLITUDE);
+
+        if(distance < speed * deltaTime){
             x= targetX;
             y= targetY;
             currentPathIndex++;
         } else {
-            x += (dx/distance) * speed * deltaTime;
-            y += (dy/distance) * speed * deltaTime;
+            float moveX = (dx/distance) * speed * deltaTime;
+            float moveY = (dy/distance) * speed * deltaTime;
+
+            // Add noise only when not too close to target
+            if (distance > 0.5f) {
+                x += moveX + noiseX * deltaTime;
+                y += moveY + noiseY * deltaTime;
+            } else {
+                x += moveX;
+                y += moveY;
+            }
         }
     }
 
