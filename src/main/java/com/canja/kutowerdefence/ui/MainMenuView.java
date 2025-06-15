@@ -22,7 +22,6 @@ import java.util.List;
 import com.canja.kutowerdefence.domain.GameSession;
 import com.canja.kutowerdefence.domain.MapService;
 import com.canja.kutowerdefence.domain.SaveService;
-import com.canja.kutowerdefence.domain.WaveDescription;
 
 import javafx.stage.Stage;
 
@@ -79,9 +78,21 @@ public class MainMenuView implements Initializable {
 
         newGameButton.setOnAction((event) -> handleNewGame());
         loadGameButton.setOnAction((event) -> handleLoadGame());
-        levelButton.setOnAction((event) -> handleCampaign());
+        updateCampaignButton();              
     }
 
+    public void updateCampaignButton() {
+        System.out.println("GUT!");
+        int level = LevelManager.getCurrentLevel();
+
+        if (level > LevelManager.maxLevel) {
+            levelButton.setDisable(true);
+            levelButton.setText("Finished");
+        } else {
+            levelButton.setOnAction((event) -> handleCampaign());
+            levelButton.setText("Play Level " + level);
+        }  
+    }
 
     private void handleNewGame() {
         List<File> maps = MapService.getInstance().getSavedMaps();

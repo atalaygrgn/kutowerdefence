@@ -6,6 +6,7 @@ import com.canja.kutowerdefence.controller.WaveController;
 import com.canja.kutowerdefence.domain.GameSession;
 import com.canja.kutowerdefence.domain.WaveDescription;
 import com.canja.kutowerdefence.ui.GamePlayView;
+import com.canja.kutowerdefence.ui.MainMenuView;
 import com.canja.kutowerdefence.ui.OptionsMenuView;
 
 import javafx.fxml.FXML;
@@ -50,7 +51,11 @@ public final class Routing {
         Scene scene = new Scene(fxmlLoader.load(), 1280, 768);
         String title = "KU Tower Defence";
         mainStage.setTitle(title);
-
+        
+        MainMenuView controller = fxmlLoader.getController();
+        System.out.println(controller.getClass().getName());
+        scene.getProperties().put("controller", controller);
+        
         route.push(scene);
         titles.push(title);
 
@@ -74,6 +79,19 @@ public final class Routing {
 
         route.pop();
         titles.pop();
+        
+        Scene prevScene = route.peek();
+        Object controller = prevScene.getProperties().get("controller");
+
+        if (controller != null) {
+            System.out.println(controller.getClass().getName());
+        }
+        
+        if (controller instanceof MainMenuView) {
+            MainMenuView mainMenuView = (MainMenuView) controller;
+            mainMenuView.updateCampaignButton();
+            System.out.println("Geri döndük, controller elimizde.");
+        }
 
         mainStage.setScene(route.peek());
         mainStage.setTitle(titles.peek());

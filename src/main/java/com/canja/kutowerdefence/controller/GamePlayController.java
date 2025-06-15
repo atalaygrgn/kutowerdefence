@@ -9,7 +9,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.io.File;
@@ -181,10 +180,10 @@ public class GamePlayController {
     public void updateGameState(){
         if(getHealth()<=0) {
             gameSession.setGameOver(2);
-            view.showGameOver(false);
+            //view.showGameOver(false);
         } else if (gameSession.getCurrentWave() == gameSession.getWaveNumber() && !gameSession.isWaveActive() && gameSession.getEnemies().isEmpty()){
             gameSession.setGameOver(1);
-            view.showGameOver(true);
+            //view.showGameOver(true);
         }
     }
     public MapObjectView putObjectOnMapView(MapObject mapObject) {

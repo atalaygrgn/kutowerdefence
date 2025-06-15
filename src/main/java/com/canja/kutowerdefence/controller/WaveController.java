@@ -143,6 +143,7 @@ public class WaveController {
             wave = new Wave(descriptions.get(waveIndex));
             gameSession.setCurrentWave(++waveIndex);
             view.updateUI();
+            view.updateRemainingTime("--:--");
             spawnEnemyGroups(wave, () -> {
                 runWaves(descriptions);  
             });

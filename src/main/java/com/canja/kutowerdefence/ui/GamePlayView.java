@@ -365,6 +365,7 @@ public class GamePlayView implements Initializable {
             try {
                 waveController.stopAll();
                 Routing.returnToPreviousScene();
+                
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
