@@ -1,6 +1,8 @@
 package com.canja.kutowerdefence.ui;
 
 import com.canja.kutowerdefence.Routing;
+import com.canja.kutowerdefence.controller.LevelManager;
+
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
@@ -17,9 +19,10 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.List;
 
+import com.canja.kutowerdefence.domain.GameSession;
 import com.canja.kutowerdefence.domain.MapService;
-import com.canja.kutowerdefence.domain.SaveSelectionOverlay;
 import com.canja.kutowerdefence.domain.SaveService;
+
 import javafx.stage.Stage;
 
 public class MainMenuView implements Initializable {
@@ -31,6 +34,7 @@ public class MainMenuView implements Initializable {
     public Button optionsButton;
     public Button newGameButton;
     public Button loadGameButton;
+    public Button levelButton;
 
     public void onQuitButtonClick(ActionEvent actionEvent) {
         Platform.exit();
@@ -74,8 +78,21 @@ public class MainMenuView implements Initializable {
 
         newGameButton.setOnAction((event) -> handleNewGame());
         loadGameButton.setOnAction((event) -> handleLoadGame());
+        updateCampaignButton();              
     }
 
+    public void updateCampaignButton() {
+        System.out.println("GUT!");
+        int level = LevelManager.getCurrentLevel();
+
+        if (level > LevelManager.maxLevel) {
+            levelButton.setDisable(true);
+            levelButton.setText("Finished");
+        } else {
+            levelButton.setOnAction((event) -> handleCampaign());
+            levelButton.setText("Play Level " + level);
+        }  
+    }
 
     private void handleNewGame() {
         List<File> maps = MapService.getInstance().getSavedMaps();
@@ -108,5 +125,23 @@ public class MainMenuView implements Initializable {
     private void handleLoadGame() {
         List<File> saves = SaveService.getInstance().getSaveFiles();
         SaveSelectionOverlay.show(saves);
+    }
+
+    private void handleCampaign() {
+        try {
+            int level = LevelManager.getCurrentLevel();
+            List<Object> info = LevelManager.extractLevelInfo(level);
+
+            GameSession session = new GameSession((File) info.get(0), (int[]) info.get(1), level);
+
+            try {
+                Routing.openCampaignLevel(session, (List<int[]>) info.get(2));
+                
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

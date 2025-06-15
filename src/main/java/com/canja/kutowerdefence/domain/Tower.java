@@ -3,29 +3,21 @@ package com.canja.kutowerdefence.domain;
 import java.util.List;
 
 public abstract class Tower extends MapObject {
-    // OVERVIEW: This class represents a general tower, which has coordinates on a map (inherited from MapObject),
-    // range to check for nearby enemies to attack, damage it deals per attack, cooldown time between attacks,
-    // and a reference to the current game session. Subclasses must define its tower type i.e. how the tower should
-    // attack an enemy.
 
-    // ABSTRACTION FUNCTION:
-    // AF(t) = (t.position.x, t.position.y) + t.range + t.damage + t.session
-
-    // REPRESENTATION INVARIANT:
-    // position.x >= 0 AND position.x <= 15 AND
-    // position.y >= 0 AND position.y <= 11 AND
-    // range >= 0 AND
-    // damage >= 0 AND
-    // session != null
-
-    public abstract Enemy[] targetEnemies(List<Enemy> allEnemies);
-    public abstract void attackEnemy(Enemy target);
-    protected int cost;
     protected int range;
     protected int damage;
-    protected GameSession session;
+    protected int cost;
+    public GameSession session;
+
     protected long lastAttackTime = 0;
+
+
     protected static long attackCooldownMillis = 800;
+
+
+    protected long personalCooldownMillis = -1;
+
+    protected TowerLevel level = TowerLevel.LEVEL1;
 
     public Tower(MapObjectType type, Point position, GameSession gameSession, int range, int damage, int cost) {
         super(type, position);
@@ -35,21 +27,23 @@ public abstract class Tower extends MapObject {
         this.cost = cost;
     }
 
-    public boolean isInRange(Enemy enemy) {
-        Point enemyPos = new Point(Math.round(enemy.getX()), Math.round(enemy.getY()));
-        return position.distanceTo(enemyPos) <= range;
-    }
-
     public final void tryAttack(List<Enemy> enemies) {
         long now = System.currentTimeMillis();
 
-        if (now - lastAttackTime < attackCooldownMillis) return;
+        long cooldownToUse = (personalCooldownMillis > 0) ? personalCooldownMillis : getCooldown();
+
+        if (now - lastAttackTime < cooldownToUse) return;
 
         Enemy[] targets = targetEnemies(enemies);
         if (targets.length > 0) {
             attackEnemy(targets[0]);
             lastAttackTime = now;
         }
+    }
+
+    public boolean isInRange(Enemy enemy) {
+        Point enemyPos = new Point(Math.round(enemy.getX()), Math.round(enemy.getY()));
+        return position.distanceTo(enemyPos) <= range;
     }
 
     protected Enemy getFurthestInRange(List<Enemy> allEnemies) {
@@ -65,6 +59,7 @@ public abstract class Tower extends MapObject {
         return best;
     }
 
+    // Existing cooldown methods - untouched
     public static long getCooldown() {
         return attackCooldownMillis;
     }
@@ -77,11 +72,63 @@ public abstract class Tower extends MapObject {
         attackCooldownMillis = 800;
     }
 
-    public boolean repOk() {
-        // EFFECTS: Returns true if the representation invariant of the Tower class holds true, otherwise returns false.
-        return  (position.getX() >= 0 && position.getX() <= 15) &&
-                (position.getY() >= 0 && position.getY() <= 11) &&
-                range >= 0 && damage >= 0 && session != null;
+
+    public TowerLevel getLevel() {
+        return level;
     }
 
+    public boolean canUpgrade() {
+        return level == TowerLevel.LEVEL1 && session.getPlayer().getGoldAmount() >= getUpgradeCost();
+    }
+
+    public void upgrade() {
+        if (canUpgrade()) {
+            session.getPlayer().deductGold(getUpgradeCost());
+            level = TowerLevel.LEVEL2;
+            applyLevel2Stats();
+        }
+    }
+
+
+    public void setPersonalCooldown(long cooldown) {
+        this.personalCooldownMillis = cooldown;
+    }
+
+    public long getPersonalCooldown() {
+        return (personalCooldownMillis > 0) ? personalCooldownMillis : getCooldown();
+    }
+
+    public void resetPersonalCooldown() {
+        this.personalCooldownMillis = -1;
+    }
+
+    public int getCost() {
+        return cost;
+    }
+
+    public void setCost(int cost) {
+        this.cost = cost;
+    }
+
+    public int getDamage() {
+        return damage;
+    }
+
+    public void setDamage(int damage) {
+        this.damage = damage;
+    }
+
+    public int getRange() {
+        return range;
+    }
+
+    public void setRange(int range) {
+        this.range = range;
+    }
+
+    public abstract Enemy[] targetEnemies(List<Enemy> allEnemies);
+    public abstract void attackEnemy(Enemy target);
+
+    public abstract int getUpgradeCost();
+    protected abstract void applyLevel2Stats();
 }

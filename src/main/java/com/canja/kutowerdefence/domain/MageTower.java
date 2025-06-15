@@ -14,19 +14,45 @@ public class MageTower extends Tower {
         return best != null ? new Enemy[]{best} : new Enemy[0];
     }
 
-
     @Override
     public void attackEnemy(Enemy target) {
-        session.getView().launchProjectile(
-                position.getX(), position.getY(),
-                target.getX(), target.getY(),
-                "/assets/effects/Fire.png",
-                128, 128, 7,
-                () -> {
-                    target.takeDamage(damage, "Spell");
-                    //DBG ICN
-                    System.out.println("Mage Tower attacked: " + target.getDescription().getName() + " HP=" + target.getHitpoint());
-                }
-        );
+        if (level == TowerLevel.LEVEL2) {
+
+            session.getView().launchProjectile(
+                    position.getX(), position.getY(),
+                    target.getX(), target.getY(),
+                    "/assets/effects/Ice.png",
+                    128, 128, 7,
+                    () -> {
+                        target.takeDamage(damage, "Spell");
+                        target.applySlow(0.8, 4000);
+                        System.out.println("Mage L2 hit: " + target.getDescription().getName() + " HP=" + target.getHitpoint());
+                    },
+                    false
+            );
+        } else {
+
+            session.getView().launchProjectile(
+                    position.getX(), position.getY(),
+                    target.getX(), target.getY(),
+                    "/assets/effects/Fire.png",
+                    128, 128, 7,
+                    () -> {
+                        target.takeDamage(damage, "Spell");
+                        System.out.println("Mage hit: " + target.getDescription().getName() + " HP=" + target.getHitpoint());
+                    },
+                    false
+            );
+        }
+    }
+
+    @Override
+    public int getUpgradeCost() {
+        return 150;
+    }
+
+    @Override
+    protected void applyLevel2Stats() {
+
     }
 }

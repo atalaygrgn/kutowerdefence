@@ -2,8 +2,11 @@ package com.canja.kutowerdefence;
 
 import com.canja.kutowerdefence.controller.GamePlayController;
 import com.canja.kutowerdefence.controller.OptionController;
+import com.canja.kutowerdefence.controller.WaveController;
 import com.canja.kutowerdefence.domain.GameSession;
+import com.canja.kutowerdefence.domain.WaveDescription;
 import com.canja.kutowerdefence.ui.GamePlayView;
+import com.canja.kutowerdefence.ui.MainMenuView;
 import com.canja.kutowerdefence.ui.OptionsMenuView;
 
 import javafx.fxml.FXML;
@@ -16,6 +19,8 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 /**
@@ -46,7 +51,11 @@ public final class Routing {
         Scene scene = new Scene(fxmlLoader.load(), 1280, 768);
         String title = "KU Tower Defence";
         mainStage.setTitle(title);
-
+        
+        MainMenuView controller = fxmlLoader.getController();
+        System.out.println(controller.getClass().getName());
+        scene.getProperties().put("controller", controller);
+        
         route.push(scene);
         titles.push(title);
 
@@ -70,6 +79,19 @@ public final class Routing {
 
         route.pop();
         titles.pop();
+        
+        Scene prevScene = route.peek();
+        Object controller = prevScene.getProperties().get("controller");
+
+        if (controller != null) {
+            System.out.println(controller.getClass().getName());
+        }
+        
+        if (controller instanceof MainMenuView) {
+            MainMenuView mainMenuView = (MainMenuView) controller;
+            mainMenuView.updateCampaignButton();
+            System.out.println("Geri döndük, controller elimizde.");
+        }
 
         mainStage.setScene(route.peek());
         mainStage.setTitle(titles.peek());
@@ -92,8 +114,10 @@ public final class Routing {
         FXMLLoader fxmlLoader = open("gameplay-view.fxml", "KU Tower Defence");
         GamePlayView view = fxmlLoader.getController();
         GamePlayController controller = new GamePlayController(gameSession);
+        WaveController waveController = new WaveController(gameSession);
         controller.setView(view);
-        view.setController(controller);
+        waveController.setView(view);
+        view.setController(controller, waveController);
 
         /* 
         FXMLLoader fxmlLoader = new FXMLLoader(Routing.class.getResource("gameplay-view.fxml"));
@@ -113,13 +137,34 @@ public final class Routing {
         */
     }
 
-    public static void openGamePlay(GameSession gameSession, int currentWave) throws IOException {   
+    public static void openGamePlayFromSave(GameSession gameSession, List<int[]> towerInfo) throws IOException{
         FXMLLoader fxmlLoader = open("gameplay-view.fxml", "KU Tower Defence");
         GamePlayView view = fxmlLoader.getController();
         GamePlayController controller = new GamePlayController(gameSession);
-        controller.setCurrentWave(currentWave);
+        WaveController waveController = new WaveController(gameSession);
         controller.setView(view);
-        view.setController(controller);
+        waveController.setView(view);
+        view.setController(controller, waveController);
+        view.reloadTowers(towerInfo, gameSession);
+    }
+
+    public static void openCampaignLevel(GameSession gameSession, List<int[]> waves) throws IOException{
+        FXMLLoader fxmlLoader = open("gameplay-view.fxml", "KU Tower Defence");
+        GamePlayView view = fxmlLoader.getController();
+        GamePlayController controller = new GamePlayController(gameSession);
+
+        List<WaveDescription> descriptions = new ArrayList<>();
+    
+        for (int[] wave : waves) {
+            WaveDescription description = new WaveDescription(wave[0], wave[1], wave[2], wave[3]);
+            descriptions.add(description);
+        }
+
+        WaveController waveController = new WaveController(gameSession, descriptions);
+
+        controller.setView(view);
+        waveController.setView(view);
+        view.setController(controller, waveController);
     }
 
     /**
@@ -151,7 +196,7 @@ public final class Routing {
         FXMLLoader fxmlLoader = new FXMLLoader(Routing.class.getResource(layoutPath));
         Parent editorRoot = fxmlLoader.load();
 
-        Scene scene = new Scene(editorRoot, 1280, 768);
+        Scene scene = new Scene(editorRoot, layoutPath.equals("gameplay-view.fxml") ? 1024 : 1280, layoutPath.equals("gameplay-view.fxml") ? 896 : 768);
         route.push(scene);
         titles.push(title); // Store new title
         mainStage.setScene(scene);

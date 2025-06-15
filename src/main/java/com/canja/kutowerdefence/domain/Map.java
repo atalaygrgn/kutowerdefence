@@ -60,6 +60,22 @@ public class Map {
         this.objects = objects;
     }
 
+    /**
+     * Requires:
+     *  - None (can be called at any time to reset the map).
+     *
+     * Modifies:
+     *  - pathStartEnd: resets to a new array of size 2.
+     *  - path: clears the list of path points.
+     *  - objects: clears the list of map objects.
+     *  - map: re-initializes the 2D Tile array to default Tile objects.
+     *
+     * Effects:
+     *  - All existing path data and map objects are removed.
+     *  - The entire map grid is filled with new default Tile instances (TileType.EMPTY).
+     *  - Returns the newly reset 2D Tile array.
+     */
+
     public Tile[][] reset() {
         pathStartEnd = new Point[2];
         path.clear();
@@ -279,6 +295,29 @@ public class Map {
         } else {
             if(y1+1==y2){ direction=2;}
             else if (y1-1==y2){ direction=3;}
+        }
+        return direction;
+    }
+
+    public int getEndDirection() {
+        int size = path.size();
+
+        Point point2 = path.get(size-2);
+        Point point1 = path.get(size-1);
+
+
+        int x1 = point2.getX();
+        int y1 = point2.getY();
+        int x2 = point1.getX();
+        int y2 = point1.getY();
+
+        int direction = 0;
+        if (x1 != x2) {
+            if (x1 + 1 == x2) direction = 1; // → Right
+            else if (x1 - 1 == x2) direction = 4; // ← Left
+        } else {
+            if (y1 + 1 == y2) direction = 3; // ↓ Down
+            else if (y1 - 1 == y2) direction = 2; // ↑ Up
         }
         return direction;
     }

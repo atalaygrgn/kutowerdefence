@@ -12,7 +12,7 @@ public class SaveService {
         return INSTANCE;
     }
 
-    public List<File> getSaveFiles(){
+    public static List<File> getSaveFiles(){
         File saveDir= new File("src/main/resources/saves");
         if(!saveDir.exists() || !saveDir.isDirectory()){
             return Collections.emptyList();
