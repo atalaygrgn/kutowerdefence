@@ -15,8 +15,11 @@ import com.canja.kutowerdefence.domain.Tower;
 import com.canja.kutowerdefence.domain.TowerFactory;
 import com.canja.kutowerdefence.domain.Option;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -31,10 +34,12 @@ import javafx.scene.paint.Color;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Random;
 import java.util.ResourceBundle;
 import java.util.List;
 import java.util.ArrayList;
 import javafx.scene.input.MouseEvent;
+import javafx.util.Duration;
 
 public class GamePlayView implements Initializable {
 
@@ -164,8 +169,8 @@ public class GamePlayView implements Initializable {
         if (node instanceof MapObjectView) {
             MapObjectView view = (MapObjectView) node;
             MapObjectType type = view.getMapObject().getType();
-            return type == MapObjectType.TOWER_ARCHER || 
-                   type == MapObjectType.TOWER_ARTILLERY || 
+            return type == MapObjectType.TOWER_ARCHER ||
+                   type == MapObjectType.TOWER_ARTILLERY ||
                    type == MapObjectType.TOWER_MAGE;
         }
         return false;
@@ -405,7 +410,7 @@ public class GamePlayView implements Initializable {
             try {
                 waveController.stopAll();
                 Routing.returnToPreviousScene();
-                
+
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
@@ -462,7 +467,7 @@ public class GamePlayView implements Initializable {
     private void restartGame() {
         // Enable controls when restarting
         setControlsDisabled(false);
-        
+
         controller.restartGameSession();
         speedLabel.setText(" x1 ");
 
@@ -483,7 +488,6 @@ public class GamePlayView implements Initializable {
 
     private void handleExit() {
         try {
-            waveController.stopAll();
             Routing.returnToPreviousScene();
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -504,10 +508,18 @@ public class GamePlayView implements Initializable {
             Enemy enemy = view.getEnemy();
             enemy.update(deltaTime);
             view.update();
-            
+
             if (view.isDead()) {
-                controller.rewardPlayer(enemy.getGoldReward());
                 toRemove.add(view);
+                if (Math.random() < 0.9) {
+                    int bagAmount = new Random().nextInt(enemy.getGoldReward()) + 1;
+                    double x = view.getTranslateX();
+                    double y = view.getTranslateY();
+                    GoldBagView bag = new GoldBagView(bagAmount, x, y);
+                    enemyLayer.getChildren().add(bag);
+                } else {
+                    controller.rewardPlayer(enemy.getGoldReward());
+                }
             }
 
             if (enemy.reachedEnd()) {
@@ -601,5 +613,43 @@ public class GamePlayView implements Initializable {
 
     public void updateRemainingTime(String time) {
         remainingTimeLabel.setText(time);
+    }
+
+    private class GoldBagView extends Group {
+        private final int goldAmount;
+        private final List<Image> frames = new ArrayList<>();
+        private final ImageView imageView;
+        private int frameIndex = 0;
+
+        public GoldBagView(int goldAmount, double x, double y) {
+            this.goldAmount = goldAmount;
+            
+            // Load all 7 goldbag frames
+            for (int i = 0; i < 7; i++) {
+                String path = String.format("file:src/main/resources/assets/enemies/goldbag/goldbag00%d.png", i);
+                frames.add(new Image(path));
+            }
+
+            imageView = new ImageView(frames.get(0));
+            imageView.setFitWidth(48);
+            imageView.setFitHeight(48);
+            getChildren().add(imageView);
+
+            setTranslateX(x - 24);
+            setTranslateY(y - 24);
+
+            Timeline anim = new Timeline(new KeyFrame(Duration.millis(100), e -> {
+                frameIndex = (frameIndex + 1) % frames.size();
+                imageView.setImage(frames.get(frameIndex));
+            }));
+            anim.setCycleCount(Timeline.INDEFINITE);
+            anim.play();
+
+            imageView.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
+                controller.rewardPlayer(goldAmount);
+                updateUI();
+                enemyLayer.getChildren().remove(this);
+            });
+        }
     }
 }
