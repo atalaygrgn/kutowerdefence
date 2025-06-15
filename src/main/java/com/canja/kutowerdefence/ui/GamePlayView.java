@@ -108,8 +108,8 @@ public class GamePlayView implements Initializable {
     private Label towerUpgradeCostLabel;
 
     @FXML private VBox gameOverOverlay;
-    @FXML private Button restartGameOverBtn;
-    @FXML private Button exitGameOverBtn;
+    @FXML private ImageView restartGameOverBtn;
+    @FXML private ImageView exitGameOverBtn;
 
     @FXML
     private Label enemiesKilledLabel;
@@ -318,7 +318,6 @@ public class GamePlayView implements Initializable {
 
     private void configurePauseButton() {
         pauseButton.setOnMouseClicked(event -> controller.pauseGame(pauseButton));
-        setupHoverEffect(pauseButton);
     }
 
     private void configureSpeedButton() {
@@ -349,7 +348,7 @@ public class GamePlayView implements Initializable {
         exitButton.setOnMouseClicked(event -> handleExit());
         restartButton.setOnMouseClicked(event -> restartGame());
         saveButton.setOnMouseClicked(event -> controller.saveGame());
-        restartGameOverBtn.setOnAction(event -> {
+        restartGameOverBtn.setOnMouseClicked(event -> {
             System.out.println("Restart clicked!");
             setControlsDisabled(false); // Enable controls when restarting
             controller.restartGameSession();
@@ -360,8 +359,7 @@ public class GamePlayView implements Initializable {
             gameOverOverlay.setVisible(false);
             waveController.restartWaves();
         });
-        setButtonImage(restartGameOverBtn, "file:src/main/resources/assets/ui/button/button_14.png");
-        exitGameOverBtn.setOnAction(event -> {
+        exitGameOverBtn.setOnMouseClicked(event -> {
             System.out.println("Exit clicked!");
             try {
                 waveController.stopAll();
@@ -370,7 +368,6 @@ public class GamePlayView implements Initializable {
                 throw new RuntimeException(ex);
             }
         });
-        setButtonImage(exitGameOverBtn, "file:src/main/resources/assets/ui/button/button_3.png");
     }
 
     public void showGameOver(boolean success) {
@@ -526,12 +523,9 @@ public class GamePlayView implements Initializable {
         enemyLayer.getChildren().add(projectile);
     }
 
-    public void setButtonImage(Button button, String resourcePath) {
+    public void setButtonImage(ImageView button, String resourcePath) {
         Image image = new Image(resourcePath);
-        ImageView imageView = new ImageView(image);
-        imageView.setPreserveRatio(true);
-        imageView.setFitWidth(32.0);
-        button.setGraphic(imageView);
+        button.setImage(image);
     }
 
     @FXML

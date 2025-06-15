@@ -217,9 +217,17 @@
                     <Pane prefHeight="290.0" prefWidth="800.0" />
                     <HBox alignment="CENTER" prefHeight="50.0" prefWidth="800.0">
                         <children>
-                            <Button fx:id="restartGameOverBtn" text="Restart" />
+                            <ImageView fx:id="restartGameOverBtn" fitHeight="48.0" fitWidth="48.0" pickOnBounds="true">
+                                <image>
+                                    <Image url="@../../../assets/ui/button/button_14.png" />
+                                </image>
+                            </ImageView>
                             <Pane prefHeight="50.0" prefWidth="30.0" />
-                            <Button fx:id="exitGameOverBtn" text="Exit" />
+                            <ImageView fx:id="exitGameOverBtn" fitHeight="48.0" fitWidth="48.0" pickOnBounds="true">
+                                <image>
+                                    <Image url="@../../../assets/ui/button/button_3.png" />
+                                </image>
+                            </ImageView>
                         </children></HBox>
                 </children>
             </VBox>
