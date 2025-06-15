@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.canja.kutowerdefence.ui.OptionsMenuView">
+<VBox fx:id="opane" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.canja.kutowerdefence.ui.OptionsMenuView">
    <children>
       <Pane prefHeight="54.0" prefWidth="1280.0" />
       <Label text="OPTIONS MENU">
@@ -13,9 +13,9 @@
          </font></Label>
       <Pane prefHeight="66.0" prefWidth="1280.0">
          <children>
-            <Button fx:id="exitButton" layoutX="1199.0" mnemonicParsing="false" text="X">
+            <Button fx:id="exitButton" layoutX="1199.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="32.0" text="X">
                <font>
-                  <Font name="System Bold" size="22.0" />
+                  <Font name="System Bold" size="13.0" />
                </font>
             </Button>
          </children></Pane>
@@ -25,89 +25,155 @@
                <children>
                   <HBox alignment="TOP_CENTER" prefHeight="40.0" prefWidth="580.0">
                      <children>
-                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="300.0" text="Number Of Waves :" />
+                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="300.0" text="Number Of Waves :">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font></Button>
                         <Pane prefHeight="40.0" prefWidth="30.0" />
-                        <Button id="waveNumberButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="1" />
+                        <Button id="waveNumberButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="1">
+                        <font>
+                           <Font name="System Bold" size="13.0" />
+                        </font></Button>
                      </children>
                   </HBox>
                   <Pane prefHeight="5.0" prefWidth="200.0" />
                   <HBox alignment="TOP_CENTER" layoutX="10.0" layoutY="10.0" prefHeight="40.0" prefWidth="580.0">
                      <children>
-                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="300.0" text="Delay | Waves (sec):" />
+                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="300.0" text="Delay | Waves (sec):">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font></Button>
                         <Pane prefHeight="40.0" prefWidth="30.0" />
-                        <Button id="waveDelayButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="30 " />
+                        <Button id="waveDelayButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="30 ">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font></Button>
                      </children>
                   </HBox>
                   <Pane prefHeight="5.0" prefWidth="200.0" />
                   <HBox alignment="TOP_CENTER" layoutX="10.0" layoutY="10.0" prefHeight="40.0" prefWidth="580.0">
                      <children>
-                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="300.0" text="Delay | Groups of Waves (sec):" />
+                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="300.0" text="Delay | Groups of Waves (sec):">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font></Button>
                         <Pane prefHeight="40.0" prefWidth="30.0" />
-                        <Button id="waveGroupDelayButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="5" />
+                        <Button id="waveGroupDelayButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="5">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font></Button>
                      </children>
                   </HBox>
                   <Pane prefHeight="5.0" prefWidth="200.0" />
                   <HBox alignment="TOP_CENTER" layoutX="10.0" layoutY="40.0" prefHeight="40.0" prefWidth="580.0">
                      <children>
-                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="300.0" text="Delay | Enemies of a Group (sec):" />
+                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="300.0" text="Delay | Enemies of a Group (sec):">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font></Button>
                         <Pane prefHeight="40.0" prefWidth="30.0" />
-                        <Button id="enemySpawnDelayButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="1" />
+                        <Button id="enemySpawnDelayButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="1">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font></Button>
                      </children>
                   </HBox>
                   <Pane prefHeight="5.0" prefWidth="200.0" />
                   <HBox alignment="TOP_CENTER" layoutX="10.0" layoutY="10.0" prefHeight="40.0" prefWidth="580.0">
                      <children>
-                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="300.0" text="Gold | Starting Amount :" />
+                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="300.0" text="Gold | Starting Amount :">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font></Button>
                         <Pane prefHeight="40.0" prefWidth="30.0" />
-                        <Button id="goldAmountButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="250" />
+                        <Button id="goldAmountButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="250">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font></Button>
                      </children>
                   </HBox>
                   <Pane prefHeight="5.0" prefWidth="200.0" />
                   <HBox alignment="TOP_CENTER" layoutX="10.0" layoutY="40.0" prefHeight="40.0" prefWidth="580.0">
                      <children>
-                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="300.0" text="Gold | Goblin :" />
+                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="300.0" text="Gold | Goblin :">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font></Button>
                         <Pane prefHeight="40.0" prefWidth="30.0" />
-                        <Button id="goblinRewardButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="10" />
+                        <Button id="goblinRewardButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="10">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font></Button>
                      </children>
                   </HBox>
                   <Pane prefHeight="5.0" prefWidth="200.0" />
                   <HBox alignment="TOP_CENTER" layoutX="10.0" layoutY="70.0" prefHeight="40.0" prefWidth="580.0">
                      <children>
-                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="300.0" text="Gold | Knight :" />
+                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="300.0" text="Gold | Knight :">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font></Button>
                         <Pane prefHeight="40.0" prefWidth="30.0" />
-                        <Button id="knightRewardButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="25" />
+                        <Button id="knightRewardButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="25">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font></Button>
                      </children>
                   </HBox>
                   <Pane prefHeight="5.0" prefWidth="200.0" />
                   <HBox alignment="TOP_CENTER" layoutX="10.0" layoutY="100.0" prefHeight="40.0" prefWidth="580.0">
                      <children>
-                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="300.0" text="Cost | Archer Tower:" />
+                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="300.0" text="Cost | Archer Tower:">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font></Button>
                         <Pane prefHeight="40.0" prefWidth="30.0" />
-                        <Button id="archerTowerCostButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="125" />
+                        <Button id="archerTowerCostButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="125">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font></Button>
                      </children>
                   </HBox>
                   <Pane prefHeight="5.0" prefWidth="200.0" />
                   <HBox alignment="TOP_CENTER" layoutX="10.0" layoutY="10.0" prefHeight="40.0" prefWidth="580.0">
                      <children>
-                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="300.0" text="Cost | Artillery Tower:" />
+                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="300.0" text="Cost | Artillery Tower:">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font></Button>
                         <Pane prefHeight="40.0" prefWidth="30.0" />
-                        <Button id="artilleryTowerCostButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="500" />
+                        <Button id="artilleryTowerCostButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="500">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font></Button>
                      </children>
                   </HBox>
                   <Pane prefHeight="5.0" prefWidth="200.0" />
                   <HBox alignment="TOP_CENTER" layoutX="10.0" layoutY="40.0" prefHeight="40.0" prefWidth="580.0">
                      <children>
-                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="300.0" text="Cost | Mage Tower:" />
+                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="300.0" text="Cost | Mage Tower:">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font></Button>
                         <Pane prefHeight="40.0" prefWidth="30.0" />
-                        <Button id="mageTowerCostButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="250" />
+                        <Button id="mageTowerCostButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="250">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font></Button>
                      </children>
                   </HBox>
                   <Pane prefHeight="5.0" prefWidth="200.0" />
                   <HBox alignment="TOP_CENTER" layoutX="10.0" layoutY="40.0" prefHeight="40.0" prefWidth="580.0">
                      <children>
-                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="300.0" text="Wave | Enemy Group Count:" />
+                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="300.0" text="Wave | Enemy Group Count:">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font></Button>
                         <Pane prefHeight="40.0" prefWidth="30.0" />
-                        <Button id="enemyGroupCountButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="3" />
+                        <Button id="enemyGroupCountButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="3">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font></Button>
                      </children>
                   </HBox>
                </children></VBox>
@@ -116,88 +182,154 @@
                <children>
                   <HBox alignment="TOP_CENTER" prefHeight="40.0" prefWidth="580.0">
                      <children>
-                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="300.0" text="Hitpoint | Starting Amount :" />
+                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="300.0" text="Hitpoint | Starting Amount :">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font></Button>
                         <Pane prefHeight="40.0" prefWidth="30.0" />
-                        <Button id="playerHitpointButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="3" />
+                        <Button id="playerHitpointButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="3">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font></Button>
                      </children></HBox>
                   <Pane prefHeight="5.0" prefWidth="200.0" />
                   <HBox alignment="TOP_CENTER" layoutX="10.0" layoutY="10.0" prefHeight="40.0" prefWidth="580.0">
                      <children>
-                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="300.0" text="Hitpoint | Goblin :" />
+                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="300.0" text="Hitpoint | Goblin :">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font></Button>
                         <Pane prefHeight="40.0" prefWidth="30.0" />
-                        <Button id="goblinHitpointButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="100" />
+                        <Button id="goblinHitpointButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="100">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font></Button>
                      </children>
                   </HBox>
                   <Pane prefHeight="5.0" prefWidth="200.0" />
                   <HBox alignment="TOP_CENTER" layoutX="10.0" layoutY="10.0" prefHeight="40.0" prefWidth="580.0">
                      <children>
-                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="300.0" text="Hitpoint | Knight :" />
+                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="300.0" text="Hitpoint | Knight :">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font></Button>
                         <Pane prefHeight="40.0" prefWidth="30.0" />
-                        <Button id="knightHitpointButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="100" />
+                        <Button id="knightHitpointButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="100">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font></Button>
                      </children>
                   </HBox>
                   <Pane prefHeight="5.0" prefWidth="200.0" />
                   <HBox alignment="TOP_CENTER" layoutX="10.0" layoutY="40.0" prefHeight="40.0" prefWidth="580.0">
                      <children>
-                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="300.0" text="Damage | Arrow :" />
+                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="300.0" text="Damage | Arrow :">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font></Button>
                         <Pane prefHeight="40.0" prefWidth="30.0" />
-                        <Button id="arrowDamageButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="10" />
+                        <Button id="arrowDamageButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="10">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font></Button>
                      </children>
                   </HBox>
                   <Pane prefHeight="5.0" prefWidth="200.0" />
                   <HBox alignment="TOP_CENTER" layoutX="10.0" layoutY="10.0" prefHeight="40.0" prefWidth="580.0">
                      <children>
-                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="300.0" text="Damage | Artillery Shell :" />
+                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="300.0" text="Damage | Artillery Shell :">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font></Button>
                         <Pane prefHeight="40.0" prefWidth="30.0" />
-                        <Button id="artilleryDamageButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="25" />
+                        <Button id="artilleryDamageButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="25">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font></Button>
                      </children>
                   </HBox>
                   <Pane prefHeight="5.0" prefWidth="200.0" />
                   <HBox alignment="TOP_CENTER" layoutX="10.0" layoutY="40.0" prefHeight="40.0" prefWidth="580.0">
                      <children>
-                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="300.0" text="Damage | Spell :" />
+                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="300.0" text="Damage | Spell :">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font></Button>
                         <Pane prefHeight="40.0" prefWidth="30.0" />
-                        <Button id="spellDamageButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="5" />
+                        <Button id="spellDamageButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="5">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font></Button>
                      </children>
                   </HBox>
                   <Pane prefHeight="5.0" prefWidth="200.0" />
                   <HBox alignment="TOP_CENTER" layoutX="10.0" layoutY="70.0" prefHeight="40.0" prefWidth="580.0">
                      <children>
-                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="300.0" text="Range | Tower :" />
+                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="300.0" text="Range | Tower :">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font></Button>
                         <Pane prefHeight="40.0" prefWidth="30.0" />
-                        <Button id="towerRangeButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="2" />
+                        <Button id="towerRangeButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="2">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font></Button>
                      </children>
                   </HBox>
                   <Pane prefHeight="5.0" prefWidth="200.0" />
                   <HBox alignment="TOP_CENTER" layoutX="10.0" layoutY="100.0" prefHeight="40.0" prefWidth="580.0">
                      <children>
-                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="300.0" text="Range | AOE Effect :" />
+                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="300.0" text="Range | AOE Effect :">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font></Button>
                         <Pane prefHeight="40.0" prefWidth="30.0" />
-                        <Button id="AOERangeButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="2" />
+                        <Button id="AOERangeButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="2">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font></Button>
                      </children>
                   </HBox>
                   <Pane prefHeight="5.0" prefWidth="200.0" />
                   <HBox alignment="TOP_CENTER" layoutX="10.0" layoutY="160.0" prefHeight="40.0" prefWidth="580.0">
                      <children>
-                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="300.0" text="Speed | Goblin :" />
+                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="300.0" text="Speed | Goblin :">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font></Button>
                         <Pane prefHeight="40.0" prefWidth="30.0" />
-                        <Button id="goblinSpeedButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="1" />
+                        <Button id="goblinSpeedButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="1">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font></Button>
                      </children>
                   </HBox>
                   <Pane prefHeight="5.0" prefWidth="200.0" />
                   <HBox alignment="TOP_CENTER" layoutX="10.0" layoutY="220.0" prefHeight="40.0" prefWidth="580.0">
                      <children>
-                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="300.0" text="Speed | Knight :" />
+                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="300.0" text="Speed | Knight :">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font></Button>
                         <Pane prefHeight="40.0" prefWidth="30.0" />
-                        <Button id="knightSpeedButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="1" />
+                        <Button id="knightSpeedButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="1">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font></Button>
                      </children>
                   </HBox>
                   <Pane prefHeight="5.0" prefWidth="200.0" />
                   <HBox alignment="TOP_CENTER" layoutX="10.0" layoutY="40.0" prefHeight="40.0" prefWidth="580.0">
                      <children>
-                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="300.0" text="Enemy Group | Size:" />
+                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="300.0" text="Enemy Group | Size:">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font></Button>
                         <Pane prefHeight="40.0" prefWidth="30.0" />
-                        <Button id="enemyGroupSizeButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="3" />
+                        <Button id="enemyGroupSizeButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="3">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font></Button>
                      </children>
                   </HBox>
                </children>
@@ -207,9 +339,9 @@
       <Pane prefHeight="25.0" prefWidth="1280.0" />
       <HBox alignment="TOP_CENTER" prefHeight="120.0" prefWidth="1280.0">
          <children>
-            <Button fx:id="saveButton" mnemonicParsing="false" text="Save Settings" />
+            <Button fx:id="saveButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Save Settings" />
             <Pane prefHeight="93.0" prefWidth="800.0" />
-            <Button fx:id="restoreButton" mnemonicParsing="false" text="Revert to Default" />
+            <Button fx:id="restoreButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Default Value" />
          </children>
       </HBox>
    </children>
