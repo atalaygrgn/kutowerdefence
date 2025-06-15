@@ -129,7 +129,10 @@ public class WaveController {
 
         IntegerProperty remainingSeconds = new SimpleIntegerProperty(delayBetweenWaves);
         Timeline initialDelay = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
-            System.out.printf("Next wave in: %d seconds%n", remainingSeconds.get());
+            int minutes = remainingSeconds.get() / 60;
+            int seconds = remainingSeconds.get() % 60;
+            String timeText = String.format("%d:%02d", minutes, seconds);
+            view.updateRemainingTime(timeText);
             remainingSeconds.set(remainingSeconds.get() - 1);
         }));
         initialDelay.setCycleCount(delayBetweenWaves);
@@ -155,7 +158,10 @@ public class WaveController {
 
         IntegerProperty remainingSeconds = new SimpleIntegerProperty(delayBetweenWaves);
         Timeline initialDelay = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
-            System.out.printf("Next wave in: %d seconds%n", remainingSeconds.get());
+            int minutes = remainingSeconds.get() / 60;
+            int seconds = remainingSeconds.get() % 60;
+            String timeText = String.format("%d:%02d", minutes, seconds);
+            view.updateRemainingTime(timeText);
             remainingSeconds.set(remainingSeconds.get() - 1);
         }));
         initialDelay.setCycleCount(delayBetweenWaves);
@@ -253,9 +259,7 @@ public class WaveController {
         configureWaves(options);
         frameRate = 1;
 
-        if (isCampaign) {
-            waveIndex = 0;
-        }
+        waveIndex = 0;
         
         startWaves();
     }
