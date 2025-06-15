@@ -231,8 +231,7 @@ public class GamePlayView implements Initializable {
                                 tileView.setTileType(TileType.EMPTY);
                                 Tower newTower = controller.getGameSession().getNewestTower();
                                 MapObjectView objectView = controller.putObjectOnMapView(newTower);
-                                
-                                // Add hover events for the new tower
+
                                 final int towerX = finalI;
                                 final int towerY = finalJ;
                                 objectView.setOnMouseEntered(e -> {
@@ -241,7 +240,9 @@ public class GamePlayView implements Initializable {
                                     }
                                 });
                                 objectView.setOnMouseExited(e -> hideRangePreview());
-                                
+
+                                objectView.setOnMouseClicked(e -> tryUpgradeTower(objectView));
+
                                 updateUI();
                                 hideRangePreview();
                             }
@@ -251,7 +252,7 @@ public class GamePlayView implements Initializable {
                 mapGridPane.add(tileView, i, j);
             }
         }
-        
+
         for (MapObject mapObject : gameMap.getObjects()) {
             if (mapObject.getType() == MapObjectType.KU_TOWER) {
                 int maxHealth = controller.getGameSession().getPlayerHitpoint();
@@ -261,22 +262,56 @@ public class GamePlayView implements Initializable {
             } else {
                 MapObjectView objectView = new MapObjectView(mapObject);
                 if (isTowerView(objectView)) {
-                    // Store position values to avoid potential issues with closure
                     final int towerX = mapObject.getPosition().getX();
                     final int towerY = mapObject.getPosition().getY();
                     final MapObjectType towerType = mapObject.getType();
-                    
-                    objectView.setOnMouseEntered(e -> {
-                        showRangePreview(towerX, towerY, towerType);
-                    });
+
+                    objectView.setOnMouseEntered(e -> showRangePreview(towerX, towerY, towerType));
                     objectView.setOnMouseExited(e -> hideRangePreview());
+                    objectView.setOnMouseClicked(e -> tryUpgradeTower(objectView));
                 }
                 mapGridPane.add(objectView, mapObject.getPosition().getX(), mapObject.getPosition().getY());
             }
         }
     }
 
-        public TileView getTileView(int x, int y) {
+    private void tryUpgradeTower(MapObjectView objectView) {
+        if (!controller.isUpgradeMode()) return;
+
+        if (!(objectView.getMapObject() instanceof Tower tower)) return;
+
+        int cost = tower.getUpgradeCost();
+
+        if (controller.getGold() < cost) {
+            System.out.println("Not enough gold to upgrade.");
+            controller.toggleUpgradeMode();
+            return;
+        }
+
+        if (!tower.canUpgrade()) {
+            System.out.println("Tower is already at max level.");
+            controller.toggleUpgradeMode();
+            return;
+        }
+
+        tower.upgrade();
+        controller.rewardPlayer(-cost);
+
+        String newAsset = switch (tower.getType()) {
+            case TOWER_ARCHER -> "src/main/resources/assets/tile64/archerl2.png";
+            case TOWER_MAGE -> "src/main/resources/assets/tile64/magel2.png";
+            case TOWER_ARTILLERY -> "src/main/resources/assets/tile64/artilleryl2.png";
+            default -> null;
+        };
+        if (newAsset != null) {
+            objectView.setImageFromPath(newAsset);
+        }
+
+        updateUI();
+        controller.toggleUpgradeMode();
+    }
+
+    public TileView getTileView(int x, int y) {
         for (Node node : mapGridPane.getChildren()) {
             Integer nodeCol = GridPane.getColumnIndex(node);
             Integer nodeRow = GridPane.getRowIndex(node);
@@ -314,6 +349,11 @@ public class GamePlayView implements Initializable {
         configureExitButton();
         configureRestartButton();
         configureSaveButton();
+        towerUpgradeButton.setOnMouseClicked(event -> {
+            controller.toggleUpgradeMode();
+            System.out.println("Click a tower to upgrade it...");
+        });
+        setupHoverEffect(towerUpgradeButton);
     }
 
     private void configurePauseButton() {

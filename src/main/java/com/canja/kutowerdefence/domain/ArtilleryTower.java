@@ -16,17 +16,13 @@ public class ArtilleryTower extends Tower {
         return best != null ? new Enemy[]{best} : new Enemy[0];
     }
 
-
-
-
-/*
-  REQUIRES: target must be an alive enemy currently present in the game session's enemy list.
-  MODIFIES: the hitpoints of any enemies within the area-of-effect radius of the target location.
-  EFFECTS: launches a projectile animation from this tower's position to the target's location.
-           Once the projectile lands, it applies damage to all enemies within aoeRadius
-            of the impact location.
- */
-
+    /*
+      REQUIRES: target must be an alive enemy currently present in the game session's enemy list.
+      MODIFIES: the hitpoints of any enemies within the area-of-effect radius of the target location.
+      EFFECTS: launches a projectile animation from this tower's position to the target's location.
+               Once the projectile lands, it applies damage to all enemies within aoeRadius
+               of the impact location.
+     */
     @Override
     public void attackEnemy(Enemy target) {
         float impactX = target.getX();
@@ -45,12 +41,21 @@ public class ArtilleryTower extends Tower {
 
                         if (dist <= aoeRadius) {
                             e.takeDamage(damage, "Shell");
-                            //DEBUG ICIN
-                            //System.out.println("Artillery AOE hit " + e.getDescription().getName() +
-                            //        " (dist, " + dist + ") HP, " + e.getHitpoint());
                         }
                     }
-                } , false
+                }, false
         );
+    }
+
+    @Override
+    public int getUpgradeCost() {
+        return 120;
+    }
+
+    @Override
+    protected void applyLevel2Stats() {
+        this.range = (int) Math.round(this.range * 1.2);
+        this.damage = (int) Math.round(this.damage * 1.2);
+
     }
 }

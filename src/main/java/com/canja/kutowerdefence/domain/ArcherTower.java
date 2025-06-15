@@ -23,9 +23,19 @@ public class ArcherTower extends Tower {
                 32, 32, 1,
                 () -> {
                     target.takeDamage(damage, "Arrow");
-                    //DEBUG ICIN TEMP
-                    //System.out.println("Archer Tower attacked: " + target.getDescription().getName() + " HP=" + target.getHitpoint());
                 }, true
         );
+    }
+
+    @Override
+    public int getUpgradeCost() {
+        return 100;
+    }
+
+    @Override
+    protected void applyLevel2Stats() {
+        this.range = (int) Math.round(this.range * 1.5);
+        this.setPersonalCooldown(400);
+
     }
 }

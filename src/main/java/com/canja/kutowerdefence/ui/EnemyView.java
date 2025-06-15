@@ -22,23 +22,20 @@ public class EnemyView extends Group {
     private final List<Image> animationFrames = new ArrayList<>();
     private int currentFrame = 0;
     private Timeline animationTimeline;
-
+    private ImageView slowIcon;
 
     public EnemyView(Enemy enemy) {
         this.enemy = enemy;
 
         String folderPath = getImageFolderPath(enemy);
         for (int i = 0; i < 6; i++) {
-            Image frame = new Image(getClass().getResourceAsStream(folderPath+ i + ".png"));
+            Image frame = new Image(getClass().getResourceAsStream(folderPath + i + ".png"));
             animationFrames.add(frame);
         }
-
 
         imageView = new ImageView(animationFrames.get(0));
         imageView.setFitWidth(TILE_SIZE);
         imageView.setFitHeight(TILE_SIZE);
-
-
 
         // health bar background
         healthBarBack = new Rectangle(TILE_SIZE, 6);
@@ -51,6 +48,17 @@ public class EnemyView extends Group {
         this.getChildren().addAll(imageView, healthBarBack, healthBarFront);
 
 
+        Image snowflakeImage = new Image(getClass().getResourceAsStream("/assets/effects/snowflake.png"));
+        slowIcon = new ImageView(snowflakeImage);
+        slowIcon.setFitWidth(16);
+        slowIcon.setFitHeight(16);
+        slowIcon.setVisible(false);
+        slowIcon.setMouseTransparent(true);
+        slowIcon.setTranslateX(TILE_SIZE / 2f - 8);
+        slowIcon.setTranslateY(-20);
+        this.getChildren().add(slowIcon);
+
+
         animationTimeline = new Timeline(
                 new KeyFrame(Duration.millis(100), e -> {
                     currentFrame = (currentFrame + 1) % animationFrames.size();
@@ -60,7 +68,7 @@ public class EnemyView extends Group {
         animationTimeline.setCycleCount(Timeline.INDEFINITE);
         animationTimeline.play();
 
-        update();
+        update(); // Initial update
     }
 
     private String getImageFolderPath(Enemy enemy) {
@@ -73,7 +81,6 @@ public class EnemyView extends Group {
             return "/assets/enemies/goblin/";
         }
     }
-
 
     public void update() {
         float tileX = enemy.getX();
@@ -88,6 +95,9 @@ public class EnemyView extends Group {
         int maxHP = enemy.getDescription().getHitpoints();
         float ratio = Math.max(0, (float) currentHP / maxHP);
         healthBarFront.setWidth(TILE_SIZE * ratio);
+
+        // Show or hide the snowflake overlay
+        slowIcon.setVisible(enemy.getIsSlowed());
     }
 
     public boolean isDead() {

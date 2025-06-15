@@ -2,7 +2,7 @@ package com.canja.kutowerdefence.domain;
 import java.util.LinkedList;
 
 public class Enemy {
-    private float x,y;
+    private float x, y;
     private float speed;
     private int hitpoint;
     private EnemyDescription description;
@@ -15,7 +15,15 @@ public class Enemy {
     private float noiseOffsetX;
     private float noiseOffsetY;
     private float noiseTime;
+    private boolean isSlowed = false;
+    private long slowEndTime = 0;
+    private double slowFactor = 1.0;
 
+    public void applySlow(double factor, long durationMillis) {
+        this.slowFactor = factor;
+        this.isSlowed = true;
+        this.slowEndTime = System.currentTimeMillis() + durationMillis;
+    }
 
     public Enemy(EnemyDescription description, LinkedList<Point> path) {
         this.description = description;
@@ -32,13 +40,17 @@ public class Enemy {
         this.noiseOffsetY = (float) (Math.random() * 2 * Math.PI);
         this.noiseTime = 0;
     }
-    
+
     public float getX() {
         return x;
     }
 
     public float getY() {
         return y;
+    }
+
+    public boolean getIsSlowed() {
+        return isSlowed;
     }
 
     public EnemyDescription getDescription() {
@@ -50,6 +62,12 @@ public class Enemy {
     }
 
     public float getSpeed() {
+        if (isSlowed && System.currentTimeMillis() < slowEndTime) {
+            return (float)(speed * slowFactor);
+        } else if (isSlowed) {
+            isSlowed = false;
+            slowFactor = 1.0;
+        }
         return speed;
     }
 
@@ -60,30 +78,34 @@ public class Enemy {
     public int getHitpoint() {
         return hitpoint;
     }
-    public void update(float deltaTime){
-        if(currentPathIndex >= path.size()){
+
+    public void update(float deltaTime) {
+        if (currentPathIndex >= path.size()) {
             return;
         }
+
         Point target = path.get(currentPathIndex);
         float targetX = target.getX();
         float targetY = target.getY();
 
         float dx = targetX - x;
         float dy = targetY - y;
-        float distance = (float)Math.sqrt(dx*dx+dy*dy);
+        float distance = (float) Math.sqrt(dx * dx + dy * dy);
+
+        float currentSpeed = getSpeed();
 
         // Update noise
         noiseTime += deltaTime;
         float noiseX = (float) (Math.sin(noiseTime * NOISE_FREQUENCY + noiseOffsetX) * NOISE_AMPLITUDE);
         float noiseY = (float) (Math.cos(noiseTime * NOISE_FREQUENCY + noiseOffsetY) * NOISE_AMPLITUDE);
 
-        if(distance < speed * deltaTime){
-            x= targetX;
-            y= targetY;
+        if (distance < currentSpeed * deltaTime) {
+            x = targetX;
+            y = targetY;
             currentPathIndex++;
         } else {
-            float moveX = (dx/distance) * speed * deltaTime;
-            float moveY = (dy/distance) * speed * deltaTime;
+            float moveX = (dx / distance) * currentSpeed * deltaTime;
+            float moveY = (dy / distance) * currentSpeed * deltaTime;
 
             // Add noise only when not too close to target
             if (distance > 0.5f) {
@@ -113,7 +135,6 @@ public class Enemy {
      * - Deducts the resulting actual damage from this.hitpoint .
      * - The hitpoint may become less than or equal to 0 (in case the enemy can "die").
      */
-
     public void takeDamage(int damage, String attackType) {
         float multiplier = 1.0f;
 
@@ -128,8 +149,9 @@ public class Enemy {
         int actualDamage = Math.round(damage * multiplier);
         hitpoint -= actualDamage;
     }
-    //damage in arrow: knight<goblin
-    //damage in spell: knight>goblin
+
+    // damage in arrow: knight < goblin
+    // damage in spell: knight > goblin
 
     public int getCurrentPathIndex() {
         return currentPathIndex;

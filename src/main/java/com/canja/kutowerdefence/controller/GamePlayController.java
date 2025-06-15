@@ -25,6 +25,55 @@ public class GamePlayController {
     private final EnemyDescription goblin = EnemyFactory.GOBLIN;
     private final EnemyDescription knight = EnemyFactory.KNIGHT;
     private GamePlayView view;
+    private boolean upgradeMode = false;
+
+    public void toggleUpgradeMode() {
+        upgradeMode = !upgradeMode;
+        System.out.println("Upgrade mode: " + upgradeMode);
+    }
+
+    public boolean isUpgradeMode() {
+        return upgradeMode;
+    }
+
+
+    public void onTowerClicked(Tower tower, MapObjectView view) {
+        if (!upgradeMode) return;
+
+        if (tower.canUpgrade()) {
+            tower.upgrade();
+
+
+            String assetPath = switch (tower.getType()) {
+                case TOWER_ARCHER -> "/assets/towers/archerl2.png";
+                case TOWER_MAGE -> "/assets/towers/magel2.png";
+                case TOWER_ARTILLERY -> "/assets/towers/artilleryl2.png";
+                default -> null;
+            };
+
+            if (assetPath != null) {
+                String fullPath = switch (tower.getType()) {
+                    case TOWER_ARCHER -> "src/main/resources/assets/tile64/archerl2.png";
+                    case TOWER_MAGE -> "src/main/resources/assets/tile64/magel2.png";
+                    case TOWER_ARTILLERY -> "src/main/resources/assets/tile64/artilleryl2.png";
+                    default -> null;
+                };
+
+                if (fullPath != null) {
+                    view.setImageFromPath(fullPath);
+                }
+            }
+
+
+            this.view.updateUI();
+        } else {
+            System.out.println("Upgrade not possible (already upgraded or not enough gold).");
+        }
+
+
+        upgradeMode = false;
+    }
+
 
     public GamePlayController(GameSession gameSession) {
         this.gameSession = gameSession;

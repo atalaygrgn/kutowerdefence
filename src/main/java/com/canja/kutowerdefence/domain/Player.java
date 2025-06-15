@@ -22,6 +22,10 @@ public class Player {
         goldAmount -= val;
     }
 
+    public boolean hasEnoughGold(int amount) {
+        return goldAmount >= amount;
+    }
+
     public void gainGold(int val) {
         goldAmount += val;
     }
@@ -41,4 +45,6 @@ public class Player {
     public void setHealth(int health) {this.currentHealth=health;}
 
     public void setGoldAmount(int gold) {this.goldAmount = gold;}
+
+
 }

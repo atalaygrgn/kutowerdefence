@@ -23,9 +23,21 @@ public class MapObjectView extends ImageView {
         setImage(getObjectImage());
     }
 
+
+
     public MapObject getMapObject() {
         return mapObject;
     }
+
+    public void setImageFromPath(String path) {
+        File file = new File(path);
+        if (file.exists()) {
+            setImage(new Image(file.toURI().toString()));
+        } else {
+            System.out.println("Image not found: " + path);
+        }
+    }
+
 
     public Image getObjectImage() {
         if (mapObject.getType().equals(MapObjectType.CASTLE)) {
