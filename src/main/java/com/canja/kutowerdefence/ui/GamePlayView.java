@@ -615,9 +615,6 @@ public class GamePlayView implements Initializable {
         remainingTimeLabel.setText(time);
     }
 
-    /**
-     * Animasyonlu çanta, tıklanınca içindeki altını verir.
-     */
     private class GoldBagView extends Group {
         private final int goldAmount;
         private final List<Image> frames = new ArrayList<>();
@@ -626,11 +623,13 @@ public class GamePlayView implements Initializable {
 
         public GoldBagView(int goldAmount, double x, double y) {
             this.goldAmount = goldAmount;
-            for (int i = 0; ; i++) {
-                String res = "src/main/resources/assets/enemies/goldbag/goldbag00" + i + ".png";
-                if (getClass().getResourceAsStream(res) == null) break;
-                frames.add(new Image(getClass().getResourceAsStream(res)));
+            
+            // Load all 7 goldbag frames
+            for (int i = 0; i < 7; i++) {
+                String path = String.format("file:src/main/resources/assets/enemies/goldbag/goldbag00%d.png", i);
+                frames.add(new Image(path));
             }
+
             imageView = new ImageView(frames.get(0));
             imageView.setFitWidth(48);
             imageView.setFitHeight(48);
