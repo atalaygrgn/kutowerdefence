@@ -339,6 +339,24 @@ public class GamePlayView implements Initializable {
             tileView.setTileType(TileType.EMPTY);
             controller.putObjectOnMapView(newTower);
             updateUI();
+
+            int level = info[3];
+            
+            //while (level--) newTower.upgrade() tarzı bi yapı daha şık olabilir 2den çok seviye olacaksa
+            if (level == 2) {
+                newTower.upgrade();
+                String newAsset = switch (newTower.getType()) {
+                    case TOWER_ARCHER -> "src/main/resources/assets/tile64/archerl2.png";
+                    case TOWER_MAGE -> "src/main/resources/assets/tile64/magel2.png";
+                    case TOWER_ARTILLERY -> "src/main/resources/assets/tile64/artilleryl2.png";
+                    default -> null;
+                };
+                if (newAsset != null) {
+                    
+                }
+
+                updateUI();
+            }
         }
     }
 

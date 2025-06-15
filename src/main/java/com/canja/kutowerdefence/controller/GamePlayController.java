@@ -183,7 +183,7 @@ public class GamePlayController {
         List<int[]> towerInfo = new ArrayList<>();
 
         for (Tower tower : activeTowers) {
-            int[] info = {tower.getType().ordinal(), tower.getPosition().getX(), tower.getPosition().getY()};
+            int[] info = {tower.getType().ordinal(), tower.getPosition().getX(), tower.getPosition().getY(), tower.getLevel().ordinal()};
             towerInfo.add(info);
         }
 
