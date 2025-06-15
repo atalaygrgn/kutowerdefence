@@ -102,8 +102,7 @@ public class GamePlayController {
 
         state.togglePauseState();
         String path = state.getNextIcon();
-
-        clickedButton.setImage(new Image(getClass().getClassLoader().getResourceAsStream(path)));
+        view.setButtonImage(clickedButton,path);
     }
 
     public void toggleSpeed(Label speedLabel) {
