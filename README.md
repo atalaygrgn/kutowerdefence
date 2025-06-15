@@ -102,9 +102,15 @@ Please list the changes you made here during development
 - Speed toggle/pause-resume states are integrated to wave mechanics.
 - Load-save game functionality is completed. Users can now save their games and/or load the games they previously saved. Currently they do not select a slot when saving, the game automatically creates another save file and stores it under saves folder. When loading all the files under saves folder are displayed and user chooses a save to open.
 
-
 ## 13.06
 
 ### Jahan:
 
 - On game over screen, number of enemies killed is now displayed. Game over text is now visually more fitting to the background.
+
+## 15.06
+
+### Anıl:
+
+- Campaign mode is added (currently only one level exist - more to be added).
+- Bug related to remaining time UI is fixed.

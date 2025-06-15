@@ -39,11 +39,29 @@ public class WaveController {
     private int waveIndex = 0;
     private float frameRate = 1f;
 
+    private boolean isCampaign;
+    private List<WaveDescription> descriptions = null;
+
     public WaveController(GameSession gameSession) {
         this.gameSession = gameSession;
         this.enemyPath = gameSession.getMap().getPath();
         this.activeTimelines = new ArrayList<>();
+        this.isCampaign = false;
 
+        configureSession();
+    }
+
+    public WaveController(GameSession gameSession, List<WaveDescription> descriptions) {
+        this.gameSession = gameSession;
+        this.enemyPath = gameSession.getMap().getPath();
+        this.activeTimelines = new ArrayList<>();
+        this.descriptions = descriptions;
+        this.isCampaign = true;
+
+        configureSession();
+    }
+
+    public void configureSession() {
         int[] options = gameSession.getOptionValues();
 
         configureWaves(options);
@@ -89,29 +107,64 @@ public class WaveController {
     }
 
     public void startWaves() {
-        runWaves();
+        gameSession.setCurrentWave(0);
+        if (isCampaign) {
+            runWaves(descriptions);
+        } else {
+            runWaves();
+        }
     }
 
     public boolean hasWaves() {
-        return gameSession.getCurrentWave() <= gameSession.getWaveNumber();
+        if (descriptions != null) {
+            return waveIndex < descriptions.size();
+        }
+        return gameSession.getCurrentWave() < gameSession.getWaveNumber();
     }
 
-    private void runWaves() {
+    private void runWaves(List<WaveDescription> descriptions) {
+        gameSession.setWaveState(false);
+
         if (!hasWaves()) return;
 
-        gameSession.setWaveState(false);
-        Timeline initialDelay = new Timeline();
         IntegerProperty remainingSeconds = new SimpleIntegerProperty(delayBetweenWaves);
-
-        KeyFrame countdownFrame = new KeyFrame(Duration.seconds(1), e -> {
+        Timeline initialDelay = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
             int minutes = remainingSeconds.get() / 60;
             int seconds = remainingSeconds.get() % 60;
             String timeText = String.format("%d:%02d", minutes, seconds);
             view.updateRemainingTime(timeText);
             remainingSeconds.set(remainingSeconds.get() - 1);
+        }));
+        initialDelay.setCycleCount(delayBetweenWaves);
+        initialDelay.setRate(frameRate);
+        initialDelay.setOnFinished(e -> {
+            activeTimelines.remove(initialDelay);
+            gameSession.setWaveState(true);
+            wave = new Wave(descriptions.get(waveIndex));
+            gameSession.setCurrentWave(++waveIndex);
+            view.updateUI();
+            view.updateRemainingTime("--:--");
+            spawnEnemyGroups(wave, () -> {
+                runWaves(descriptions);  
+            });
         });
+        initialDelay.play();
+        activeTimelines.add(initialDelay);
+    }
 
-        initialDelay.getKeyFrames().add(countdownFrame);
+    private void runWaves() {
+        gameSession.setWaveState(false);
+
+        if (!hasWaves()) return;
+
+        IntegerProperty remainingSeconds = new SimpleIntegerProperty(delayBetweenWaves);
+        Timeline initialDelay = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
+            int minutes = remainingSeconds.get() / 60;
+            int seconds = remainingSeconds.get() % 60;
+            String timeText = String.format("%d:%02d", minutes, seconds);
+            view.updateRemainingTime(timeText);
+            remainingSeconds.set(remainingSeconds.get() - 1);
+        }));
         initialDelay.setCycleCount(delayBetweenWaves);
         initialDelay.setRate(frameRate);
         initialDelay.setOnFinished(e -> {
@@ -205,7 +258,10 @@ public class WaveController {
 
         EnemyGroupFactory.setDelay(options[Option.ENEMY_SPAWN_DELAY.ordinal()]);
         configureWaves(options);
-        frameRate=1;
+        frameRate = 1;
+
+        waveIndex = 0;
+        
         startWaves();
     }
 }
