@@ -332,6 +332,7 @@ public class GameSession {
 
     public void resetSession() {
         this.gameOver = 0;
+        this.enemiesKilled = 0;
         this.currentWave = 0;
         this.waveNumber = optionValues[Option.WAVE_NUMBER.ordinal()];
 
