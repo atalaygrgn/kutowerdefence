@@ -529,7 +529,7 @@ public class GamePlayView implements Initializable {
 
             if (view.isDead()) {
                 toRemove.add(view);
-                if (Math.random() < 0.9) {
+                if (Math.random() < 0.3) {
                     int bagAmount = new Random().nextInt(enemy.getGoldReward()) + 1;
                     double x = view.getTranslateX();
                     double y = view.getTranslateY();
@@ -662,6 +662,12 @@ public class GamePlayView implements Initializable {
             }));
             anim.setCycleCount(Timeline.INDEFINITE);
             anim.play();
+
+            Timeline removalTimer = new Timeline(new KeyFrame(Duration.seconds(5), e -> {
+                enemyLayer.getChildren().remove(this);
+            }));
+            removalTimer.setCycleCount(1);
+            removalTimer.play();
 
             imageView.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
                 controller.rewardPlayer(goldAmount);
