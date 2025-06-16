@@ -488,7 +488,12 @@ public class GamePlayView implements Initializable {
             controller.toggleUpgradeMode();
             if (controller.isUpgradeMode()) {
                 towerUpgradeButton.setEffect(glow);
-                // Clear tower selection when upgrade button is clicked
+                towerUpgradeButton.setOnMouseExited(e -> {
+                    if (controller.isUpgradeMode()) {
+                        towerUpgradeButton.setEffect(glow);
+                    }
+                });
+
                 if (selectedTowerButton != null) {
                     selectedTowerButton.setEffect(null);
                     selectedTowerButton = null;
