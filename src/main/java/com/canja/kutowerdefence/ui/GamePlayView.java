@@ -4,19 +4,12 @@ import com.canja.kutowerdefence.Routing;
 import com.canja.kutowerdefence.controller.GamePlayController;
 import com.canja.kutowerdefence.controller.LevelManager;
 import com.canja.kutowerdefence.controller.WaveController;
-import com.canja.kutowerdefence.domain.Enemy;
-import com.canja.kutowerdefence.domain.GameSession;
-import com.canja.kutowerdefence.domain.Map;
-import com.canja.kutowerdefence.domain.MapObject;
-import com.canja.kutowerdefence.domain.MapObjectType;
-import com.canja.kutowerdefence.domain.Point;
-import com.canja.kutowerdefence.domain.TileType;
-import com.canja.kutowerdefence.domain.Tower;
-import com.canja.kutowerdefence.domain.TowerFactory;
-import com.canja.kutowerdefence.domain.Option;
+import com.canja.kutowerdefence.domain.*;
 
 import javafx.animation.KeyFrame;
+import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
@@ -39,6 +32,7 @@ import java.util.ResourceBundle;
 import java.util.List;
 import java.util.ArrayList;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 
 public class GamePlayView implements Initializable {
@@ -131,6 +125,7 @@ public class GamePlayView implements Initializable {
     private static final Glow glow = new Glow(0.5);
     private Circle rangePreview;
     private static final int TILE_SIZE = 64;
+    private PauseTransition messageTimer;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -184,14 +179,14 @@ public class GamePlayView implements Initializable {
 
         int range = switch (towerType) {
             case TOWER_ARCHER, TOWER_ARTILLERY, TOWER_MAGE ->
-                controller.getGameSession().getOptionValues()[Option.TOWER_RANGE.ordinal()];
+                    controller.getGameSession().getOptionValues()[Option.TOWER_RANGE.ordinal()];
             default -> 0;
         };
 
         rangePreview = new Circle(
-            (x + 0.5) * TILE_SIZE,
-            (y + 0.5) * TILE_SIZE,
-            range * TILE_SIZE
+                (x + 0.5) * TILE_SIZE,
+                (y + 0.5) * TILE_SIZE,
+                range * TILE_SIZE
         );
         rangePreview.setFill(Color.rgb(255, 255, 255, 0.2));
         rangePreview.setStroke(Color.WHITE);
@@ -199,6 +194,54 @@ public class GamePlayView implements Initializable {
         rangePreview.setMouseTransparent(true);
 
         enemyLayer.getChildren().add(rangePreview);
+
+        // Show upgrade cost when hovering over a level 1 tower
+        List<Tower> towers = controller.getGameSession().getTowers();
+        for (Tower tower : towers) {
+            if (tower.getPosition().getX() == x && tower.getPosition().getY() == y && tower.getLevel() == TowerLevel.LEVEL1) {
+                int upgradeCost = tower.getUpgradeCost();
+                String message = "Upgrade Cost: " + upgradeCost;
+                String bgColor = "#f4e9bc";
+                String borderColor = "#5e4b1c";
+
+                Platform.runLater(() -> {
+                    towerUpgradeCostLabel.setText(message);
+                    towerUpgradeCostLabel.setStyle(
+                            "-fx-background-color: linear-gradient(" + bgColor + ", " + bgColor + ");" +
+                                    "-fx-text-fill: black;" +
+                                    "-fx-font-size: 18px;" +
+                                    "-fx-font-weight: bold;" +
+                                    "-fx-padding: 10px 20px;" +
+                                    "-fx-background-radius: 16;" +
+                                    "-fx-border-color: " + borderColor + ";" +
+                                    "-fx-border-width: 2px;" +
+                                    "-fx-border-radius: 16;" +
+                                    "-fx-alignment: center;"
+                    );
+                    towerUpgradeCostLabel.setWrapText(true);
+                    towerUpgradeCostLabel.setTextAlignment(TextAlignment.CENTER);
+                    towerUpgradeCostLabel.setEffect(new Glow(0.4));
+                    towerUpgradeCostLabel.setPrefWidth(200);
+                    towerUpgradeCostLabel.setPrefHeight(80);
+
+                    double localX = 300;
+                    double localY = -20;
+
+                    towerUpgradeCostLabel.setLayoutX(localX);
+                    towerUpgradeCostLabel.setLayoutY(localY);
+                    towerUpgradeCostLabel.setVisible(true);
+
+                    if (messageTimer != null) {
+                        messageTimer.stop();
+                    }
+
+                    messageTimer = new PauseTransition(Duration.seconds(2));
+                    messageTimer.setOnFinished(e -> towerUpgradeCostLabel.setVisible(false));
+                    messageTimer.play();
+                });
+                break;
+            }
+        }
     }
 
     private void hideRangePreview() {
@@ -283,39 +326,105 @@ public class GamePlayView implements Initializable {
     }
 
     private void tryUpgradeTower(MapObjectView objectView) {
-        if (!controller.isUpgradeMode()) return;
+        if (objectView == null) {
+            if (!controller.isUpgradeMode()) return;
 
+            showTowerMessage("Upgrade mode active", "#cceabb", "#4b792d");
+            return;
+        }
+
+        if (!controller.isUpgradeMode()) return;
         if (!(objectView.getMapObject() instanceof Tower tower)) return;
 
-        int cost = tower.getUpgradeCost();
+        TowerLevel level = tower.getLevel();
+        int upgradeCost = tower.getUpgradeCost();
+        int playerGold = controller.getGameSession().getPlayer().getGoldAmount();
 
-        if (controller.getGold() < cost) {
-            System.out.println("Not enough gold to upgrade.");
+        // Debug logging
+        System.out.println("[DEBUG] Tower type: " + tower.getType());
+        System.out.println("[DEBUG] Tower level: " + level);
+        System.out.println("[DEBUG] Upgrade cost: " + upgradeCost);
+        System.out.println("[DEBUG] Player gold: " + playerGold);
+
+        String message;
+        String bgColor = "#f4e9bc";
+        String borderColor = "#5e4b1c";
+
+        if (controller.getPauseState()) {
+            message = "Cannot upgrade in pause mode";
+            System.out.println("[DEBUG] Message: " + message + " (Pause state)");
+        } else if (level == TowerLevel.LEVEL2 || upgradeCost == 0) {
+            message = "This tower is maxed out!";
+            System.out.println("[DEBUG] Message: " + message + " (Tower is maxed out)");
+        } else if (playerGold < upgradeCost) {
+            message = "Not enough gold!";
+            System.out.println("[DEBUG] Message: " + message + " (Not enough gold)");
+        }
+        else {
+            controller.getGameSession().getPlayer().deductGold(upgradeCost);
+            tower.upgrade();
+
+            String newAsset = switch (tower.getType()) {
+                case TOWER_ARCHER -> "/assets/tile64/archerl2.png";
+                case TOWER_MAGE -> "/assets/tile64/magel2.png";
+                case TOWER_ARTILLERY -> "/assets/tile64/artilleryl2.png";
+                default -> null;
+            };
+
+            if (newAsset != null) {
+                Image image = new Image(getClass().getResource(newAsset).toExternalForm());
+                objectView.setImage(image);
+            }
+
+            updateUI();
             controller.toggleUpgradeMode();
+            towerUpgradeButton.setEffect(null);
+
+            showTowerMessage("Tower upgraded successfully!", "#cceabb", "#4b792d");
             return;
         }
 
-        if (!tower.canUpgrade()) {
-            System.out.println("Tower is already at max level.");
-            controller.toggleUpgradeMode();
-            return;
-        }
+        showTowerMessage(message, bgColor, borderColor);
+    }
+    private void showTowerMessage(String message, String bgColor, String borderColor) {
+        Platform.runLater(() -> {
+            towerUpgradeCostLabel.setText(message);
+            towerUpgradeCostLabel.setStyle(
+                    "-fx-background-color: linear-gradient(" + bgColor + ", " + bgColor + ");" +
+                            "-fx-text-fill: black;" +
+                            "-fx-font-size: 18px;" +
+                            "-fx-font-weight: bold;" +
+                            "-fx-padding: 10px 20px;" +
+                            "-fx-background-radius: 16;" +
+                            "-fx-border-color: " + borderColor + ";" +
+                            "-fx-border-width: 2px;" +
+                            "-fx-border-radius: 16;" +
+                            "-fx-alignment: center;"
+            );
+            towerUpgradeCostLabel.setWrapText(true);
+            towerUpgradeCostLabel.setTextAlignment(TextAlignment.CENTER);
+            towerUpgradeCostLabel.setEffect(new Glow(0.4));
+            towerUpgradeCostLabel.setPrefWidth(200);
+            towerUpgradeCostLabel.setPrefHeight(80);
 
-        tower.upgrade();
-        controller.rewardPlayer(-cost);
+            // Position the message just below the buttons
+            double localX = 300; // Position to the left
+            double localY = -10; // Position just below the buttons
 
-        String newAsset = switch (tower.getType()) {
-            case TOWER_ARCHER -> "src/main/resources/assets/tile64/archerl2.png";
-            case TOWER_MAGE -> "src/main/resources/assets/tile64/magel2.png";
-            case TOWER_ARTILLERY -> "src/main/resources/assets/tile64/artilleryl2.png";
-            default -> null;
-        };
-        if (newAsset != null) {
-            objectView.setImageFromPath(newAsset);
-        }
+            towerUpgradeCostLabel.setLayoutX(localX);
+            towerUpgradeCostLabel.setLayoutY(localY);
+            towerUpgradeCostLabel.setVisible(true);
 
-        updateUI();
-        controller.toggleUpgradeMode();
+            // Cancel any existing message timer
+            if (messageTimer != null) {
+                messageTimer.stop();
+            }
+
+            // Ensure all messages are displayed for exactly 3 seconds
+            messageTimer = new PauseTransition(Duration.seconds(3));
+            messageTimer.setOnFinished(e -> towerUpgradeCostLabel.setVisible(false));
+            messageTimer.play();
+        });
     }
 
     public TileView getTileView(int x, int y) {
@@ -375,9 +484,25 @@ public class GamePlayView implements Initializable {
         configureRestartButton();
         configureSaveButton();
         towerUpgradeButton.setOnMouseClicked(event -> {
+            boolean wasUpgradeMode = controller.isUpgradeMode();
             controller.toggleUpgradeMode();
-            System.out.println("Click a tower to upgrade it...");
+            if (controller.isUpgradeMode()) {
+                towerUpgradeButton.setEffect(glow);
+                // Clear tower selection when upgrade button is clicked
+                if (selectedTowerButton != null) {
+                    selectedTowerButton.setEffect(null);
+                    selectedTowerButton = null;
+                    selectedTowerType = null;
+                    hideRangePreview();
+                }
+                Platform.runLater(() -> tryUpgradeTower(null));
+            } else {
+                towerUpgradeButton.setEffect(null);
+                // Show message when upgrade mode is disabled
+                showTowerMessage("Upgrade mode disabled", "#f4e9bc", "#5e4b1c");
+            }
         });
+
         setupHoverEffect(towerUpgradeButton);
     }
 
@@ -456,6 +581,7 @@ public class GamePlayView implements Initializable {
             }
         } else {
             bgFile = new File("src/main/resources/assets/gameover.png");
+
         }
         BackgroundImage bgImage = new BackgroundImage(new Image(bgFile.toURI().toString()),
                 BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
@@ -580,16 +706,16 @@ public class GamePlayView implements Initializable {
                     controller.getGameSession().tick(deltaTime);
 
                     if(controller.getGameState()==2){
-                        showGameOver(false, true);
+                        showGameOver(false,true);
                     } else if (controller.getGameState()==1) {
                         int level = LevelManager.getCurrentLevel();
 
                         if (controller.getLevel() == level & controller.getGameSession().isCampaign()) {
                             LevelManager.saveLevel(++level);
-                            showGameOver(true, true);
+                            showGameOver(true,true);
                         }
 
-                        showGameOver(true, false);
+                        showGameOver(true,false);
                     }
                     updateEnemies(deltaTime, controller.getPauseState());
                 }
@@ -629,11 +755,18 @@ public class GamePlayView implements Initializable {
             return;
         }
 
+        // Deselect upgrade button when tower button is clicked
+        if (controller != null && controller.isUpgradeMode()) {
+            controller.toggleUpgradeMode();
+            towerUpgradeButton.setEffect(null);
+        }
+
         // Select new button
         selectedTowerButton = clickedButton;
         selectedTowerButton.setEffect(glow);
         selectedTowerType = MapObjectType.valueOf((String)clickedButton.getUserData());
     }
+
 
     public void updateRemainingTime(String time) {
         remainingTimeLabel.setText(time);
