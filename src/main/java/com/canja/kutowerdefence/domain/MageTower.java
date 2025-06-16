@@ -26,6 +26,10 @@ public class MageTower extends Tower {
                     () -> {
                         target.takeDamage(damage, "Spell");
                         target.applySlow(0.8, 4000);
+
+                        if (Math.random() < 0.03) { // 3% chance to teleport
+                            target.teleportToStart();
+                        }
                         System.out.println("Mage L2 hit: " + target.getDescription().getName() + " HP=" + target.getHitpoint());
                     },
                     false
@@ -39,6 +43,10 @@ public class MageTower extends Tower {
                     128, 128, 7,
                     () -> {
                         target.takeDamage(damage, "Spell");
+
+                        if (Math.random() < 0.03) { // 3% chance to teleport
+                            target.teleportToStart();
+                        }
                         System.out.println("Mage hit: " + target.getDescription().getName() + " HP=" + target.getHitpoint());
                     },
                     false

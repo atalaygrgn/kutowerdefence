@@ -160,4 +160,13 @@ public class Enemy {
     public boolean reachedEnd() {
         return currentPathIndex >= path.size();
     }
+
+    public void teleportToStart() {
+        if (path != null && !path.isEmpty()) {
+            Point start = path.get(0);
+            this.x = start.getX();
+            this.y = start.getY();
+            this.currentPathIndex = 1;
+        }
+    }
 }
