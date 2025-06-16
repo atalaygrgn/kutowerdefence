@@ -344,6 +344,24 @@ public class GamePlayView implements Initializable {
             tileView.setTileType(TileType.EMPTY);
             controller.putObjectOnMapView(newTower);
             updateUI();
+
+            int level = info[3];
+            
+            //while (level--) newTower.upgrade() tarzı bi yapı daha şık olabilir 2den çok seviye olacaksa
+            if (level == 2) {
+                newTower.upgrade();
+                String newAsset = switch (newTower.getType()) {
+                    case TOWER_ARCHER -> "src/main/resources/assets/tile64/archerl2.png";
+                    case TOWER_MAGE -> "src/main/resources/assets/tile64/magel2.png";
+                    case TOWER_ARTILLERY -> "src/main/resources/assets/tile64/artilleryl2.png";
+                    default -> null;
+                };
+                if (newAsset != null) {
+                    
+                }
+
+                updateUI();
+            }
         }
     }
 
@@ -511,7 +529,7 @@ public class GamePlayView implements Initializable {
 
             if (view.isDead()) {
                 toRemove.add(view);
-                if (Math.random() < 0.9) {
+                if (Math.random() < 0.3) {
                     int bagAmount = new Random().nextInt(enemy.getGoldReward()) + 1;
                     double x = view.getTranslateX();
                     double y = view.getTranslateY();
@@ -644,6 +662,12 @@ public class GamePlayView implements Initializable {
             }));
             anim.setCycleCount(Timeline.INDEFINITE);
             anim.play();
+
+            Timeline removalTimer = new Timeline(new KeyFrame(Duration.seconds(5), e -> {
+                enemyLayer.getChildren().remove(this);
+            }));
+            removalTimer.setCycleCount(1);
+            removalTimer.play();
 
             imageView.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
                 controller.rewardPlayer(goldAmount);
