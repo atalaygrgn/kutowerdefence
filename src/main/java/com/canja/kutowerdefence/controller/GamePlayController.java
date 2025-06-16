@@ -7,16 +7,22 @@ import com.canja.kutowerdefence.ui.GamePlayView;
 import com.canja.kutowerdefence.ui.MapObjectView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonParser;
 
+import javafx.scene.control.Alert;
+import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 
 public class GamePlayController {
@@ -160,19 +166,32 @@ public class GamePlayController {
         speedLabel.setText(" " + text + " ");
     }
 
-    public void saveGame() {
+    public void getSelection() {
         if (gameSession.isWaveActive()) {
-            System.out.println("Cannot save while a wave is active!");
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle(null);
+            alert.setHeaderText(null);
+            alert.setContentText("Cannot save while a wave is active!");
+            alert.showAndWait();
             return;
         }
 
         if (!gameSession.getEnemies().isEmpty()) {
-            System.out.println("Cannot save while there are enemies alive!");
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle(null);
+            alert.setHeaderText(null);
+            alert.setContentText("Cannot save while there are enemies alive!");
+            alert.showAndWait();
             return;
         }
 
-        List<File> saveFiles = SaveService.getSaveFiles();
-        String filename = "src/main/resources/saves/save" + String.valueOf(saveFiles.size() + 1) + ".kutdsave";
+        view.showSaveDialog();
+    }
+
+    public void saveGame(String saveName) {
+        
+
+        String filename = "src/main/resources/saves/" + saveName + ".kutdsave";
         String mapPath = gameSession.getMapPath();
 
         int[] options = gameSession.getOptionValues();
@@ -247,5 +266,14 @@ public class GamePlayController {
 
     public boolean buyNewTower(int finalI, int finalJ, MapObjectType selectedTowerType) {
         return gameSession.buyNewTower(finalI, finalJ, selectedTowerType);
+    }
+
+    public void setStates() {
+        gameSession.getPlayingState().setGamePlayController(this);
+        gameSession.getPausedState().setGamePlayController(this);
+    }
+
+    public GamePlayView getView() {
+        return view;
     }
 }
