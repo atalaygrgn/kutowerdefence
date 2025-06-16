@@ -222,6 +222,12 @@
                                 </image>
                             </ImageView>
                             <Pane prefHeight="50.0" prefWidth="30.0" />
+                            <ImageView fx:id="nextLevelBtn" fitHeight="48.0" fitWidth="48.0" pickOnBounds="true">
+                                <image>
+                                    <Image url="@../../../assets/ui/button/button_9.png" />
+                                </image>
+                            </ImageView>
+                            <Pane prefHeight="50.0" prefWidth="30.0" />
                             <ImageView fx:id="exitGameOverBtn" fitHeight="48.0" fitWidth="48.0" pickOnBounds="true">
                                 <image>
                                     <Image url="@../../../assets/ui/button/button_3.png" />

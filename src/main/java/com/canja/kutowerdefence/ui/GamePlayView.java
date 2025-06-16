@@ -116,6 +116,7 @@ public class GamePlayView implements Initializable {
     @FXML private VBox gameOverOverlay;
     @FXML private ImageView restartGameOverBtn;
     @FXML private ImageView exitGameOverBtn;
+    @FXML private ImageView nextLevelBtn;
 
     @FXML
     private Label enemiesKilledLabel;
@@ -451,6 +452,8 @@ public class GamePlayView implements Initializable {
             bgFile = new File("src/main/resources/assets/gamesuccess.png");
         } else {
             bgFile = new File("src/main/resources/assets/gameover.png");
+            nextLevelBtn.setVisible(false);
+            nextLevelBtn.setDisable(true);
         }
         BackgroundImage bgImage = new BackgroundImage(new Image(bgFile.toURI().toString()),
                 BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
