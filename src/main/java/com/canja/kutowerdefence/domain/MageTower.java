@@ -26,10 +26,6 @@ public class MageTower extends Tower {
                     () -> {
                         target.takeDamage(damage, "Spell");
                         target.applySlow(0.8, 4000);
-
-                        if (Math.random() < 0.03) { // 3% chance to teleport
-                            target.teleportToStart();
-                        }
                         System.out.println("Mage L2 hit: " + target.getDescription().getName() + " HP=" + target.getHitpoint());
                     },
                     false
@@ -43,10 +39,6 @@ public class MageTower extends Tower {
                     128, 128, 7,
                     () -> {
                         target.takeDamage(damage, "Spell");
-
-                        if (Math.random() < 0.03) { // 3% chance to teleport
-                            target.teleportToStart();
-                        }
                         System.out.println("Mage hit: " + target.getDescription().getName() + " HP=" + target.getHitpoint());
                     },
                     false
@@ -56,11 +48,17 @@ public class MageTower extends Tower {
 
     @Override
     public int getUpgradeCost() {
-        return 150;
+        // Return 0 for level 2 towers to indicate they are maxed out
+        if (level == TowerLevel.LEVEL2) {
+            return 0;
+        }
+        return cost + (cost * 3 / 5);
     }
 
     @Override
     protected void applyLevel2Stats() {
-
+        this.range = (int) Math.round(this.range * 1.3);
+        this.damage = (int) Math.round(this.damage * 1.5);
+        this.setPersonalCooldown(600);
     }
 }

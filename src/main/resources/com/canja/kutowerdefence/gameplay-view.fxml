@@ -91,10 +91,7 @@
                                     <Image url="@../../../assets/ui/button/tower_option_buttons_3.png" />
                                 </image>
                             </ImageView>
-                            <Label fx:id="towerUpgradeCostLabel" text="300" translateX="16" translateY="24">
-                                <font>
-                                    <Font name="System" size="13.0" />
-                                </font></Label>
+
                         </children>
                     </StackPane>
                 </HBox>
@@ -210,15 +207,31 @@
                 </rowConstraints>
             </GridPane>
             <Pane fx:id="enemyLayer" pickOnBounds="false" />
-            <VBox fx:id="gameOverOverlay" alignment="TOP_CENTER" maxHeight="600.0" maxWidth="800.0" spacing="20" style="-fx-background-color: rgba(0,0,0,0.6);" visible="false" translateY="-100">
+
+            <Pane fx:id="upgradeMessageLayer" pickOnBounds="false">
+                <Label fx:id="towerUpgradeCostLabel"
+                       visible="false"
+                       layoutX="0"
+                       layoutY="0"
+                       text="Click"
+                       style="-fx-background-color: transparent;" />
+            </Pane>
+
+            <VBox fx:id="gameOverOverlay" alignment="TOP_CENTER" maxHeight="600.0" maxWidth="800.0" spacing="20" style="-fx-background-color: rgba(0,0,0,0.6);" translateY="-100" visible="false" >
                 <children>
-                    <Label fx:id="enemiesKilledLabel" prefHeight="45.0" prefWidth="300.0" style="-fx-font-family: 'System'; -fx-font-size: 30px; -fx-text-fill: #F8E8A0; -fx-font-weight: bold; -fx-effect: dropshadow(one-pass-box, black, 5, 0.3, 2, 2);" alignment="CENTER" text="Enemies Killed: 0" />
+                    <Label fx:id="enemiesKilledLabel"  alignment="CENTER" prefHeight="45.0" prefWidth="300.0" style="-fx-font-family: 'System'; -fx-font-size: 30px; -fx-text-fill: #F8E8A0; -fx-font-weight: bold; -fx-effect: dropshadow(one-pass-box, black, 5, 0.3, 2, 2);" text="Enemies Killed: 0" />
                     <Pane prefHeight="400.0" prefWidth="800.0" />
                     <HBox alignment="CENTER" prefHeight="50.0" prefWidth="800.0">
                         <children>
                             <ImageView fx:id="restartGameOverBtn" fitHeight="48.0" fitWidth="48.0" pickOnBounds="true">
                                 <image>
                                     <Image url="@../../../assets/ui/button/button_14.png" />
+                                </image>
+                            </ImageView>
+                            <Pane prefHeight="50.0" prefWidth="30.0" />
+                            <ImageView fx:id="nextLevelBtn" disable="true" fitHeight="48.0" fitWidth="48.0" pickOnBounds="true" visible="false">
+                                <image>
+                                    <Image url="@../../../assets/ui/button/button_9.png" />
                                 </image>
                             </ImageView>
                             <Pane prefHeight="50.0" prefWidth="30.0" />

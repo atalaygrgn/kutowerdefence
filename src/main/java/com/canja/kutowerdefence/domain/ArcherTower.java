@@ -29,13 +29,17 @@ public class ArcherTower extends Tower {
 
     @Override
     public int getUpgradeCost() {
-        return 100;
+
+        if (level == TowerLevel.LEVEL2) {
+            return 0;
+        }
+        return cost + (cost * 3 / 5);
     }
 
     @Override
     protected void applyLevel2Stats() {
         this.range = (int) Math.round(this.range * 1.5);
+        this.damage = (int) Math.round(this.damage * 1.4);
         this.setPersonalCooldown(400);
-
     }
 }

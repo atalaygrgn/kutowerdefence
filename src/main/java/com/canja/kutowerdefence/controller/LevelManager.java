@@ -13,7 +13,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 public class LevelManager {
-    public static final int maxLevel = 1;
+    public static final int maxLevel = 10;
 
     public static int getCurrentLevel() {
         try {

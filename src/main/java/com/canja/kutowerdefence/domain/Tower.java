@@ -78,12 +78,10 @@ public abstract class Tower extends MapObject {
     }
 
     public boolean canUpgrade() {
-        return level == TowerLevel.LEVEL1 && session.getPlayer().getGoldAmount() >= getUpgradeCost();
-    }
+        return level == TowerLevel.LEVEL1; }
 
     public void upgrade() {
         if (canUpgrade()) {
-            session.getPlayer().deductGold(getUpgradeCost());
             level = TowerLevel.LEVEL2;
             applyLevel2Stats();
         }

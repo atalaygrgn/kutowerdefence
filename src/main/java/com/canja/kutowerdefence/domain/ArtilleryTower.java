@@ -49,7 +49,12 @@ public class ArtilleryTower extends Tower {
 
     @Override
     public int getUpgradeCost() {
-        return 120;
+        // Return 0 for level 2 towers to indicate they are maxed out
+        if (level == TowerLevel.LEVEL2) {
+            return 0;
+        }
+        return cost + (cost * 3 / 5);
+
     }
 
     @Override
