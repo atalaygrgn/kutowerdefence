@@ -10,6 +10,7 @@ import com.canja.kutowerdefence.domain.Map;
 import com.canja.kutowerdefence.domain.MapObject;
 import com.canja.kutowerdefence.domain.MapObjectType;
 import com.canja.kutowerdefence.domain.Point;
+import com.canja.kutowerdefence.domain.SaveService;
 import com.canja.kutowerdefence.domain.TileType;
 import com.canja.kutowerdefence.domain.Tower;
 import com.canja.kutowerdefence.domain.TowerFactory;
@@ -19,16 +20,24 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.animation.AnimationTimer;
 import javafx.scene.shape.Circle;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.scene.paint.Color;
 
 import java.io.File;
@@ -37,6 +46,7 @@ import java.net.URL;
 import java.util.Random;
 import java.util.ResourceBundle;
 import java.util.List;
+import java.util.Optional;
 import java.util.ArrayList;
 import javafx.scene.input.MouseEvent;
 import javafx.util.Duration;
@@ -342,7 +352,7 @@ public class GamePlayView implements Initializable {
             gameSession.addTower(newTower);
             TileView tileView = getTileView(x, y);
             tileView.setTileType(TileType.EMPTY);
-            controller.putObjectOnMapView(newTower);
+            MapObjectView objectView = controller.putObjectOnMapView(newTower);
             updateUI();
 
             int level = info[3];
@@ -357,7 +367,7 @@ public class GamePlayView implements Initializable {
                     default -> null;
                 };
                 if (newAsset != null) {
-                    
+                    objectView.setImageFromPath(newAsset);
                 }
 
                 updateUI();
@@ -400,8 +410,19 @@ public class GamePlayView implements Initializable {
     }
 
     private void configureSaveButton() {
-        saveButton.setOnMouseClicked(event -> controller.saveGame());
+        saveButton.setOnMouseClicked(event -> controller.getSelection());
         setupHoverEffect(saveButton);
+        deactivateSaveButton();
+    }
+
+    public void deactivateSaveButton() {
+        saveButton.setDisable(true);
+        saveButton.setOpacity(0.5);
+    }
+
+    public void activateSaveButton() {
+        saveButton.setDisable(false);
+        saveButton.setOpacity(1);
     }
 
     private void setupHoverEffect(ImageView button) {
@@ -411,7 +432,7 @@ public class GamePlayView implements Initializable {
         speedButton.setOnMouseClicked(event -> controller.toggleSpeed(speedLabel));
         exitButton.setOnMouseClicked(event -> handleExit());
         restartButton.setOnMouseClicked(event -> restartGame());
-        saveButton.setOnMouseClicked(event -> controller.saveGame());
+        saveButton.setOnMouseClicked(event -> controller.getSelection());
         restartGameOverBtn.setOnMouseClicked(event -> {
             System.out.println("Restart clicked!");
             setControlsDisabled(false); // Enable controls when restarting
@@ -669,5 +690,80 @@ public class GamePlayView implements Initializable {
                 enemyLayer.getChildren().remove(this);
             });
         }
+    }
+
+    public void showSaveDialog() {
+        Stage dialog = new Stage();
+        dialog.initModality(Modality.APPLICATION_MODAL);
+        dialog.setTitle("Save Game");
+
+        VBox vbox = new VBox(10);
+        vbox.setPadding(new Insets(20));
+        vbox.setAlignment(Pos.CENTER_LEFT);
+
+        Label label = new Label("Select a save file");
+        label.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
+        vbox.getChildren().add(label);
+
+        List<File> saveFiles = SaveService.getSaveFiles();
+
+        for (int i = 0; i < 3; i++) {
+            String name;
+            final boolean isEmpty;
+            if (i < saveFiles.size() && saveFiles.get(i).exists()) {
+                File file = saveFiles.get(i);
+                name = file.getName();
+                name = name.substring(0, name.lastIndexOf(".kutdsave"));
+                isEmpty = false;
+            } else {
+                name = "Empty Slot" + i;
+                isEmpty = true;
+            }
+
+            Button btn = new Button(name);
+            final int slotIndex = i + 1;
+            btn.setMaxWidth(Double.MAX_VALUE);
+
+            btn.setOnAction(e -> {
+                TextInputDialog inputDialog = new TextInputDialog();
+                inputDialog.setTitle(null);
+                inputDialog.setHeaderText("Enter save name:");
+                inputDialog.setContentText("Save name:");
+
+                Optional<String> result = inputDialog.showAndWait();
+                if (result.isPresent()) {
+                    String saveName = result.get().trim();
+                    if (!saveName.isEmpty()) {                        
+                        String alertText = "Are you sure you want to save as \"" + saveName + "\"?";
+                        if (!isEmpty) alertText += "\nThis will overwrite existing data!";
+
+                        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+                        confirm.setTitle(null);
+                        confirm.setHeaderText(null);
+                        confirm.setContentText(alertText);
+
+                        Optional<ButtonType> confirmation = confirm.showAndWait();
+                        if (confirmation.isPresent() && confirmation.get() == ButtonType.OK) {
+                            dialog.close();
+                            
+                            if (!isEmpty) {
+                                String path = "src/main/resources/saves/" + btn.getText() + ".kutdsave";
+                                File file = new File(path);
+
+                                if (file.exists()) file.delete();
+                            }
+
+                            controller.saveGame(saveName);
+                        }
+                    }
+                }
+            });
+
+            vbox.getChildren().add(btn);
+        }
+
+        Scene scene = new Scene(vbox, 300, 200);
+        dialog.setScene(scene);
+        dialog.showAndWait();
     }
 }

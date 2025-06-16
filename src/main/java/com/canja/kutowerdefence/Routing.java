@@ -116,6 +116,7 @@ public final class Routing {
         GamePlayController controller = new GamePlayController(gameSession);
         WaveController waveController = new WaveController(gameSession);
         controller.setView(view);
+        controller.setStates();
         waveController.setView(view);
         view.setController(controller, waveController);
 
@@ -143,6 +144,7 @@ public final class Routing {
         GamePlayController controller = new GamePlayController(gameSession);
         WaveController waveController = new WaveController(gameSession);
         controller.setView(view);
+        controller.setStates();
         waveController.setView(view);
         view.setController(controller, waveController);
         view.reloadTowers(towerInfo, gameSession);
@@ -163,6 +165,7 @@ public final class Routing {
         WaveController waveController = new WaveController(gameSession, descriptions);
 
         controller.setView(view);
+        controller.setStates();
         waveController.setView(view);
         view.setController(controller, waveController);
     }
