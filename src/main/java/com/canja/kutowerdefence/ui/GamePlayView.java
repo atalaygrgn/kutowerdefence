@@ -275,7 +275,7 @@ public class GamePlayView implements Initializable {
                     int finalI = i;
                     int finalJ = j;
                     tileView.setOnMouseClicked(event -> {
-                        if (selectedTowerType != null) {
+                        if (selectedTowerType != null && !isTowerPlaced(finalI, finalJ)) {
                             boolean success = controller.buyNewTower(finalI, finalJ, selectedTowerType);
                             if (success) {
                                 tileView.setTileType(TileType.EMPTY);
