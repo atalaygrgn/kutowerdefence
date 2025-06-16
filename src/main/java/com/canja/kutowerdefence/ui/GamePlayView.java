@@ -195,7 +195,6 @@ public class GamePlayView implements Initializable {
 
         enemyLayer.getChildren().add(rangePreview);
 
-        // Show upgrade cost when hovering over a level 1 tower
         List<Tower> towers = controller.getGameSession().getTowers();
         for (Tower tower : towers) {
             if (tower.getPosition().getX() == x && tower.getPosition().getY() == y && tower.getLevel() == TowerLevel.LEVEL1) {
@@ -420,8 +419,7 @@ public class GamePlayView implements Initializable {
                 messageTimer.stop();
             }
 
-            // Ensure all messages are displayed for exactly 3 seconds
-            messageTimer = new PauseTransition(Duration.seconds(3));
+            messageTimer = new PauseTransition(Duration.seconds(1));
             messageTimer.setOnFinished(e -> towerUpgradeCostLabel.setVisible(false));
             messageTimer.play();
         });

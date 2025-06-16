@@ -69,7 +69,7 @@ public class GameSession {
         this.map = new Map(dimX, dimY);
 
         extractOptionValues(optionFile);
-        
+
         this.player = new Player(optionValues[Option.GOLD.ordinal()], optionValues[Option.PLAYER_HITPOINT.ordinal()]);
 
         InitializeSession();
@@ -84,11 +84,11 @@ public class GameSession {
         player.setGoldAmount(playerInfo[0]);
         player.setHealth(playerInfo[1]);
         isCampaign = true;
-        
+
         this.gameOver=0;
         InitializeSession();
     }
-    
+
     public GameSession(File mapFile, int[] options, int level) {
         this.optionValues = options;
         this.mapFile = mapFile;
@@ -101,7 +101,7 @@ public class GameSession {
         this.gameOver=0;
         InitializeSession();
      }
-    
+
     public void InitializeSession() {
         Tower.setCooldownToDefault();
         ProjectileView.setAnimationDurationToDefault();
@@ -170,7 +170,7 @@ public class GameSession {
     public SpeedState getSlowState() {
         return slowState;
     }
-    
+
     public SpeedState getSpeedState() {
         return speedState;
     }
@@ -186,7 +186,7 @@ public class GameSession {
     public FlowState getFlowState() {
         return flowState;
     }
-    
+
     public void setSpeedState(SpeedState state) {
         speedState = state;
     }
@@ -225,7 +225,7 @@ public class GameSession {
 
         return waveInfo;
     }
-    
+
     public Player getPlayer() {
         return this.player;
     }
@@ -236,11 +236,46 @@ public class GameSession {
 
     public void tick(float deltaTime) {
         for (Enemy enemy : activeEnemies) {
+            if (enemy.getDescription().getName().equals("Knight")) {
+                float minDistance = Float.MAX_VALUE;
+                Enemy closestGoblin = null;
+
+                for (Enemy otherEnemy : activeEnemies) {
+                    if (otherEnemy.getDescription().getName().equals("Goblin")) {
+                        float dx = enemy.getX() - otherEnemy.getX();
+                        float dy = enemy.getY() - otherEnemy.getY();
+                        float distance = (float) Math.sqrt(dx * dx + dy * dy);
+
+                        if (distance < minDistance) {
+                            minDistance = distance;
+                            closestGoblin = otherEnemy;
+                        }
+                    }
+                }
+
+                if (closestGoblin != null && minDistance < 1.0f) {
+                    if (!enemy.getHasCombatSynergy()) {
+                        float knightSpeed = enemy.getDescription().getSpeed();
+                        float goblinSpeed = closestGoblin.getDescription().getSpeed();
+                        float averageSpeed = (knightSpeed + goblinSpeed) / 2.0f;
+
+                        enemy.setSpeed(averageSpeed);
+                        enemy.setHasCombatSynergy(true);
+                    }
+                } else {
+                    if (enemy.getHasCombatSynergy()) {
+                        enemy.setSpeed(enemy.getOriginalSpeed());
+                        enemy.setHasCombatSynergy(false);
+                    }
+                }
+            }
+        }
+
+        for (Enemy enemy : activeEnemies) {
             enemy.update(deltaTime);
         }
         for (Tower tower : activeTowers) {
             tower.tryAttack(activeEnemies);
-
         }
 
         activeEnemies.removeIf(e -> {
@@ -260,7 +295,7 @@ public class GameSession {
     public String getMapPath() {
         return mapFile.getPath();
     }
-    
+
     public Tower getNewestTower() {
         if (activeTowers.isEmpty()) return null;
 
@@ -306,7 +341,7 @@ public class GameSession {
         }
 
         if (player.getGoldAmount() < cost) return false;
-        
+
         if (x < 0 || x >= dimX || y < 0 || y >= dimY) return false;
 
         Tower newTower = TowerFactory.createTower(selectedType, new Point(x, y), this);
@@ -358,4 +393,3 @@ public class GameSession {
         waveActive = bool;
     }
 }
-

@@ -1,5 +1,6 @@
 package com.canja.kutowerdefence.domain;
 import java.util.LinkedList;
+import java.util.List;
 
 public class Enemy {
     private float x, y;
@@ -18,6 +19,12 @@ public class Enemy {
     private boolean isSlowed = false;
     private long slowEndTime = 0;
     private double slowFactor = 1.0;
+    private boolean hasCombatSynergy = false;
+    private float originalSpeed;
+
+    public float getOriginalSpeed() {
+        return originalSpeed;
+    }
 
     public void applySlow(double factor, long durationMillis) {
         this.slowFactor = factor;
@@ -29,6 +36,7 @@ public class Enemy {
         this.description = description;
         this.path = path;
         this.speed = description.getSpeed();
+        this.originalSpeed = description.getSpeed();
         this.hitpoint = description.getHitpoints();
         this.goldReward = description.getGold();
 
@@ -39,6 +47,14 @@ public class Enemy {
         this.noiseOffsetX = (float) (Math.random() * 2 * Math.PI);
         this.noiseOffsetY = (float) (Math.random() * 2 * Math.PI);
         this.noiseTime = 0;
+    }
+
+    public boolean getHasCombatSynergy() {
+        return hasCombatSynergy;
+    }
+
+    public void setHasCombatSynergy(boolean hasSynergy) {
+        this.hasCombatSynergy = hasSynergy;
     }
 
     public float getX() {
@@ -62,13 +78,16 @@ public class Enemy {
     }
 
     public float getSpeed() {
+        float currentSpeed = speed;
+
         if (isSlowed && System.currentTimeMillis() < slowEndTime) {
-            return (float)(speed * slowFactor);
+            currentSpeed = (float)(currentSpeed * slowFactor);
         } else if (isSlowed) {
             isSlowed = false;
             slowFactor = 1.0;
         }
-        return speed;
+
+        return currentSpeed;
     }
 
     public void setSpeed(float speed) {
@@ -78,6 +97,9 @@ public class Enemy {
     public int getHitpoint() {
         return hitpoint;
     }
+
+    private float lastDx = 0;
+    private float lastDy = 0;
 
     public void update(float deltaTime) {
         if (currentPathIndex >= path.size()) {
@@ -99,16 +121,29 @@ public class Enemy {
         float noiseX = (float) (Math.sin(noiseTime * NOISE_FREQUENCY + noiseOffsetX) * NOISE_AMPLITUDE);
         float noiseY = (float) (Math.cos(noiseTime * NOISE_FREQUENCY + noiseOffsetY) * NOISE_AMPLITUDE);
 
+        boolean directionChanged = false;
+        if (lastDx != 0 || lastDy != 0) {
+            float dotProduct = (dx * lastDx + dy * lastDy) / 
+                              (distance * (float)Math.sqrt(lastDx * lastDx + lastDy * lastDy));
+            directionChanged = dotProduct < 0.9;
+        }
+
         if (distance < currentSpeed * deltaTime) {
             x = targetX;
             y = targetY;
             currentPathIndex++;
+            lastDx = 0;
+            lastDy = 0;
         } else {
             float moveX = (dx / distance) * currentSpeed * deltaTime;
             float moveY = (dy / distance) * currentSpeed * deltaTime;
 
-            // Add noise only when not too close to target
-            if (distance > 0.5f) {
+            // Store current direction for next update
+            lastDx = dx;
+            lastDy = dy;
+
+            // Add noise only when not too close to target and not changing direction
+            if (distance > 0.5f && !directionChanged) {
                 x += moveX + noiseX * deltaTime;
                 y += moveY + noiseY * deltaTime;
             } else {

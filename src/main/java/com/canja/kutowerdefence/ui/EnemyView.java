@@ -23,6 +23,7 @@ public class EnemyView extends Group {
     private int currentFrame = 0;
     private Timeline animationTimeline;
     private ImageView slowIcon;
+    private ImageView thunderIcon;
 
     public EnemyView(Enemy enemy) {
         this.enemy = enemy;
@@ -54,9 +55,19 @@ public class EnemyView extends Group {
         slowIcon.setFitHeight(16);
         slowIcon.setVisible(false);
         slowIcon.setMouseTransparent(true);
-        slowIcon.setTranslateX(TILE_SIZE / 2f - 8);
+        slowIcon.setTranslateX(TILE_SIZE / 2f - 16);
         slowIcon.setTranslateY(-20);
         this.getChildren().add(slowIcon);
+
+        Image thunderImage = new Image(getClass().getResourceAsStream("/assets/effects/thunder.png"));
+        thunderIcon = new ImageView(thunderImage);
+        thunderIcon.setFitWidth(16);
+        thunderIcon.setFitHeight(16);
+        thunderIcon.setVisible(false);
+        thunderIcon.setMouseTransparent(true);
+        thunderIcon.setTranslateX(TILE_SIZE / 2f);
+        thunderIcon.setTranslateY(-20);
+        this.getChildren().add(thunderIcon);
 
 
         animationTimeline = new Timeline(
@@ -98,6 +109,9 @@ public class EnemyView extends Group {
 
         // Show or hide the snowflake overlay
         slowIcon.setVisible(enemy.getIsSlowed());
+
+        // Show or hide the thunder icon for combat synergy
+        thunderIcon.setVisible(enemy.getHasCombatSynergy());
     }
 
     public boolean isDead() {
