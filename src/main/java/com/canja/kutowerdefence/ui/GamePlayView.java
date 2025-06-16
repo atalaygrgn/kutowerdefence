@@ -436,7 +436,7 @@ public class GamePlayView implements Initializable {
         });
     }
 
-    public void showGameOver(boolean success) {
+    public void showGameOver(boolean success, boolean campaign) {
         waveController.stopAll();
         controller.getGameSession().clearActiveEnemiesTowers();
         enemyViews.clear();
@@ -450,10 +450,12 @@ public class GamePlayView implements Initializable {
         File bgFile;
         if (success) {
             bgFile = new File("src/main/resources/assets/gamesuccess.png");
+            if(campaign) {
+                nextLevelBtn.setVisible(true);
+                nextLevelBtn.setDisable(false);
+            }
         } else {
             bgFile = new File("src/main/resources/assets/gameover.png");
-            nextLevelBtn.setVisible(false);
-            nextLevelBtn.setDisable(true);
         }
         BackgroundImage bgImage = new BackgroundImage(new Image(bgFile.toURI().toString()),
                 BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
@@ -578,15 +580,16 @@ public class GamePlayView implements Initializable {
                     controller.getGameSession().tick(deltaTime);
 
                     if(controller.getGameState()==2){
-                        showGameOver(false);
+                        showGameOver(false, true);
                     } else if (controller.getGameState()==1) {
                         int level = LevelManager.getCurrentLevel();
 
-                        if (controller.getLevel() == level) {
+                        if (controller.getLevel() == level & controller.getGameSession().isCampaign()) {
                             LevelManager.saveLevel(++level);
+                            showGameOver(true, true);
                         }
 
-                        showGameOver(true);
+                        showGameOver(true, false);
                     }
                     updateEnemies(deltaTime, controller.getPauseState());
                 }

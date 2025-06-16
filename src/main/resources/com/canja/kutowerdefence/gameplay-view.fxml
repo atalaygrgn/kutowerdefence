@@ -210,9 +210,9 @@
                 </rowConstraints>
             </GridPane>
             <Pane fx:id="enemyLayer" pickOnBounds="false" />
-            <VBox fx:id="gameOverOverlay" alignment="TOP_CENTER" maxHeight="600.0" maxWidth="800.0" spacing="20" style="-fx-background-color: rgba(0,0,0,0.6);" visible="false" translateY="-100">
+            <VBox fx:id="gameOverOverlay" alignment="TOP_CENTER" maxHeight="600.0" maxWidth="800.0" spacing="20" style="-fx-background-color: rgba(0,0,0,0.6);" translateY="-100" visible="false">
                 <children>
-                    <Label fx:id="enemiesKilledLabel" prefHeight="45.0" prefWidth="300.0" style="-fx-font-family: 'System'; -fx-font-size: 30px; -fx-text-fill: #F8E8A0; -fx-font-weight: bold; -fx-effect: dropshadow(one-pass-box, black, 5, 0.3, 2, 2);" alignment="CENTER" text="Enemies Killed: 0" />
+                    <Label fx:id="enemiesKilledLabel" alignment="CENTER" prefHeight="45.0" prefWidth="300.0" style="-fx-font-family: 'System'; -fx-font-size: 30px; -fx-text-fill: #F8E8A0; -fx-font-weight: bold; -fx-effect: dropshadow(one-pass-box, black, 5, 0.3, 2, 2);" text="Enemies Killed: 0" />
                     <Pane prefHeight="400.0" prefWidth="800.0" />
                     <HBox alignment="CENTER" prefHeight="50.0" prefWidth="800.0">
                         <children>
@@ -222,7 +222,7 @@
                                 </image>
                             </ImageView>
                             <Pane prefHeight="50.0" prefWidth="30.0" />
-                            <ImageView fx:id="nextLevelBtn" fitHeight="48.0" fitWidth="48.0" pickOnBounds="true">
+                            <ImageView fx:id="nextLevelBtn" disable="true" fitHeight="48.0" fitWidth="48.0" pickOnBounds="true" visible="false">
                                 <image>
                                     <Image url="@../../../assets/ui/button/button_9.png" />
                                 </image>
