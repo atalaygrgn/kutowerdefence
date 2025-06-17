@@ -1,0 +1,15 @@
+Assets:
+- Asset pack on LearnHub
+- Phase II Assets
+- Kenney UI Pack: Adventure
+    https://kenney.nl/assets/ui-pack-adventure
+- GNU Image Manipulation Program (GIMP) for creating HUD interface
+- Spritesheet Cutter
+    https://yeoji.github.io/spritesheet-cutter/
+
+Libraries:
+- JavaFX
+    - Controls
+    - FXML
+- Gson by Google
+- JUnit 5
