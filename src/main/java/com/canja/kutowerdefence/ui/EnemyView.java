@@ -49,7 +49,7 @@ public class EnemyView extends Group {
         this.getChildren().addAll(imageView, healthBarBack, healthBarFront);
 
 
-        Image snowflakeImage = new Image(getClass().getResourceAsStream("/assets/effects/snowflake.png"));
+        Image snowflakeImage = new Image("file:src/main/resources/assets/effects/snowflake.png");
         slowIcon = new ImageView(snowflakeImage);
         slowIcon.setFitWidth(16);
         slowIcon.setFitHeight(16);
@@ -59,7 +59,7 @@ public class EnemyView extends Group {
         slowIcon.setTranslateY(-20);
         this.getChildren().add(slowIcon);
 
-        Image thunderImage = new Image(getClass().getResourceAsStream("/assets/effects/thunder.png"));
+        Image thunderImage = new Image("file:src/main/resources/assets/effects/thunder.png");
         thunderIcon = new ImageView(thunderImage);
         thunderIcon.setFitWidth(16);
         thunderIcon.setFitHeight(16);
