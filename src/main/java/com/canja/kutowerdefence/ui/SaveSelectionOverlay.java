@@ -13,6 +13,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.VBox;
@@ -61,8 +62,14 @@ public class SaveSelectionOverlay {
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
-                } catch (IOException e) {
-                    System.err.println("Failed to open save: " + e.getMessage());
+                } catch (Exception e) {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle(null);
+                        alert.setHeaderText(null);
+                        alert.setContentText("An error occured. Save file may be corrupted!");
+                        alert.showAndWait();
+
+                        System.err.println("Corrupted save file! Cannot open: " + e.getMessage());
                 }
             }
         });
